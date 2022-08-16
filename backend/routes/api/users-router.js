@@ -1,7 +1,11 @@
+require('dotenv').config()
 const router = require('express').Router();
 
-router.post('/signin', (req, res) => {
+const { User } = require('../../db/models')
 
+router.get('/signin', async (req, res) => {
+    const user = await User.getCurrentUserById(120);
+    res.json(user)
 });
 
 router.post('/signup', (req, res) => {
