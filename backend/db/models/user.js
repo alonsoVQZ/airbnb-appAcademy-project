@@ -1,6 +1,8 @@
 'use strict';
 const bcrypt = require('bcryptjs');
 const { Model, Validator, Op } = require('sequelize');
+const toCamelCase = (string) => string[0].toUpperCase() + string.slice(1).toLowerCase();
+
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     toSafeObject() {
@@ -23,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
         }
       });
       if (user && user.validatePassword(password)) {
-        return await User.scope('currentUser').findByPk(user.id);
+        return await User.scope('currentUser').findByPk(user.id).catch(err);
       }
     }
     static async signup({ firstName, lastName, username, email, password }) {
@@ -44,7 +46,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        len: [4, 30],
+        len: {
+          args: [2, 32],
+          msg: "First Name is required"
+        },
         isNotEmail(value) {
           if (Validator.isEmail(value)) {
             throw new Error("Cannot be an email.");
@@ -56,7 +61,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        len: [4, 30],
+        len: {
+          args: [2, 32],
+          msg: "Last Name is required"
+        },
         isNotEmail(value) {
           if (Validator.isEmail(value)) {
             throw new Error("Cannot be an email.");
@@ -67,9 +75,11 @@ module.exports = (sequelize, DataTypes) => {
     username: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
       validate: {
-        len: [4, 30],
+        len: {
+          args: [4, 32],
+          msg: "Username is required"
+        },
         isNotEmail(value) {
           if (Validator.isEmail(value)) {
             throw new Error("Cannot be an email.");
@@ -80,10 +90,12 @@ module.exports = (sequelize, DataTypes) => {
     email: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
       validate: {
         len: [8, 256],
-        isEmail: true
+        isEmail: {
+          args: true,
+          msg: "Invalid email"
+        }
       }
     },
     password: {
@@ -97,7 +109,9 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'User',
     defaultScope: {
-      exclude: ["password", "createdAt", "updatedAt"]
+      attributes: {
+        exclude: ["password", "createdAt", "updatedAt"]
+      }
     },
     scopes: {
       currentUser: {

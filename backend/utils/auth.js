@@ -40,7 +40,7 @@ const restoreUser = (req, res, next) => {
     });
 };
 
-const requireAuth = function (req, _res, next) {
+const requireAuth = (req, _res, next) => {
     if (req.user) return next();
     const err = new Error('Unauthorized');
     err.title = 'Unauthorized';
@@ -49,4 +49,29 @@ const requireAuth = function (req, _res, next) {
     return next(err);
 }
 
-module.exports = { setTokenCookie, restoreUser, requireAuth };
+const authentication = (req, res, next) => {
+    try {
+        const { token } = req.cookies;
+        if(!token) throw new Error();
+        jwt.verify(token, secret);
+        return next();
+    } catch(e) {
+        e.message = 'Authentication required';
+        e.status = 401;
+        return next({ message: e.message, statusCode: e.status });
+    }
+}
+
+const authorization = (req, res, next) => {
+    try {
+        const { id } = jwt.verify(token, secret).data;
+        
+        return next();
+    } catch(e) {
+        e.message = 'Forbidden';
+        e.status = 403;
+        return next({ message: e.message, statusCode: e.status });
+    }
+}
+
+module.exports = { setTokenCookie, restoreUser, requireAuth, authentication, authorization};
