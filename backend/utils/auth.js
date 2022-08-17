@@ -65,6 +65,13 @@ const authentication = (req, res, next) => {
 const authorization = (req, res, next) => {
     try {
         const { id } = jwt.verify(token, secret).data;
+        if(req.params.spotId) {
+            const user = User.findByPk(1, {
+                include: Spots 
+            })
+        } else if(req.params.reviewId) {
+
+        }
         
         return next();
     } catch(e) {
