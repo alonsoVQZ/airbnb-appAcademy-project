@@ -2,7 +2,8 @@ const jwt = require('jsonwebtoken');
 const router = require('express').Router();
 
 const { jwtConfig } = require('../../config');
-const { authentication } = require('../../utils/auth.js')
+const { authentication } = require('../../utils/auth.js');
+const { Spot } = require('../../db/models');
 
 const { secret } = jwtConfig;
 
@@ -14,9 +15,12 @@ router.get('/', (req, res) => {
     res.json( payload );
 });
 
-router.get('/spots', (req, res) => {
+router.get('/spots', async (req, res) => {
     // Get all spots by the current user
     // Authe
+    const { currentUserId } = req.body;
+    const spots = await Spot.getSpots(currentUserId);
+    res.json({ spots })
 });
 
 module.exports = router;

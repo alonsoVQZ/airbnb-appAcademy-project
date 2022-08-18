@@ -44,8 +44,8 @@ const authentication = (req, _res, next) => {
     try {
         const { token } = req.cookies;
         if(!token) throw new Error('Authentication required');
-        const { id } = jwt.verify(token, secret).data;
-        req.body.currentUserId = id;
+        const data = jwt.verify(token, secret).data;
+        req.body.currentUserData = data;
         next();
     } catch(e) {
         e.status = 401;

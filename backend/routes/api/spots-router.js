@@ -9,13 +9,15 @@ const { Spot } = require('../../db/models');
 router.post('/', validateSpot, authentication, async (req, res) => {
     // Create a Spot
     // Authe
-    const spot = await Spot.createSpot(req.body);
-    console.log(spot)
-    res.json(spot);
+    const spots = await Spot.createSpot(req.body);
+    console.log(spots)
+    res.json({ spots });
 })
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
     // Get All Spots
+    const spots = await Spot.getSpots();
+    res.json({ spots })
 });
 
 router.get('/:spotId', (req, res) => {

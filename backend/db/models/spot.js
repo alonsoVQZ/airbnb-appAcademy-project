@@ -2,6 +2,12 @@
 const {  Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Spot extends Model {
+    static async getSpots(currentUserId) {
+      let spots;
+      if(currentUserId) spots = await Spot.findAll({ where: { ownerId: currentUserId } })
+      else spots = await Spot.findAll();
+      return spots;
+    }
     static async createSpot({ currentUserId, address, city, state, country, lat, lng, name, description, price }) {
       const ownerId = currentUserId
       const spot = await Spot.create({
