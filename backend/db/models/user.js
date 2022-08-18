@@ -1,13 +1,12 @@
 'use strict';
 const bcrypt = require('bcryptjs');
 const { Model, Validator, Op } = require('sequelize');
-const toCamelCase = (string) => string[0].toUpperCase() + string.slice(1).toLowerCase();
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
-    toSafeObject() {
+    toSafeObject(token) {
       const { id, firstName, lastName, username, email } = this;
-      return { id, firstName, lastName, username, email };
+      return { id, firstName, lastName, username, email, token};
     }
     validatePassword(password) {
       return bcrypt.compareSync(password, this.password.toString());
@@ -25,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
         }
       });
       if (user && user.validatePassword(password)) {
-        return await User.scope('currentUser').findByPk(user.id).catch(err);
+        return await User.scope('currentUser').findByPk(user.id);
       }
     }
     static async signup({ firstName, lastName, username, email, password }) {
@@ -39,6 +38,10 @@ module.exports = (sequelize, DataTypes) => {
       return await User.scope('currentUser').findByPk(user.id);
     }
     static associate(models) {
+      User.hasMany(
+        models.Spot,
+          { foreignKey: 'ownerId', onDelete: 'CASCADE',  hooks: true }
+      );
     }
   }
   User.init({

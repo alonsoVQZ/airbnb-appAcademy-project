@@ -40,45 +40,26 @@ const restoreUser = (req, res, next) => {
     });
 };
 
-const requireAuth = (req, _res, next) => {
-    if (req.user) return next();
-    const err = new Error('Unauthorized');
-    err.title = 'Unauthorized';
-    err.errors = ['Unauthorized'];
-    err.status = 401;
-    return next(err);
-}
-
-const authentication = (req, res, next) => {
+const authentication = (req, _res, next) => {
     try {
         const { token } = req.cookies;
-        if(!token) throw new Error();
+        if(!token) throw new Error('Authentication required');
         jwt.verify(token, secret);
-        return next();
+        next();
     } catch(e) {
-        e.message = 'Authentication required';
         e.status = 401;
-        return next({ message: e.message, statusCode: e.status });
+        next(e);
     }
 }
 
-const authorization = (req, res, next) => {
-    try {
-        const { id } = jwt.verify(token, secret).data;
-        if(req.params.spotId) {
-            const user = User.findByPk(1, {
-                include: Spots 
-            })
-        } else if(req.params.reviewId) {
-
-        }
-        
-        return next();
-    } catch(e) {
-        e.message = 'Forbidden';
-        e.status = 403;
-        return next({ message: e.message, statusCode: e.status });
+const authorization = (currentUserId, resourceUserId, belongsTo) => {
+    const error = new Error('Forbidden');
+    error.status = 403;
+    if(!belongsTo) {
+        if(currentUserId === resourceUserId) throw error;
     }
+    if(currentUserId !== resourceUserId) throw error;
+    return true;
 }
 
-module.exports = { setTokenCookie, restoreUser, requireAuth, authentication, authorization};
+module.exports = { setTokenCookie, restoreUser, authentication, authorization};

@@ -1,48 +1,38 @@
 const express = require('express');
 
-const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth');
+const { setTokenCookie } = require('../../utils/auth.js');
+const { validateSignup, validateSignin } = require('../../utils/validation.js');
 const { User } = require('../../db/models');
 
 const router = express.Router();
 
-router.post('/signin', async (req, res, next) => {
-    try {
-        const { credential, password } = req.body;
-        // if(!credential || !password) throw new Error('Validation error');
-        const user = await User.signin({ credential, password });
-        // if (!user) throw new Error();
-        setTokenCookie(res, user);
-        return res.json(user);
-    } catch(e) {
-        return next(e.message)
-        // if(e.message === 'Validation error') {
-        //     e.status = 400;
-        //     return next({
-        //         message: e.message,
-        //         statusCode: e.status,
-        //         errors: {
-        //             credential: "Email or username is required",
-        //             password: "Password is required"
-        //         }
-        //     });
-        // } else if(e.message === 'Invalid credentials') {
-        //     e.status = 401;
-        //     return next({
-        //         message: e.message,
-        //         statusCode: e.status,
-        //     })
-        // }
-    }
-});
-
-router.post('/signup', async (req, res, next) => {
+router.post('/signup', validateSignup, async (req, res, next) => {
     try {
         const { firstName, lastName, username, email, password } = req.body;
         const user = await User.signup({ firstName, lastName, username, email, password });
-        setTokenCookie(res, user);
-        return res.json(user);
+        const token = setTokenCookie(res, user);
+        return res.json(user.toSafeObject(token));
     } catch (e) {
-        return next(e)
+        if(e.name === 'SequelizeUniqueConstraintError') {
+            console.log(e.errors)
+            e.status = 403;
+            e.message = 'User already exists';
+            e.errors.forEach((error) => error.message = `User with that ${error.path} already exists`);
+            next(e);
+        }
+    }
+});
+
+router.post('/signin', validateSignin, async (req, res, next) => {
+    try {
+        const { credential, password } = req.body;
+        const user = await User.signin({ credential, password });
+        if (!user) throw new Error('Invalid credentials');
+        const token = setTokenCookie(res, user);
+        res.json(user.toSafeObject(token));
+    } catch(e) {
+        e.status = 401;
+        next(e)
     }
 });
 

@@ -43,15 +43,13 @@ app.use(routes);
 
 app.use((_req, _res, next) => {
     const err = new Error("The requested resource couldn't be found.");
-    err.title = "Resource Not Found";
-    err.errors = ["The requested resource couldn't be found."];
     err.status = 404;
     next(err);
 });
 
 app.use((err, _req, _res, next) => {
-    if (err instanceof ValidationError || err instanceof EmptyResultError) {
-        const errors = {};
+    if (err instanceof ValidationError) {
+        const errors = new Object();
         err.errors.forEach((e) => errors[e.path] = e.message);
         err.errors = errors;
     }
@@ -60,7 +58,11 @@ app.use((err, _req, _res, next) => {
 
 app.use((err, _req, res, _next) => {
     res.status(err.status || 500);
-    res.json(err)
+    res.json({
+        message: err.message,
+        statusCode: err.status,
+        errors: err.errors
+    });
 });
 
 module.exports = app;
