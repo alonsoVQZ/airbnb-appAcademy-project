@@ -4,7 +4,6 @@ module.exports = (sequelize, DataTypes) => {
   class Spot extends Model {
     static async createSpot({ currentUserId, address, city, state, country, lat, lng, name, description, price }) {
       const ownerId = currentUserId
-      console.log(currentUserId)
       const spot = await Spot.create({
         ownerId: 1,
         address,

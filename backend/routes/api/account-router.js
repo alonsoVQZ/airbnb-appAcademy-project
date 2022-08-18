@@ -15,7 +15,8 @@ router.get('/', (req, res) => {
 });
 
 router.get('/spots', (req, res) => {
-    // Returns all the spots owned (created) by the current user.
+    // Get all spots by the current user
+    // Authe
 });
 
 module.exports = router;
