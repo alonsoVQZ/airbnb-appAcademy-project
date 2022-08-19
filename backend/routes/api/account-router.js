@@ -10,16 +10,15 @@ const { secret } = jwtConfig;
 router.use(authentication);
 
 router.get('/', (req, res) => {
-    const { token } = req.cookies;
-    const payload = jwt.verify(token, secret).data;
-    res.json( payload );
+    const { currentUserData } = req.body;
+    res.json( currentUserData );
 });
 
 router.get('/spots', async (req, res) => {
     // Get all spots by the current user
     // Authe
-    const { currentUserId } = req.body;
-    const spots = await Spot.getSpots(currentUserId);
+    const { id } = req.body.currentUserData;
+    const spots = await Spot.getSpots(id);
     res.json({ spots })
 });
 

@@ -3,15 +3,21 @@ const {  Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Spot extends Model {
     static async getSpots(currentUserId) {
+      const { Image } = require('../models')
       let spots;
       if(currentUserId) spots = await Spot.findAll({ where: { ownerId: currentUserId } })
-      else spots = await Spot.findAll();
+      else spots = await Spot.findAll({
+        include: {
+          model: Image
+        }
+      });
+      
       return spots;
     }
-    static async createSpot({ currentUserId, address, city, state, country, lat, lng, name, description, price }) {
-      const ownerId = currentUserId
+    static async createSpot({ currentUserData, address, city, state, country, lat, lng, name, description, price }) {
+      const ownerId = currentUserData.id;
       const spot = await Spot.create({
-        ownerId: 1,
+        ownerId,
         address,
         city,
         state,
@@ -34,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'imageableId',
         constraints: false,
         scope: {
-          commentableType: 'Spot'
+          imageableType: 'Spot'
         }
       });
     }

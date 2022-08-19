@@ -17,7 +17,7 @@ router.post('/', validateSpot, authentication, async (req, res) => {
 router.get('/', async (req, res) => {
     // Get All Spots
     const spots = await Spot.getSpots();
-    res.json({ spots })
+    res.json({ Spots: spots })
 });
 
 router.get('/:spotId', (req, res) => {

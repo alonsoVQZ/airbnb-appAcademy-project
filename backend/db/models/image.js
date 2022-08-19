@@ -2,6 +2,9 @@
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Image extends Model {
+    static idk() {
+      return "hola"
+    }
     static associate(models) {
       Image.belongsTo(
         models.Spot,

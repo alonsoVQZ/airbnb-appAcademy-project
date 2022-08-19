@@ -1,6 +1,7 @@
 const { faker } = require('@faker-js/faker');
 
 const users = new Array();
+const passwords = ['123456','abcdef']
 
 for (let i = 0; i < 100; i++) {
     const firstName = faker.name.firstName();
