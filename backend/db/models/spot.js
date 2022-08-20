@@ -31,18 +31,26 @@ module.exports = (sequelize, DataTypes) => {
       return spot;
     }
     static associate(models) {
-      Spot.belongsTo(
-        models.User,
-          { foreignKey: 'ownerId' }
+      Spot.hasMany(
+        models.Review,
+          { foreignKey: 'spotId', onDelete: 'CASCADE',  hooks: true }
+      );
+      Spot.hasMany(
+        models.Booking,
+          { foreignKey: 'spotId', onDelete: 'CASCADE',  hooks: true }
       );
       Spot.hasMany(
         models.Image, {
         foreignKey: 'imageableId',
         constraints: false,
         scope: {
-          imageableType: 'Spot'
+          commentableType: 'Spot'
         }
       });
+      Spot.belongsTo(
+        models.User,
+          { foreignKey: 'ownerId' }
+      );
     }
   }
   Spot.init({

@@ -1,17 +1,16 @@
 const { faker } = require('@faker-js/faker');
+const bcrypt = require('bcryptjs')
 
 const users = new Array();
-const passwords = ['123456','abcdef']
 
 for (let i = 0; i < 100; i++) {
     const firstName = faker.name.firstName();
     users.push({
         firstName: firstName,
         lastName: faker.name.lastName(),
-        username: faker.internet.userName(firstName),
-        email: faker.internet.email(firstName),
-        password: faker.internet.password(Math.floor(Math.random() * (30 - 10) + 10))
-    })
+        username: faker.internet.userName(firstName).toLowerCase(),
+        email: faker.internet.email(firstName).toLowerCase(),
+        password: bcrypt.hashSync('1234')
+    });
 }
-
 module.exports = users;
