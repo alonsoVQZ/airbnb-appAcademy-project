@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'imageableId',
         constraints: false,
         scope: {
-          commentableType: 'Review'
+          imageableType: 'Review'
         }
       });
       Review.belongsTo(

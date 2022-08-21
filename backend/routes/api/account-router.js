@@ -19,7 +19,7 @@ router.get('/spots', async (req, res) => {
     // Authe
     const { id } = req.body.currentUserData;
     const spots = await Spot.getSpots(id);
-    res.json({ spots })
+    res.json({ Spots: spots })
 });
 
 module.exports = router;

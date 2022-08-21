@@ -6,12 +6,11 @@ const { validateSpot } = require('../../utils/validation.js');
 const { authentication, authorization } = require('../../utils/auth.js')
 const { Spot } = require('../../db/models');
 
-router.post('/', validateSpot, authentication, async (req, res) => {
+router.post('/', authentication, async (req, res) => {
     // Create a Spot
     // Authe
-    const spots = await Spot.createSpot(req.body);
-    console.log(spots)
-    res.json({ spots });
+    const spot = await Spot.createSpot(req.body);
+    res.json(spot);
 })
 
 router.get('/', async (req, res) => {
@@ -20,8 +19,17 @@ router.get('/', async (req, res) => {
     res.json({ Spots: spots })
 });
 
-router.get('/:spotId', (req, res) => {
+router.get('/:spotId', async (req, res, next) => {
     // Get details of a spot from an id
+    try {
+        const { spotId } = req.params;
+        const spot = await Spot.getSpotDetails(spotId);
+        if(!spot) throw new Error("Spot couldn't be found");
+        res.json(spot)
+    } catch(e) {
+        e.status = 404;
+        next(e)
+    }
 });
 
 router.put('/:spotId', (req, res) => {
@@ -35,6 +43,12 @@ router.delete('/:spotId', (req, res) => {
 });
 
 router.use('/:spotId', imagesRouter)
+
+router.use((_req, _res, next) => {
+    const err = new Error("Spot couldn't be found");
+    err.status = 404;
+    next(err);
+});
 
 
 module.exports = router;

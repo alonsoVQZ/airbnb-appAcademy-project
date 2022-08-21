@@ -1,18 +1,60 @@
 'use strict';
+
 const {  Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Spot extends Model {
-    static async getSpots(currentUserId) {
-      const { Image } = require('../models')
-      let spots;
-      if(currentUserId) spots = await Spot.findAll({ where: { ownerId: currentUserId } })
-      else spots = await Spot.findAll({
-        include: {
-          model: Image
+    static async getSpotDetails(spotId) {
+      const { User, Review, Image } = require('../models')
+      const spot = await Spot.findByPk(
+        spotId,
+        {
+          attributes: {
+            include: [
+              [sequelize.fn("COUNT", sequelize.col("Reviews.stars")), "numReviews"],
+              [sequelize.fn("AVG", sequelize.col("Reviews.stars")), "avgStarRating"]
+            ]
+          },
+          include: [
+            { required: false, model: Review, attributes: []},
+            { required: false, model: Image}, 
+            { required: true, model: User, as: 'Owner', attributes: { exclude: ['username', 'email', 'password', 'createdAt', 'updatedAt'] }}
+          ],
+          group: ['Reviews.spotId'],
         }
-      });
+      );
+      return spot;
+    }
+    static async getSpots(currentUserId) {
+      const { Review, Image } = require('../models')
+      if(currentUserId) {
+        const spots = await Spot.findAll({
+          where: { ownerId: currentUserId },
+          attributes: {
+            include: [
+              [sequelize.fn("AVG", sequelize.col("Reviews.stars")), "avgRating"]
+            ]
+          },
+          include: [{ model: Review, attributes: [] }, { model: Image, attributes: [] }],
+          group: ['Reviews.spotId'],
+          order: ['id']
+        });
+        return spots;
+      }
+      else {
+        const spots = await Spot.findAll({
+          attributes: {
+            include: [
+              [sequelize.fn("AVG", sequelize.col("Reviews.stars")), "avgRating"]
+            ]
+          },
+          include: [{ model: Review, attributes: [] }, { model: Image, attributes: [] }],
+          group: ['Reviews.spotId'],
+          order: ['id']
+        });
+        return spots;
+      } 
       
-      return spots;
+      
     }
     static async createSpot({ currentUserData, address, city, state, country, lat, lng, name, description, price }) {
       const ownerId = currentUserData.id;
@@ -44,12 +86,12 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'imageableId',
         constraints: false,
         scope: {
-          commentableType: 'Spot'
+          imageableType: 'Spot'
         }
       });
       Spot.belongsTo(
         models.User,
-          { foreignKey: 'ownerId' }
+          { as: 'Owner', foreignKey: 'ownerId' }
       );
     }
   }
