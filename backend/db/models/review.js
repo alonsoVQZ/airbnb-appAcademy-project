@@ -24,7 +24,10 @@ module.exports = (sequelize, DataTypes) => {
       );
       Review.belongsTo(
         models.Spot,
-          { foreignKey: 'spotId' }
+          { 
+            through: 'SpotReviews',
+            foreignKey: 'spotId' 
+          }
       );
     }
   }

@@ -9,7 +9,7 @@ module.exports = async () => {
     const randomSpotId = () => Math.floor(Math.random() * ((spotsCount + 1) - 1) + 1);
     const randomReviewId = () => Math.floor(Math.random() * ((reviewsCount + 1) - 1) + 1);
     const getId = (type) => type === 'Spot' ? randomSpotId() : randomReviewId();
-    for (let index = 0; index < 800; index++) {
+    for (let index = 0; index < 500; index++) {
         const type = typesArray[Math.floor(Math.random() * typesArray.length)];
         images.push({
             url: faker.internet.url(),

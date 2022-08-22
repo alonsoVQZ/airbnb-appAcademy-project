@@ -16,7 +16,7 @@ module.exports = async () => {
         })
         return { startDate, endDate }
     }
-    for (let index = 0; index < 400; index++) {
+    for (let index = 0; index < 100; index++) {
         const spot = await Spot.findByPk(randomSpotId());
         const userId = goodUserId(randomUserId(), spot.ownerId)
         const spotId = spot.id;

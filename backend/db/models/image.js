@@ -3,14 +3,24 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Image extends Model {
     static associate(models) {
-      // Image.belongsTo(
-      //   models.Spot,
-      //   { foreignKey: 'imageableId', constraints: false }
-      // );
-      // Image.belongsTo(
-      //   models.Review,
-      //   { foreignKey: 'imageableId', constraints: false }
-      // );
+      Image.belongsTo(
+        models.Spot,
+        { 
+          through: 'SpotImages',
+          as: 'Images',
+          foreignKey: 'imageableId', 
+          constraints: false 
+        }
+      );
+      Image.belongsTo(
+        models.Review,
+        { 
+          through: 'ReviewImages',
+          as: 'Imagess',
+          foreignKey: 'imageableId', 
+          constraints: false 
+        }
+      );
     }
   }
   Image.init({
@@ -29,6 +39,11 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Image',
+    defaultScope: {
+      attributes: {
+        exclude: ['imageableType', 'createdAt', 'updatedAt']
+      }
+    }
   });
   return Image;
 };
