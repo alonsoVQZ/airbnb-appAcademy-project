@@ -65,7 +65,7 @@ module.exports = async () => {
     const spots = new Array();
     const userCount = await User.count();
     const randomUserId = () => Math.floor(Math.random() * ((userCount + 1) - 1) + 1);
-    for (let index = 0; index < 100; index++) {
+    for (let index = 0; index < 200; index++) {
         const csc = randomCSC();
         const { latitude, longitude } = csc.cityObj;
         const coords = randomLocation.randomCirclePoint({ latitude, longitude }, 500);

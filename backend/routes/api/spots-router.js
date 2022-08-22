@@ -35,20 +35,12 @@ router.get('/:spotId', async (req, res, next) => {
 router.put('/:spotId', (req, res) => {
     // Edit a Spot from an Id
     // Authe and Autho
+
 });
 
 router.delete('/:spotId', (req, res) => {
     // Delete a Spot from an Id
     // Authe and Autho
 });
-
-router.use('/:spotId', imagesRouter)
-
-router.use((_req, _res, next) => {
-    const err = new Error("Spot couldn't be found");
-    err.status = 404;
-    next(err);
-});
-
 
 module.exports = router;

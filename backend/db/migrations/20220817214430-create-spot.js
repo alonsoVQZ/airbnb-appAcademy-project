@@ -58,12 +58,18 @@ module.exports = {
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+        get() {
+          return moment(this.getDataValue('updatedAt')).format('YYYY-MM-DD hh:mm:ss');
+        }
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+        get() {
+          return moment(this.getDataValue('updatedAt')).format('YYYY-MM-DD hh:mm:ss');
+        }
       }
     });
   },

@@ -3,6 +3,42 @@
 const {  Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Spot extends Model {
+    goodDates(object) {
+      const copiedObject = JSON.parse(JSON.stringify(object));
+      for (const key in copiedObject) {
+        
+      }
+    }
+    static async getSpots() {
+      const { Review, Image } = require('../models')
+      const spots = await Spot.findAll({
+        attributes: {
+          include: [
+            // [sequelize.fn('strftime', sequelize.col('Spot.rraw')), 'createdAt'],
+            [sequelize.fn("AVG", sequelize.col("Reviews.stars")), "avgRating"]
+          ]
+        },
+        include: [{ model: Review, attributes: [] }, { model: Image}],
+        group: ['Spot.id'],
+        order: ['id']
+      });
+      
+      return spots;
+    }
+    static async getCurrentUserSpots(currentUserId) {
+      const spots = await Spot.findAll({
+        where: { ownerId: currentUserId },
+        attributes: {
+          include: [
+            [sequelize.fn("AVG", sequelize.col("Reviews.stars")), "avgRating"]
+          ]
+        },
+        include: [{ model: Review, attributes: [] }, { model: Image, attributes: [] }],
+        group: ['Reviews.spotId'],
+        order: ['id']
+      });
+      return spots;
+    }
     static async getSpotDetails(spotId) {
       const { User, Review, Image } = require('../models')
       const spot = await Spot.findByPk(
@@ -23,38 +59,6 @@ module.exports = (sequelize, DataTypes) => {
         }
       );
       return spot;
-    }
-    static async getSpots(currentUserId) {
-      const { Review, Image } = require('../models')
-      if(currentUserId) {
-        const spots = await Spot.findAll({
-          where: { ownerId: currentUserId },
-          attributes: {
-            include: [
-              [sequelize.fn("AVG", sequelize.col("Reviews.stars")), "avgRating"]
-            ]
-          },
-          include: [{ model: Review, attributes: [] }, { model: Image, attributes: [] }],
-          group: ['Reviews.spotId'],
-          order: ['id']
-        });
-        return spots;
-      }
-      else {
-        const spots = await Spot.findAll({
-          attributes: {
-            include: [
-              [sequelize.fn("AVG", sequelize.col("Reviews.stars")), "avgRating"]
-            ]
-          },
-          include: [{ model: Review, attributes: [] }, { model: Image, attributes: [] }],
-          group: ['Reviews.spotId'],
-          order: ['id']
-        });
-        return spots;
-      } 
-      
-      
     }
     static async createSpot({ currentUserData, address, city, state, country, lat, lng, name, description, price }) {
       const ownerId = currentUserData.id;
@@ -109,6 +113,13 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Spot',
+    // defaultScope: {
+    //   attributes: {
+    //     exclude: ['createdAt'],
+    //     include: [[sequelize.fn('strftime', sequelize.col('Spot.createdAt')), 'createdAt']],
+        
+    //   }
+    // },
   });
   return Spot;
 };
