@@ -92,4 +92,15 @@ const validateImage = [
   handleValidationErrors
 ];
 
-module.exports = { validateSignup, validateSignin, validateSpot, validateImage };
+const validateReview = [
+  check('review', 'Review text is required')
+    .exists({ checkFalsy: true })
+    .notEmpty(),
+  check('stars', 'Stars must be an integer from 1 to 5')
+    .exists({ checkFalsy: true })
+    .isInt({ min: 0, max: 5 }),
+  handleValidationErrors
+];
+
+
+module.exports = { validateSignup, validateSignin, validateSpot, validateImage, validateReview };

@@ -56,7 +56,6 @@ const authentication = (req, res, next) => {
 const authorization = (req, res, next) => {
     try {
         const { resourceUserId, currentUserId, belongsTo } = res.locals;
-        console.log(res.locals)
         if(belongsTo) {
             if(currentUserId === resourceUserId) throw new Error('Forbidden');
         }

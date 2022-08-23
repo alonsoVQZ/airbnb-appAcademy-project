@@ -27,6 +27,32 @@ module.exports = (sequelize, DataTypes) => {
       });
       return reviews;
     }
+    static async createReview(spotId, userId, { review, stars }) {
+      const { Review } = require('../models');
+      const newReview = Review.create({
+        spotId,
+        userId,
+        review,
+        stars
+      });
+      return await Review.findByPK(newReview.id);
+    }
+    static async editReview(reviewId, { review, stars }) {
+      const { Review } = require('../models');
+      console.log('que peo')
+      const editedReview = await Review.findByPk(reviewId);
+      review.set({
+        review,
+        stars
+      })
+      await editedReview.save();
+      return editedReview;
+    }
+    static async editReview(reviewId) {
+      const { Review } = require('../models');
+      const review = await Review.findByPK(reviewId);
+      await review.destroy();
+    }
     static associate(models) {
       Review.hasMany(
         models.Image, {
