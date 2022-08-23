@@ -51,17 +51,13 @@ module.exports = (sequelize, DataTypes) => {
             ]
           },
           include: [
-            // { model: Image, as: 'Images', attributes: { exclude: ['imageableType', 'createdAt', 'updatedAt'] }}, 
-            // { model: User, as: 'Owner', attributes: { exclude: ['username', 'email', 'password', 'createdAt', 'updatedAt'] }},
-            { model: Review,  attributes: [], },
+            { required: true, model: Image, as: 'Images', attributes: { exclude: ['imageableType', 'createdAt', 'updatedAt'] }}, 
+            { required: true, model: User, as: 'Owner', attributes: { exclude: ['username', 'email', 'password', 'createdAt', 'updatedAt'] }},
+            { required: true, model: Review,  attributes: [], },
           ],
-          group: ['Reviews.stars']
+          group: ['Images.id']
         }
       );
-      spot.dataValues.Images = await spot.getImages();
-      spot.dataValues.Owner = await spot.getOwner();
-
-      console.log(spot.dataValues)
       return spot;
     }
     static async createSpot({ currentUserData, address, city, state, country, lat, lng, name, description, price }) {
