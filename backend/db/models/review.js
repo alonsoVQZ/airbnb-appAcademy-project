@@ -4,11 +4,29 @@ const {
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Review extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
+    static async getCurrentUserReviews(currentUserId) {
+      const { Review, User, Spot, Image } = require('../models');
+      const reviews = await Review.findAll({
+        where: { userId: currentUserId },
+        include: [
+          { required: true, model: User, attributes: { exclude: ['username', 'email', 'password', 'createdAt', 'updatedAt'] }},
+          { required: true, model: Spot, attributes: { exclude: ['createdAt', 'updatedAt'] }},
+          { required: false, model: Image, attributes: { exclude: ['imageableType', 'createdAt', 'updatedAt'] }},
+        ]
+      });
+      return reviews;
+    }
+    static async getSpotReviews(spotId) {
+      const { Review, User, Spot, Image } = require('../models');
+      const reviews = await Review.findAll({
+        where: { spotId },
+        include: [
+          { required: true, model: User, attributes: { exclude: ['username', 'email', 'password', 'createdAt', 'updatedAt'] }},
+          { required: false, model: Image, attributes: { exclude: ['imageableType', 'createdAt', 'updatedAt'] }},
+        ]
+      });
+      return reviews;
+    }
     static associate(models) {
       Review.hasMany(
         models.Image, {

@@ -1,6 +1,7 @@
 const router = require('express').Router();
 
 const imagesRouter = require('./images-router.js');
+const reviewsRouter = require('./reviews-router.js');
 
 const { validateSpot } = require('../../utils/validation.js');
 const { authentication, authorization } = require('../../utils/auth.js');
@@ -62,5 +63,7 @@ router.delete('/:spotId', authentication, authorization, async (req, res) => {
 });
 
 router.use('/:spotId', imagesRouter);
+
+router.use('/:spotId', reviewsRouter)
 
 module.exports = router;
