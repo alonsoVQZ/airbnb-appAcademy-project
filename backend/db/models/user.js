@@ -1,13 +1,15 @@
 'use strict';
+const bcrypt = require('bcryptjs');
 const { Model, Validator, Op } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
-    toSafeObject() {
+    toSafeObject(token) {
       const { id, firstName, lastName, username, email } = this;
-      return { id, firstName, lastName, username, email };
+      return { id, firstName, lastName, username, email, token};
     }
     validatePassword(password) {
-      return bcrypt.compareSync(password, this.hashedPassword.toString());
+      return bcrypt.compareSync(password, this.password.toString());
     }
     static getCurrentUserById(id) {
       return User.scope("currentUser").findByPk(id);
@@ -25,18 +27,29 @@ module.exports = (sequelize, DataTypes) => {
         return await User.scope('currentUser').findByPk(user.id);
       }
     }
-    static async signup({ firstName, lastName, username, email, plainPassword }) {
-      const password = bcrypt.hashSync(plainPassword);
+    static async signup({ firstName, lastName, username, email, password }) {
       const user = await User.create({
         firstName,
         lastName,
         username,
         email,
-        password
+        password: bcrypt.hashSync(password)
       });
       return await User.scope('currentUser').findByPk(user.id);
     }
     static associate(models) {
+      User.hasMany(
+        models.Spot,
+          { as: 'Owner', foreignKey: 'ownerId', onDelete: 'CASCADE',  hooks: true }
+      );
+      User.hasMany(
+        models.Review,
+          { foreignKey: 'userId', onDelete: 'CASCADE',  hooks: true }
+      );
+      User.hasMany(
+        models.Booking,
+          { foreignKey: 'userId', onDelete: 'CASCADE',  hooks: true }
+      );
     }
   }
   User.init({
@@ -44,7 +57,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        len: [4, 30],
+        len: {
+          args: [2, 32],
+          msg: "First Name is required"
+        },
         isNotEmail(value) {
           if (Validator.isEmail(value)) {
             throw new Error("Cannot be an email.");
@@ -56,7 +72,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        len: [4, 30],
+        len: {
+          args: [2, 32],
+          msg: "Last Name is required"
+        },
         isNotEmail(value) {
           if (Validator.isEmail(value)) {
             throw new Error("Cannot be an email.");
@@ -67,9 +86,11 @@ module.exports = (sequelize, DataTypes) => {
     username: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
       validate: {
-        len: [4, 30],
+        len: {
+          args: [4, 32],
+          msg: "Username is required"
+        },
         isNotEmail(value) {
           if (Validator.isEmail(value)) {
             throw new Error("Cannot be an email.");
@@ -80,10 +101,12 @@ module.exports = (sequelize, DataTypes) => {
     email: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
       validate: {
         len: [8, 256],
-        isEmail: true
+        isEmail: {
+          args: true,
+          msg: "Invalid email"
+        }
       }
     },
     password: {
@@ -97,7 +120,9 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'User',
     defaultScope: {
-      exclude: ["password", "createdAt", "updatedAt"]
+      attributes: {
+        exclude: ["password", "createdAt", "updatedAt"]
+      }
     },
     scopes: {
       currentUser: {
