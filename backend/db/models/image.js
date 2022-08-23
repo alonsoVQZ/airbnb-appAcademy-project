@@ -2,6 +2,22 @@
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Image extends Model {
+    static async createSpotImage(spotId, url) {
+      const image = await Image.create({
+        url,
+        imageableType: 'Spot',
+        imageableId: spotId
+      });
+      return image;
+    }
+    static async createReviewImage(reviewId, url) {
+      const image = await Image.create({
+        url,
+        imageableType: 'Review',
+        imageableId: reviewId
+      });
+      return image;
+    }
     static associate(models) {
       Image.belongsTo(
         models.Spot,

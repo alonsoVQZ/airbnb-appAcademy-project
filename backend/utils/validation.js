@@ -3,7 +3,6 @@ const { validationResult, check } = require('express-validator');
 const handleValidationErrors = (req, _res, next) => {
   try {
     const validationErrors = validationResult(req);
-    console.log(validationErrors)
     const errorsObject = new Object();
     if (!validationErrors.isEmpty()) {
       validationErrors
@@ -70,9 +69,11 @@ const validateSpot = [
     .exists({ checkFalsy: true })
     .notEmpty()
     .isDecimal(),
-  check('name', 'Name must be less than 50 characters')
+  check('name', 'Name is required')
     .exists({ checkFalsy: true })
-    .notEmpty(),
+    .notEmpty()
+    .isLength({ max: 50 })
+    .withMessage('Name must be less than 50 characters'),
   check('description', 'Description is required')
     .exists({ checkFalsy: true })
     .notEmpty(),
@@ -82,4 +83,13 @@ const validateSpot = [
   handleValidationErrors
 ]
 
-module.exports = { validateSignup, validateSignin, validateSpot};
+const validateImage = [
+  check('url', 'URL is required')
+    .exists({ checkFalsy: true })
+    .notEmpty()
+    .isURL()
+    .withMessage('URL is not valid'),
+  handleValidationErrors
+];
+
+module.exports = { validateSignup, validateSignin, validateSpot, validateImage };

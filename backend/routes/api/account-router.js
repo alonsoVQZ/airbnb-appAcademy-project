@@ -3,22 +3,25 @@ const router = require('express').Router();
 
 const { jwtConfig } = require('../../config');
 const { authentication } = require('../../utils/auth.js');
-const { Spot } = require('../../db/models');
+const { Spot, User } = require('../../db/models');
 
 const { secret } = jwtConfig;
 
 router.use(authentication);
 
-router.get('/', (req, res) => {
-    const { currentUserData } = req.body;
-    res.json( currentUserData );
+router.get('/', async (req, res) => {
+    const { currentUserId } = res.locals;
+    console.log(currentUserId)
+    const user = await User.findByPk(currentUserId);
+    res.json( user );
 });
 
 router.get('/spots', async (req, res) => {
     // Get all spots by the current user
     // Authe
-    const { id } = req.body.currentUserData;
-    const spots = await Spot.getSpots(id);
+    const { currentUserId } = res.locals;
+    console.log(currentUserId)
+    const spots = await Spot.getCurrentUserSpots(currentUserId);
     res.json({ Spots: spots })
 });
 

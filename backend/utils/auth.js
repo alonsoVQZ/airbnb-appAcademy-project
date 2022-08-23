@@ -40,27 +40,33 @@ const restoreUser = (req, res, next) => {
     });
 };
 
-const authentication = (req, _res, next) => {
+const authentication = (req, res, next) => {
     try {
         const { token } = req.cookies;
-        if(!token) throw new Error('Authentication required');
         const data = jwt.verify(token, secret).data;
-        req.body.currentUserData = data;
+        res.locals.currentUserId = data.id;
         next();
     } catch(e) {
+        e.message = 'Authentication required';
         e.status = 401;
         next(e);
     }
 }
 
-const authorization = (currentUserId, resourceUserId, belongsTo) => {
-    const error = new Error('Forbidden');
-    error.status = 403;
-    if(!belongsTo) {
-        if(currentUserId === resourceUserId) throw error;
+const authorization = (req, res, next) => {
+    try {
+        const { resourceUserId, currentUserId, belongsTo } = res.locals;
+        console.log(res.locals)
+        if(belongsTo) {
+            if(currentUserId === resourceUserId) throw new Error('Forbidden');
+        }
+        if(currentUserId !== resourceUserId) throw new Error('Forbidden');
+        next();
+    } catch(e) {
+        e.status = 403;
+        next(e);
     }
-    if(currentUserId !== resourceUserId) throw error;
-    return true;
 }
+
 
 module.exports = { setTokenCookie, restoreUser, authentication, authorization};

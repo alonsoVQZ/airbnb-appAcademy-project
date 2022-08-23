@@ -48,6 +48,7 @@ app.use((_req, _res, next) => {
 });
 
 app.use((err, _req, _res, next) => {
+    console.log(err)
     if (err instanceof ValidationError) {
         const errors = new Object();
         err.errors.forEach((e) => errors[e.path] = e.message);
