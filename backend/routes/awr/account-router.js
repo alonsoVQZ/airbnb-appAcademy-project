@@ -1,7 +1,8 @@
 const router = require('express').Router();
 
 const { authentication } = require('../../utils/auth.js');
-const { Spot, User, Review, Booking } = require('../../db/models');
+const { userSpotsRouter } = require('./spotsRouter.js');
+const { Spot } = require('../../db/models');
 
 router.use(authentication);
 
@@ -12,13 +13,7 @@ router.get('/', async (req, res) => {
     res.json( user );
 });
 
-router.get('/spots', async (req, res) => {
-    // Get all Spots owned by the Current User
-    // Authe
-    const { currentUserId } = res.locals;
-    const spots = await Spot.getCurrentUserSpots(currentUserId);
-    res.json({ Spots: spots })
-});
+router.use(userSpotsRouter);
 
 router.get('/reviews', async (req, res) => {
     // Get all Reviews of the Current User

@@ -4,38 +4,48 @@ const { Model, Validator, Op } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
-    toSafeObject(token) {
+    toSafeObject() {
       const { id, firstName, lastName, username, email } = this;
-      return { id, firstName, lastName, username, email, token};
+      return { id, firstName, lastName, username, email};
     }
     validatePassword(password) {
       return bcrypt.compareSync(password, this.password.toString());
     }
-    static getCurrentUserById(id) {
-      return User.scope("currentUser").findByPk(id);
+    static async getCurrentUserById(id) {
+      return await User.scope("currentUser").findByPk(id);
     }
     static async signin({ credential, password }) {
-      const user = await User.scope('signinUser').findOne({
-        where: {
-          [Op.or]: {
-            username: credential,
-            email: credential
+      try {
+        const user = await User.findOne({
+          where: {
+            [Op.or]: {
+              username: credential,
+              email: credential
+            }
           }
-        }
-      });
-      if (user && user.validatePassword(password)) {
-        return await User.scope('currentUser').findByPk(user.id);
+        });
+        console.log(user)
+        if(!user ||  !user.validatePassword(password)) throw new Error("Invalid credentials");
+        return await User.scope("currentUser").findByPk(user.id);
+      } catch(e) {
+        e.status = 401
+        throw e;
       }
     }
     static async signup({ firstName, lastName, username, email, password }) {
-      const user = await User.create({
-        firstName,
-        lastName,
-        username,
-        email,
-        password: bcrypt.hashSync(password)
-      });
-      return await User.scope('currentUser').findByPk(user.id);
+      try {
+        const user = await User.create({ firstName, lastName, username, email, password: bcrypt.hashSync(password) });
+        return await User.scope("currentUser").findByPk(user.id);
+      } catch(e) {
+        if(e.name === 'SequelizeUniqueConstraintError') {
+          console.log(e.errors)
+          e.status = 403;
+          e.message = 'User already exists';
+          e.errors.forEach((error) => error.message = `User with that ${error.path} already exists`);
+          
+        }
+        throw e;
+      }      
     }
     static associate(models) {
       User.hasMany(
@@ -119,19 +129,11 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'User',
-    defaultScope: {
-      attributes: {
-        exclude: ["password", "createdAt", "updatedAt"]
-      }
-    },
     scopes: {
       currentUser: {
         attributes: {
           exclude: ["password", "createdAt", "updatedAt"]
         }
-      },
-      signinUser: {
-        attributes: {}
       }
     }
   });

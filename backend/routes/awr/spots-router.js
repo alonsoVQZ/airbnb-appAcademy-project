@@ -6,7 +6,7 @@ const { validateSpot } = require('../../utils/validation.js');
 const { authentication, authorization } = require('../../utils/auth.js');
 const { goodSpot } = require('../../utils/resources-check.js');
 const imagesRouter = require('./images-router.js');
-const reviewsRouter = require('./reviews-router.js');
+const { spotReviewsRouter } = require('./reviews-router.js');
 const bookingsRouter = require('./bookings-router.js');
 
 // Get All Spots
@@ -55,10 +55,10 @@ spotIdRouter.delete('/', authentication, authorization, async (req, res) => {
     });
 });
 
-spotIdRouter.use(imagesRouter);
+// spotIdRouter.use(imagesRouter);
 
-spotIdRouter.use(reviewsRouter);
+// spotIdRouter.use(spotReviewsRouter);
 
-spotIdRouter.use(bookingsRouter);
+// spotIdRouter.use(bookingsRouter);
 
 module.exports = router;
