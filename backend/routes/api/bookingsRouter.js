@@ -31,8 +31,10 @@ bookingByIdRouter.delete('/', (req, res) => {
 /*** spotBookingsRouter ***/
 
 // Get all Bookings for a Spot based on the Spot's id
-spotBookingsRouter.get('/', (req, res) => {
-
+spotBookingsRouter.get('/', async (req, res) => {
+    const { spotId } = res.locals;
+    const bookings = await Booking.getSpotBookings(spotId)
+    res.json({ Bookings: bookings })
 });
 
 // Create a Booking from a Spot based on the Spot's id
