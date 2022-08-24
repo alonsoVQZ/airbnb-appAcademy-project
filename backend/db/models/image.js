@@ -36,8 +36,8 @@ module.exports = (sequelize, DataTypes) => {
       Image.belongsTo(
         models.Spot,
         { 
-          through: 'SpotImages',
-          as: 'Images',
+          // through: 'SpotImages',
+          as: 'raw',
           foreignKey: 'imageableId', 
           constraints: false 
         }
@@ -46,7 +46,7 @@ module.exports = (sequelize, DataTypes) => {
         models.Review,
         { 
           through: 'ReviewImages',
-          as: 'Imagess',
+          // as: 'ReviewImages',
           foreignKey: 'imageableId', 
           constraints: false 
         }

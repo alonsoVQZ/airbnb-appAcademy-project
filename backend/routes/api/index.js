@@ -4,11 +4,13 @@ const usersRouter = require('./users-router.js');
 const accountRouter = require('./account-router.js');
 const spotsRouter = require('./spots-router.js');
 const reviewsRouter = require('./reviews-router.js');
+const imagesRouter = require('./images-router.js');
 
 router.use('/users', usersRouter);
 router.use('/account', accountRouter);
 router.use('/spots', spotsRouter);
 router.use('/reviews', reviewsRouter);
+router.use('/images', imagesRouter);
 
 // router.get("/csrf/restore", (req, res) => {
 //     const csrfToken = req.csrfToken();

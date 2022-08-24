@@ -72,9 +72,9 @@ module.exports = async () => {
         spots.push({
             ownerId: randomUserId(),
             address: faker.address.streetAddress(),
-            city: csc.countryObj.name,
+            city: csc.cityObj.name,
             state: csc.stateObj.name,
-            country: csc.cityObj.name,
+            country: csc.countryObj.name,
             lat: coords.latitude,
             lng: coords.longitude,
             name: info.names[Math.floor(Math.random() * info.names.length)],
