@@ -1,7 +1,8 @@
-const { validationResult, check } = require('express-validator');
+const { validationResult, check, query } = require('express-validator');
 const { Spot, Review, Booking, Image } = require('../db/models');
 
 const handleValidationErrors = (req, _res, next) => {
+  console.log(req.query.page)
   try {
     const validationErrors = validationResult(req);
     const errorsObject = new Object();
@@ -194,6 +195,38 @@ const validateBooking = [
   handleValidationErrors
 ];
 
+const validateQueryParams = [
+  query('page', 'Page must be greater than or equal to 0')
+    .custom((pageQuery, { req }) => {
+      console.log(pageQuery)
+      if(!pageQuery) req.query.page = 0;
+      console.log(req.query.page)
+      return true;
+    })
+    .isInt({ min: -1, max: 11})
+    .exists({ checkFalsy: true }),
+  query('size', 'Size must be greater than or equal to 0')
+    .custom((sizeQuery, { req }) => {
+      if(!sizeQuery) req.query.size = 20;
+      return true;
+    })
+    .isInt({ min: -1, max: 21})
+    .exists({ checkFalsy: true }),
+  query('minLat', 'Minimum latitude is invalid')
+    .isDecimal(),
+  query('maxLat', 'Maximum latitude is invalid')
+    .isDecimal(),
+  query('minLng', 'Minimum longitude is invalid')
+    .isDecimal(),
+  query('maxLng', 'Maximum longitude is invalid')
+    .isDecimal(),
+  query('minPrice', 'Minimum price must be greater than or equal to 0')
+    .isInt({ min: 0 }),
+  query('maxPrice', 'Maximum price must be greater than or equal to 0')
+    .isInt({ min: 0 }),
+  handleValidationErrors
+];
+
 
 
 module.exports = { 
@@ -203,6 +236,7 @@ module.exports = {
   validateReview,
   validateBooking,
   validateImage,
+  validateQueryParams,
   checkSpotId,
   checkReviewId,
   checkBookingId,
