@@ -55,10 +55,7 @@ const authentication = (req, res, next) => {
 
 const authorization = (req, res, next) => {
     try {
-        const { resourceUserId, currentUserId, belongsTo } = res.locals;
-        if(belongsTo) {
-            if(currentUserId === resourceUserId) throw new Error('Forbidden');
-        }
+        const { resourceUserId, currentUserId } = res.locals;
         if(currentUserId !== resourceUserId) throw new Error('Forbidden');
         next();
     } catch(e) {
@@ -67,5 +64,16 @@ const authorization = (req, res, next) => {
     }
 }
 
+const authorizationReversed = (req, res, next) => {
+    try {
+        const { resourceUserId, currentUserId } = res.locals;
+        if(currentUserId === resourceUserId) throw new Error('Forbidden');
+        next();
+    } catch(e) {
+        e.status = 403;
+        next(e);
+    }
+}
 
-module.exports = { setTokenCookie, restoreUser, authentication, authorization};
+
+module.exports = { setTokenCookie, restoreUser, authentication, authorization, authorizationReversed };

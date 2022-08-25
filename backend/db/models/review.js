@@ -49,7 +49,6 @@ module.exports = (sequelize, DataTypes) => {
       return editedReview;
     }
     static async editReview(reviewId) {
-      const { Review } = require('../models');
       const review = await Review.findByPK(reviewId);
       await review.destroy();
     }

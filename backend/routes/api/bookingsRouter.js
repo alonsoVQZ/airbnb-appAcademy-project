@@ -4,7 +4,7 @@ const spotBookingsRouter = require('express').Router();
 const accountBookingsRouter = require('express').Router();
 
 const { Booking } = require('../../db/models');
-const { authentication, authorization } = require('../../utils/auth.js');
+const { authentication, authorization, authorizationReversed } = require('../../utils/auth.js');
 const { validateBooking } = require('../../utils/validation.js');
 const { goodBooking } = require('../../utils/resources-check.js');
 
@@ -18,28 +18,40 @@ bookingsRouter.use('/:bookingId', goodBooking, bookingByIdRouter);
 /*** bookingByIdRouter ***/
 
 // Edit a Booking
-bookingByIdRouter.put('/', (req, res) => {
-
+bookingByIdRouter.put('/', validateBooking, authentication, authorization, async (req, res) => {
+    const { bookingId } = res.locals;
+    const bookingForm = req.body;
+    const booking = await Booking.editBooking(bookingId, bookingForm);
+    res.json(booking);
 });
 
 // Delete a Booking
-bookingByIdRouter.delete('/', (req, res) => {
-
+bookingByIdRouter.delete('/', authentication, authorization, async (req, res) => {
+    const { bookingId } = res.locals;
+    await Booking.deleteBooking(bookingId);
+    res.json({
+        "message": "Successfully deleted",
+        "statusCode": 200
+    });
 });
 
 
 /*** spotBookingsRouter ***/
 
 // Get all Bookings for a Spot based on the Spot's id
-spotBookingsRouter.get('/', async (req, res) => {
-    const { spotId } = res.locals;
-    const bookings = await Booking.getSpotBookings(spotId)
-    res.json({ Bookings: bookings })
+spotBookingsRouter.get('/', authentication, async (req, res) => {
+    const owner = (idRes, id2Curr) => idRes === id2Curr ? true : false;
+    const { spotId, resourceUserId, currentUserId } = res.locals;
+    const bookings = await Booking.getSpotBookings(spotId, owner(resourceUserId, currentUserId));
+    res.json({ Bookings: bookings });
 });
 
 // Create a Booking from a Spot based on the Spot's id
-spotBookingsRouter.post('/', (req, res) => {
-
+spotBookingsRouter.post('/', validateBooking, authentication, authorizationReversed, async (req, res) => {
+    const { spotId, currentUserId } = res.locals;
+    const bookingForm = req.body;
+    const booking = await Booking.createBooking(spotId, currentUserId, bookingForm);
+    res.json(booking);
 });
 
 

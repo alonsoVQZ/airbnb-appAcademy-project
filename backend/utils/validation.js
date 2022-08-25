@@ -1,4 +1,5 @@
 const { validationResult, check } = require('express-validator');
+const { Spot, Review, Booking, Image } = require('../db/models');
 
 const handleValidationErrors = (req, _res, next) => {
   try {
@@ -20,6 +21,66 @@ const handleValidationErrors = (req, _res, next) => {
     next(e);
   }
 };
+
+// Check if a Spot exists based on the params
+const checkSpotId = async (req, res, next) => {
+  try {
+      const { spotId } = req.params;
+      const spot = await Spot.findByPk(spotId);
+      if(!spot) throw new Error ("Spot couldn't be found");
+      res.locals.spotId = spot.id;
+      res.locals.resourceUserId = spot.ownerId;
+      next();
+  } catch(e) {
+      e.status = 404;
+      next(e);
+  }
+}
+
+// Check if a Review exists based on the params
+const checkReviewId = async (req, res, next) => {
+  try {
+      const { reviewId } = req.params;
+      const review = await Review.findByPk(reviewId);
+      if(!review) throw new Error ("Review couldn't be found");
+      res.locals.reviewId = review.id;
+      res.locals.resourceUserId = review.userId;
+      next();
+  } catch(e) {
+      e.status = 404;
+      next(e);
+  }
+}
+
+// Check if a Booking exists based on the params
+const checkBookingId = async (req, res, next) => {
+  try {
+      const { bookingId } = req.params;
+      const booking = await Booking.findByPk(bookingId);
+      if(!booking) throw new Error ("Booking couldn't be found");
+      res.locals.bookingId = booking.id;
+      res.locals.resourceUserId = booking.userId;
+      next();
+  } catch(e) {
+      e.status = 404;
+      next(e);
+  }
+}
+
+// Check if a Image exists based on the params
+const checkImageId = async (req, res, next) => {
+  try {
+      const { imageId } = req.params;
+      const image = await Image.findByPk(imageId);
+      if(!image) throw new Error ("Image couldn't be found");
+      res.locals.imageId = image.id;
+      res.locals.resourceType = image.imageableType;
+      next();
+  } catch(e) {
+      e.status = 404;
+      next(e);
+  }
+}
 
 const validateSignup = [
   check('email', 'Invalid email')
@@ -102,5 +163,48 @@ const validateReview = [
   handleValidationErrors
 ];
 
+const validateBooking = [
+  check('startDate', 'startDate Date is required')
+    .exists({ checkFalsy: true })
+    .notEmpty()
+    .isDate()
+    .withMessage('startDate not valid')
+    .custom((startDateString, { req }) => {
+      const todayDate = new Date(Date.now()).toDateString();
+      const startDate = new Date(startDateString)
+      startDate.setDate(startDate.getDate() + 1);
+      if(new Date(startDate) < new Date(todayDate)) {
+        throw new Error("startDate cannot come before today's Date");
+      }
+      return true;
+    }),
+  check('endDate', 'endDate is required')
+    .exists({ checkFalsy: true })
+    .notEmpty()
+    .isDate()
+    .withMessage('endDate not valid')
+    .custom((endDateString, { req }) => {
+      const endDate = new Date(endDateString);
+      const startDate = new Date(req.body.startDate)
+      if (endDate <= startDate) {
+        throw new Error('endDate cannot come before startDate');
+      }
+      return true;
+    }),
+  handleValidationErrors
+];
 
-module.exports = { validateSignup, validateSignin, validateSpot, validateImage, validateReview };
+
+
+module.exports = { 
+  validateSignup,
+  validateSignin,
+  validateSpot,
+  validateReview,
+  validateBooking,
+  validateImage,
+  checkSpotId,
+  checkReviewId,
+  checkBookingId,
+  checkImageId
+};

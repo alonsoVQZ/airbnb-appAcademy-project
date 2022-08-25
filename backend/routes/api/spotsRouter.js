@@ -6,8 +6,9 @@ const { Spot } = require('../../db/models');
 const { authentication, authorization } = require('../../utils/auth.js')
 const { validateSpot } = require('../../utils/validation.js');
 const { goodSpot } = require('../../utils/resources-check.js');
-const { spotImagesRouter } = require('./imagesRouter.js');
+const { spotReviewsRouter } = require('./reviewsRouter.js');
 const { spotBookingsRouter } = require('./bookingsRouter.js');
+const { spotImagesRouter } = require('./imagesRouter.js');
 
 /***********************/
 /*** userSpotsRouter ***/
@@ -57,7 +58,7 @@ spotByIdRouter.delete('/', authentication, authorization, async (req, res) => {
 });
 
 // Middleware to spotReviewsRouter
-spotByIdRouter.use('/reviews', spotImagesRouter);
+spotByIdRouter.use('/reviews', spotReviewsRouter);
 
 // Middleware to spotBookingsRouter
 spotByIdRouter.use('/bookings', spotBookingsRouter);
