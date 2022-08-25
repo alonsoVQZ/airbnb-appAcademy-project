@@ -67,4 +67,18 @@
 // SELECT `Booking`.`id`, `Booking`.`userId`, `Booking`.`spotId`, `Booking`.`startDate`, `Booking`.`endDate`, `Booking`.`createdAt`, `Booking`.`updatedAt`, `Spot`.`id` AS `Spot.id`, `Spot`.`ownerId` AS `Spot.ownerId`, `Spot`.`address` AS `Spot.address`, `Spot`.`city` AS `Spot.city`, `Spot`.`state` AS `Spot.state`, `Spot`.`country` AS `Spot.country`, `Spot`.`lat` AS `Spot.lat`, `Spot`.`lng` AS `Spot.lng`, `Spot`.`name` AS `Spot.name`, `Spot`.`description` AS `Spot.description`, `Spot`.`price` AS `Spot.price`, `Spot`.`createdAt` AS `Spot.createdAt`, `Spot`.`updatedAt` AS `Spot.updatedAt` FROM `Bookings` AS `Booking` INNER JOIN `Spots` AS `Spot` ON `Booking`.`spotId` = `Spot`.`id` WHERE `Booking`.`userId` = 9;
 // Executing (default): SELECT `Image`.* FROM (SELECT * FROM (SELECT `id`, `url`, `imageableId` FROM `Images` AS `Image` WHERE (`Image`.`imageableType` = 'Spot' AND `Image`.`imageableType` = 'Spot') AND `Image`.`imageableId` = 50 ORDER BY `Image`.`id` LIMIT 1) AS sub UNION SELECT * FROM (SELECT `id`, `url`, `imageableId` FROM `Images` AS `Image` WHERE (`Image`.`imageableType` = 'Spot' AND `Image`.`imageableType` = 'Spot') AND `Image`.`imageableId` = 47 ORDER BY `Image`.`id` LIMIT 1) AS sub UNION SELECT * FROM (SELECT `id`, `url`, `imageableId` FROM `Images` AS `Image` WHERE (`Image`.`imageableType` = 'Spot' AND `Image`.`imageableType` = 'Spot') AND `Image`.`imageableId` = 33 ORDER BY `Image`.`id` LIMIT 1) AS sub UNION SELECT * FROM (SELECT `id`, `url`, `imageableId` FROM `Images` AS `Image` WHERE (`Image`.`imageableType` = 'Spot' AND `Image`.`imageableType` = 'Spot') AND `Image`.`imageableId` = 47 ORDER BY `Image`.`id` LIMIT 1) AS sub) AS `Image`;
 
-console.log(new Date(Date.now() - 25200000))
+// const date1 = new Date('2022-08-27 17:11');
+// const date2 = new Date('2022-08-27 17:12');
+// const date3 = new Date();
+// console.log(date1.toLocaleString())
+// console.log(date2)
+// console.log(date3.toLocaleString())
+// console.log(date1.toLocaleString() < date2.toLocaleString())
+// // console.log(date2)
+
+// LIMIT  = ( x results/page )
+// OFFSET = ( y pages ) * ( x results/page )
+
+LIMIT  = ( 20 )
+OFFSET = ( 0 + 1 ) * ( 20 )
+

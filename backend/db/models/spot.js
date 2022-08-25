@@ -87,6 +87,25 @@ module.exports = (sequelize, DataTypes) => {
       const spot = await Spot.findByPk(spotId);
       await spot.destroy();
     }
+    static async getQuerySpots({ page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice }) {
+      const { Op } = require('sequelize')
+      const filter = new Object();
+      if(minLat && !maxLat) filter.lat = { [Op.gte]: minLat }
+      if(maxLat && !minLat) filter.lat = { [Op.lte]: maxLat }
+      if(minLat && maxLat) filter.lat = { [Op.between]: [minLat, maxLat] }
+      if(minLng && !maxLng) filter.lng = { [Op.gte]: minLng }
+      if(maxLng && !minLng) filter.lng = { [Op.lte]: maxLng }
+      if(minLng && maxLng) filter.lng = { [Op.between]: [minLng, maxLng] }
+      if(minPrice && !maxPrice) filter.price = { [Op.gte]: minPrice }
+      if(maxPrice && !minPrice) filter.price = { [Op.lte]: maxPrice }
+      if(minPrice && maxPrice) filter.price = { [Op.between]: [minPrice, maxPrice] }
+      const spots = await Spot.findAll({
+        where: filter,
+        limit: size,
+        offset: (page - 1) * size
+      })
+      return spots;
+    }
     static associate(models) {
       Spot.hasMany(
         models.Review,

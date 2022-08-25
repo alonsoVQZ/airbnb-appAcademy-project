@@ -22,9 +22,8 @@ spotsRouter.get('/', async (req, res) => {
 
 // Return spots filtered by query parameters
 spotsRouter.get('/search', validateQueryParams, async (req, res) => {
-    // const { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice }
-    console.log(req.query.page);
-    res.json()
+    const querySpots = await Spot.getQuerySpots(req.query)
+    res.json({ Spots: querySpots })
 });
 
 // Create a Spot

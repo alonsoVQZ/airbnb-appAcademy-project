@@ -2,7 +2,6 @@ const { validationResult, check, query } = require('express-validator');
 const { Spot, Review, Booking, Image } = require('../db/models');
 
 const handleValidationErrors = (req, _res, next) => {
-  console.log(req.query.page)
   try {
     const validationErrors = validationResult(req);
     const errorsObject = new Object();
@@ -168,13 +167,12 @@ const validateBooking = [
   check('startDate', 'startDate Date is required')
     .exists({ checkFalsy: true })
     .notEmpty()
-    .isDate()
-    .withMessage('startDate not valid')
-    .custom((startDateString, { req }) => {
-      const todayDate = new Date(Date.now()).toDateString();
-      const startDate = new Date(startDateString)
-      startDate.setDate(startDate.getDate() + 1);
-      if(new Date(startDate) < new Date(todayDate)) {
+    .isDate({ format: 'yyyy-mm-dd'})
+    .withMessage('startDate is not valid')
+    .custom((startDate) => {
+      startDate = new Date(startDate + ' 15:30')
+      const nowDate = new Date();
+      if(startDate.toLocaleString() < nowDate.toLocaleString()) {
         throw new Error("startDate cannot come before today's Date");
       }
       return true;
@@ -182,47 +180,54 @@ const validateBooking = [
   check('endDate', 'endDate is required')
     .exists({ checkFalsy: true })
     .notEmpty()
-    .isDate()
-    .withMessage('endDate not valid')
-    .custom((endDateString, { req }) => {
-      const endDate = new Date(endDateString);
-      const startDate = new Date(req.body.startDate)
-      if (endDate <= startDate) {
+    .isDate({ format: 'yyyy-mm-dd'})
+    .withMessage('endDate is not valid')
+    .custom((endDate, { req }) => {
+      endDate = new Date(endDate + ' 12:00')
+      const startDate = new Date(req.body.startDate + ' 15:30');
+      if(endDate.toLocaleString() < startDate.toLocaleString()) {
         throw new Error('endDate cannot come before startDate');
       }
       return true;
     }),
-  handleValidationErrors
+  handleValidationErrors,
+  (req, res, next) => {
+    req.body.startDate = new Date(req.body.startDate + ' 15:30');
+    req.body.endDate = new Date(req.body.endDate + ' 12:00');
+    next();
+  }
 ];
 
 const validateQueryParams = [
+  (req, res, next) => {
+    const { page, size } = req.query;
+    if(page === undefined) req.query.page = 0;
+    if(size === undefined) req.query.size = 20;
+    next();
+  },
   query('page', 'Page must be greater than or equal to 0')
-    .custom((pageQuery, { req }) => {
-      console.log(pageQuery)
-      if(!pageQuery) req.query.page = 0;
-      console.log(req.query.page)
-      return true;
-    })
-    .isInt({ min: -1, max: 11})
-    .exists({ checkFalsy: true }),
+    .exists()
+    .isInt({ min: 0, max: 10}),
   query('size', 'Size must be greater than or equal to 0')
-    .custom((sizeQuery, { req }) => {
-      if(!sizeQuery) req.query.size = 20;
-      return true;
-    })
-    .isInt({ min: -1, max: 21})
-    .exists({ checkFalsy: true }),
+    .exists()
+    .isInt({ min: 0, max: 20}),
   query('minLat', 'Minimum latitude is invalid')
+    .optional()
     .isDecimal(),
   query('maxLat', 'Maximum latitude is invalid')
+    .optional()
     .isDecimal(),
   query('minLng', 'Minimum longitude is invalid')
+    .optional()
     .isDecimal(),
   query('maxLng', 'Maximum longitude is invalid')
+    .optional()
     .isDecimal(),
   query('minPrice', 'Minimum price must be greater than or equal to 0')
+    .optional()
     .isInt({ min: 0 }),
   query('maxPrice', 'Maximum price must be greater than or equal to 0')
+    .optional()
     .isInt({ min: 0 }),
   handleValidationErrors
 ];
