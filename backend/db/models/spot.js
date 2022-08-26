@@ -98,6 +98,7 @@ module.exports = (sequelize, DataTypes) => {
           { 
             required: false,
             model: Image,
+            as: 'Images',
             attributes: [],
             duplicating: false,
             on: { id:  [sequelize.literal(`SELECT I.id FROM Images AS I WHERE Spot.id = I.ImageableId ORDER BY I.id ASC LIMIT 1`)] } }
