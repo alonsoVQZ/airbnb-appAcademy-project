@@ -92,7 +92,7 @@ module.exports = (sequelize, DataTypes) => {
       const spots = await Spot.findAll({
         where: filter,
         attributes: { include: [[sequelize.col('Images.url'), 'previewImage']] },
-        include: [{ required: false, model: Image, attributes: [] }],
+        include: [{ required: false, model: Image, attributes: [], duplicating: false }],
         limit: size,
         offset: (page - 1) * size,
         group: ['Spot.id', 'Images.id', 'Images.url'],
