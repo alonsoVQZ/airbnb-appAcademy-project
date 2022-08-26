@@ -91,15 +91,15 @@ module.exports = (sequelize, DataTypes) => {
       if(page === 0) page = 1;
       const spots = await Spot.findAll({
         // where: filter,
-        // attributes: { 
-        //   include: [[sequelize.col('Images.url'), 'previewImage']] 
-        // },
+        attributes: { 
+          include: [[sequelize.col('Images.url'), 'previewImage']] 
+        },
         include: [
           { 
             required: false,
             model: Image,
-            // attributes: [],
-            // duplicating: false,
+            attributes: [],
+            duplicating: false,
             // on: { id:  [sequelize.literal(`SELECT Image.id FROM Images AS Image WHERE Image.imageableId = Spot.id AND Image.imageableType = "Spot" ORDER BY Image.id DESC LIMIT 1`)] } 
           }
         ],
