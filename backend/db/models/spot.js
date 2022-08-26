@@ -55,7 +55,8 @@ module.exports = (sequelize, DataTypes) => {
             { required: true, model: User, as: 'Owner', attributes: { exclude: ['username', 'email', 'password', 'createdAt', 'updatedAt'] }},
             { required: false, model: Review,  attributes: [], },
           ],
-          group: ['Images.id']
+          group: ['Spot.id', 'Images.id', 'Images.url'],
+          order: [['id', 'ASC'], [Image, 'id', 'ASC']]
         }
       );
       return spot;
