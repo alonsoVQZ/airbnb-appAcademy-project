@@ -90,7 +90,7 @@ module.exports = (sequelize, DataTypes) => {
       const spots = await Spot.findAll({
         where: filter,
         limit: size,
-        offset: (page) * size
+        offset: (page + 1) * size
       })
       return spots;
     }
