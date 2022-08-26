@@ -76,7 +76,8 @@ module.exports = (sequelize, DataTypes) => {
       await spot.destroy();
     }
     static async getQuerySpots({ page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice }) {
-      const { Op } = require('sequelize')
+      const { Op } = require('sequelize');
+      const { Image } = require('../models');
       const filter = new Object();
       if(minLat && !maxLat) filter.lat = { [Op.gte]: minLat }
       if(maxLat && !minLat) filter.lat = { [Op.lte]: maxLat }
