@@ -92,19 +92,36 @@ module.exports = (sequelize, DataTypes) => {
       const spots = await Spot.findAll({
         where: filter,
         attributes: { 
-          include: [
-            [sequelize.literal(
-              `(SELECT Image.url FROM Images as Image
-              WHERE Image.imageableId = Spot.id AND Image.imageableType = "Spot"
-              ORDER BY id ASC
-              LIMIT 1)`
-            ), 'previewImage']
-          ] 
+          include: [[sequelize.col('Images.url'), 'previewImage']] 
         },
-        include: [{model: Image, attributes: []}],
+        include: [
+          { 
+            required: false,
+            model: Image,
+            attributes: [],
+            duplicating: false,
+            on: { id: [sequelize.literal(`SELECT I.id FROM Images AS I WHERE Spot.id = I.ImageableId ORDER BY I.id LIMIT 1`)] }
+          }
+        ],
+        order: [['id']],
         offset: (page - 1) * size,
-        limit: size
-      });
+        limit: 10
+      })
+      // const spots = await Spot.findAll({
+      //   where: filter,
+      //   attributes: { 
+      //     include: [
+      //       [sequelize.literal(
+      //         `(SELECT Image.url FROM Images as Image
+      //         WHERE Image.imageableId = Spot.id AND Image.imageableType = "Spot"
+      //         LIMIT 1)`
+      //       ), 'previewImage']
+      //     ] 
+      //   },
+      //   offset: (page - 1) * size,
+      //   limit: 10
+      // })
+      // const spots = await sequelize.query("SELECT `Spot`.`id`, `Spot`.`ownerId`, `Spot`.`address`, `Spot`.`city`, `Spot`.`state`, `Spot`.`country`, `Spot`.`lat`, `Spot`.`lng`, `Spot`.`name`, `Spot`.`description`, `Spot`.`price`, `Spot`.`createdAt`, `Spot`.`updatedAt`, ROUND(`lat`, 7) AS `lat`, ROUND(`lng`, 7) AS `lng`, `Images`.`url` AS `previewImage` FROM `Spots` AS `Spot` LEFT OUTER JOIN `Images` AS `Images` ON `Images`.`id` = (SELECT `I`.`id` FROM `Images` AS `I` WHERE `Spot`.`id` = `I`.`ImageableId` ORDER BY `I`.`id` LIMIT 1) AND `Images`.`imageableType` = 'Spot' ORDER BY `Spot`.`id` LIMIT 20 OFFSET 20")
       return spots;
     }
     static associate(models) {
