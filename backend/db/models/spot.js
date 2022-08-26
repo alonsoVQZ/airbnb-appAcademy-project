@@ -103,7 +103,7 @@ module.exports = (sequelize, DataTypes) => {
             duplicating: false
           }
         ],
-        group: ['Spot.id'],
+        group: ['Spot.id', 'Images.url'],
         order: ['id'],
         offset: (page - 1) * size,
         limit: size
