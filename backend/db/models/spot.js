@@ -15,7 +15,8 @@ module.exports = (sequelize, DataTypes) => {
         include: [
           { required: false, model: Review, attributes: [] }, 
           { required: false, model: Image, attributes: [] }
-        ]
+        ],
+        group: ['id']
       });
       return spots;
     }
