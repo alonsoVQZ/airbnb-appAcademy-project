@@ -72,13 +72,33 @@
 // LIMIT  = ( x results/page )
 // OFFSET = ( y pages ) * ( x results/page )
 
-LIMIT  = ( 20 )
-OFFSET = ( 0 + 1 ) * ( 20 )
+// LIMIT  = ( 20 )
+// OFFSET = ( 0 + 1 ) * ( 20 )
 
-// "@faker-js/faker": "^7.4.0",
-// "country-state-city": "^3.0.6",
-// "dotenv-cli": "^6.0.0",
-// "express-validator": "^6.14.2",
-// "nodemon": "^2.0.19",
-// "random-location": "^1.1.3",
-// "sqlite3": "^5.0.11"
+// // "@faker-js/faker": "^7.4.0",
+// // "country-state-city": "^3.0.6",
+// // "dotenv-cli": "^6.0.0",
+// // "express-validator": "^6.14.2",
+// // "nodemon": "^2.0.19",
+// // "random-location": "^1.1.3",
+// // "sqlite3": "^5.0.11"
+
+// SELECT `Spot`.`id`, `Spot`.`ownerId`, `Spot`.`address`, `Spot`.`city`, `Spot`.`state`, `Spot`.`country`, `Spot`.`lat`, `Spot`.`lng`, `Spot`.`name`, `Spot`.`description`, `Spot`.`price`, `Spot`.`createdAt`, `Spot`.`updatedAt`, ROUND(`lat`, 7) AS `lat`, ROUND(`lng`, 7) AS `lng`, `Images`.`url` AS `previewImage` 
+// FROM `Spots` AS `Spot`
+// LEFT OUTER JOIN `Images` AS `Images` ON `Images`.`id` = (SELECT `I`.`id` FROM `Images` AS `I`
+// WHERE `Spot`.`id` = `I`.`ImageableId`
+// ORDER BY `I`.`id`
+// LIMIT 1) AND `Images`.`imageableType` = 'Spot' 
+// ORDER BY `Spot`.`id` 
+// LIMIT 20
+// OFFSET 20;
+
+// "SELECT `Spot`.`id`, `Spot`.`ownerId`, `Spot`.`address`, `Spot`.`city`, `Spot`.`state`, `Spot`.`country`, `Spot`.`lat`, `Spot`.`lng`, `Spot`.`name`, `Spot`.`description`, `Spot`.`price`, `Spot`.`createdAt`, `Spot`.`updatedAt`, ROUND(`lat`, 7) AS `lat`, ROUND(`lng`, 7) AS `lng`, `Images`.`url` AS `previewImage` FROM `Spots` AS `Spot` LEFT OUTER JOIN `Images` AS `Images` ON `Images`.`id` = (SELECT `I`.`id` FROM `Images` AS `I` WHERE `Spot`.`id` = `I`.`ImageableId` ORDER BY `I`.`id` LIMIT 1) AND `Images`.`imageableType` = 'Spot' ORDER BY `Spot`.`id` LIMIT 20 OFFSET 20"
+
+const sequelize = require('sequelize');
+
+const spots = async () => {
+    const spots = await sequelize.query("SELECT `Spot`.`id`, `Spot`.`ownerId`, `Spot`.`address`, `Spot`.`city`, `Spot`.`state`, `Spot`.`country`, `Spot`.`lat`, `Spot`.`lng`, `Spot`.`name`, `Spot`.`description`, `Spot`.`price`, `Spot`.`createdAt`, `Spot`.`updatedAt`, ROUND(`lat`, 7) AS `lat`, ROUND(`lng`, 7) AS `lng`, `Images`.`url` AS `previewImage` FROM `Spots` AS `Spot` LEFT OUTER JOIN `Images` AS `Images` ON `Images`.`id` = (SELECT `I`.`id` FROM `Images` AS `I` WHERE `Spot`.`id` = `I`.`ImageableId` ORDER BY `I`.`id` LIMIT 1) AND `Images`.`imageableType` = 'Spot' ORDER BY `Spot`.`id` LIMIT 20 OFFSET 20")
+    console.log(spots)
+}
+spots()

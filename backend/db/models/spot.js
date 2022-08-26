@@ -91,14 +91,19 @@ module.exports = (sequelize, DataTypes) => {
       if(page === 0) page = 1;
       const spots = await Spot.findAll({
         where: filter,
-        attributes: { include: [[sequelize.col('Images.url'), 'previewImage']] },
-        include: [{ required: false, model: Image, attributes: [] }],
-        // group: ['Spot.id', 'Images.url'],
-        // order: [['id'], [Image, 'id', 'ASC'] ],
-        order: [['id']],
+        attributes: { 
+          include: [
+            [sequelize.literal(
+              `(SELECT Image.url FROM Images as Image
+              WHERE Image.imageableId = Spot.id AND Image.imageableType = "Spot"
+              ORDER BY id ASC
+              LIMIT 1)`
+            ), 'previewImage']
+          ] 
+        },
         offset: (page - 1) * size,
-        limit: 10
-      })
+        limit: size
+      });
       return spots;
     }
     static associate(models) {
