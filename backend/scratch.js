@@ -75,3 +75,10 @@
 LIMIT  = ( 20 )
 OFFSET = ( 0 + 1 ) * ( 20 )
 
+// "@faker-js/faker": "^7.4.0",
+// "country-state-city": "^3.0.6",
+// "dotenv-cli": "^6.0.0",
+// "express-validator": "^6.14.2",
+// "nodemon": "^2.0.19",
+// "random-location": "^1.1.3",
+// "sqlite3": "^5.0.11"
