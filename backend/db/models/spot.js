@@ -87,10 +87,15 @@ module.exports = (sequelize, DataTypes) => {
       if(minPrice && !maxPrice) filter.price = { [Op.gte]: minPrice }
       if(maxPrice && !minPrice) filter.price = { [Op.lte]: maxPrice }
       if(minPrice && maxPrice) filter.price = { [Op.between]: [minPrice, maxPrice] }
+      if(page === 0) page = 1;
       const spots = await Spot.findAll({
         where: filter,
+        attributes: { include: [[sequelize.col('Images.url'), 'previewImage']] },
+        include: [{ required: false, model: Image, attributes: [] }],
         limit: size,
-        offset: (page + 1) * size
+        offset: (page - 1) * size,
+        group: ['Spot.id', 'Images.id', 'Images.url'],
+        order: [['id', 'ASC'], [Image, 'id', 'ASC']]
       })
       return spots;
     }

@@ -21,8 +21,9 @@ spotsRouter.get('/', async (req, res) => {
 
 // Return spots filtered by query parameters
 spotsRouter.get('/search', validateQueryParams, async (req, res) => {
+    const { page, size } = req.query;
     const spots = await Spot.getQuerySpots(req.query)
-    res.json({ Spots: spots })
+    res.json({ page, size, Spots: spots })
 });
 
 // Create a Spot
