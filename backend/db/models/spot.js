@@ -92,7 +92,7 @@ module.exports = (sequelize, DataTypes) => {
       const spots = await Spot.findAll({
         where: filter,
         attributes: { 
-          include: [[sequelize.literal(`(SELECT Image.url FROM Images AS Image WHERE Image.imageableId = Spot.id AND Image.imageableType = "Spot" ORDER BY Image.id ASC LIMIT 1)`), 'previewImage']] 
+          // include: [[sequelize.literal(`(SELECT Image.url FROM Images AS Image WHERE Image.imageableId = Spot.id AND Image.imageableType = "Spot" ORDER BY Image.id ASC LIMIT 1)`), 'previewImage']] 
         },
         include: [
           {
