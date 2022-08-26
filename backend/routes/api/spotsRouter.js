@@ -61,7 +61,10 @@ spotByIdRouter.put('/', validateSpot, authentication, authorization, async (req,
 spotByIdRouter.delete('/', authentication, authorization, async (req, res) => {
     const { spotId } = res.locals;
     await Spot.deleteSpot(spotId);
-    res.json({})
+    res.status(200).json({
+        "message": "Successfully deleted",
+        "statusCode": 200
+    })
 });
 
 // Middleware to spotReviewsRouter
