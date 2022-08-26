@@ -24,7 +24,6 @@ module.exports = (sequelize, DataTypes) => {
             }
           }
         });
-        console.log(user)
         if(!user ||  !user.validatePassword(password)) throw new Error("Invalid credentials");
         return await User.scope("currentUser").findByPk(user.id);
       } catch(e) {
@@ -38,7 +37,6 @@ module.exports = (sequelize, DataTypes) => {
         return await User.scope("currentUser").findByPk(user.id);
       } catch(e) {
         if(e.name === 'SequelizeUniqueConstraintError') {
-          console.log(e.errors)
           e.status = 403;
           e.message = 'User already exists';
           e.errors.forEach((error) => error.message = `User with that ${error.path} already exists`);

@@ -40,7 +40,6 @@ module.exports = (sequelize, DataTypes) => {
     }
     static async getSpotDetails(spotId) {
       const { User, Review, Image } = require('../models')
-      console.log(spotId)
       const spot = await Spot.findByPk(
         spotId,
         {

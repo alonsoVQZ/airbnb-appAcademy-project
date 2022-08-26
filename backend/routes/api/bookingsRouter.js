@@ -50,7 +50,6 @@ spotBookingsRouter.get('/', authentication, async (req, res) => {
 spotBookingsRouter.post('/', validateBooking, authentication, authorizationReversed, async (req, res) => {
     const { spotId, currentUserId } = res.locals;
     const bookingForm = req.body;
-    console.log(bookingForm)
     const booking = await Booking.createBooking(spotId, currentUserId, bookingForm);
     res.json(booking);
 });

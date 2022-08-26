@@ -45,7 +45,6 @@ reviewsRouter.put('/', validateReview, authentication, authorization, async (req
 // Delete a Review
 // Authe and Autho
 reviewsRouter.delete('/', authentication, authorization, async (req, res) => {
-    console.log(req.originalUrl)
     const { reviewId } = res.locals;
     const reviews = await Review.deleteReview(reviewId);
     res.json(reviews);

@@ -27,7 +27,6 @@
 // const csc = randomCSC()
 // const { latitude, longitude } = csc.cityObj;
 // const coords = randomLocation.randomCirclePoint({ latitude, longitude }, 500);
-// console.log(coords)
 
 // // SELECT `Spot`.`id`, `Spot`.`ownerId`, `Spot`.`address`, `Spot`.`city`, `Spot`.`state`, `Spot`.`country`, `Spot`.`lat`, `Spot`.`lng`, `Spot`.`name`, `Spot`.`description`, `Spot`.`price`, `Spot`.`createdAt`, `Spot`.`updatedAt`, COUNT(`Reviews`.`stars`) AS `numReviews`, AVG(`Reviews`.`stars`) AS `avgStarRating`, `Images`.`id` AS `Images.id`, `Images`.`url` AS `Images.url`, `Images`.`imageableId` AS `Images.imageableId`
 // // FROM `Spots` AS `Spot` 
@@ -70,12 +69,6 @@
 // const date1 = new Date('2022-08-27 17:11');
 // const date2 = new Date('2022-08-27 17:12');
 // const date3 = new Date();
-// console.log(date1.toLocaleString())
-// console.log(date2)
-// console.log(date3.toLocaleString())
-// console.log(date1.toLocaleString() < date2.toLocaleString())
-// // console.log(date2)
-
 // LIMIT  = ( x results/page )
 // OFFSET = ( y pages ) * ( x results/page )
 
