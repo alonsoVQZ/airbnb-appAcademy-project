@@ -101,6 +101,7 @@ module.exports = (sequelize, DataTypes) => {
             ), 'previewImage']
           ] 
         },
+        include: [{model: Image, attributes: []}],
         offset: (page - 1) * size,
         limit: size
       });
