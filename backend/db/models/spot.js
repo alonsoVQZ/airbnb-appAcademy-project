@@ -96,38 +96,21 @@ module.exports = (sequelize, DataTypes) => {
         },
         include: [
           { 
-            required: false,
+            required: true,
             model: Image,
-            as: 'Images',
             attributes: [],
             duplicating: false,
-            on: { id:  [sequelize.literal(`SELECT I.id FROM Images AS I WHERE Spot.id = I.ImageableId ORDER BY I.id ASC LIMIT 1`)] } }
+            on: { id:  [sequelize.literal(`SELECT Image.id FROM Images AS Image WHERE Image.imageableId = Spot.id AND Image.imageableType = "Spot" ORDER BY Image.id DESC LIMIT 1`)] } 
+          }
         ],
-        group: ['Spot.id', 'Images.id', 'Images.url'],
-        order: [['id']],
         offset: (page - 1) * size,
         limit: size
-      })
-      // const spots = await Spot.findAll({
-      //   where: filter,
-      //   attributes: { 
-      //     include: [
-      //       [sequelize.literal(
-      //         `(SELECT Image.url FROM Images as Image
-      //         WHERE Image.imageableId = Spot.id AND Image.imageableType = "Spot"
-      //         LIMIT 1)`
-      //       ), 'previewImage']
-      //     ] 
-      //   },
-      //   offset: (page - 1) * size,
-      //   limit: 10
-      // })
-      // const spots = await sequelize.query("SELECT `Spot`.`id`, `Spot`.`ownerId`, `Spot`.`address`, `Spot`.`city`, `Spot`.`state`, `Spot`.`country`, `Spot`.`lat`, `Spot`.`lng`, `Spot`.`name`, `Spot`.`description`, `Spot`.`price`, `Spot`.`createdAt`, `Spot`.`updatedAt`, ROUND(`lat`, 7) AS `lat`, ROUND(`lng`, 7) AS `lng`, `Images`.`url` AS `previewImage` FROM `Spots` AS `Spot` LEFT OUTER JOIN `Images` AS `Images` ON `Images`.`id` = (SELECT `I`.`id` FROM `Images` AS `I` WHERE `Spot`.`id` = `I`.`ImageableId` ORDER BY `I`.`id` LIMIT 1) AND `Images`.`imageableType` = 'Spot' ORDER BY `Spot`.`id` LIMIT 20 OFFSET 20")
+      });
       return spots;
     }
     static associate(models) {
       Spot.hasMany(
-        models.Review,
+        models.Review,add 
           { foreignKey: 'spotId', onDelete: 'CASCADE',  hooks: true }
       );
       Spot.hasMany(
