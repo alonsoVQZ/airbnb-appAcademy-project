@@ -103,7 +103,8 @@ module.exports = (sequelize, DataTypes) => {
             // on: { id: [sequelize.literal(`SELECT Image.id FROM Images AS Image WHERE Image.imageableId = Spot.id AND Image.imageableType = "Spot" ORDER BY Image.id ASC LIMIT 1`)] } 
           }
         ],
-        // order: ['id'],
+        group: ['Spot.id'],
+        order: ['id'],
         offset: (page - 1) * size,
         limit: size
       });
