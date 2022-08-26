@@ -100,12 +100,12 @@ module.exports = (sequelize, DataTypes) => {
             model: Image,
             attributes: [],
             duplicating: false,
-            on: { id: [sequelize.literal(`SELECT I.id FROM Images AS I WHERE Spot.id = I.ImageableId ORDER BY I.id LIMIT 1`)] }
-          }
+            on: { id:  [sequelize.literal(`SELECT I.id FROM Images AS I WHERE Spot.id = I.ImageableId ORDER BY I.id ASC LIMIT 1`)] } }
         ],
+        group: ['Spot.id', 'Images.id', 'Images.url'],
         order: [['id']],
         offset: (page - 1) * size,
-        limit: 10
+        limit: size
       })
       // const spots = await Spot.findAll({
       //   where: filter,
