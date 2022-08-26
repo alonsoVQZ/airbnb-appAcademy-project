@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         include: [
           { required: false, model: Review, attributes: [] }, 
-          { required: false, model: Image, attributes: [] }
+          { required: false, model: Image, attributes: [], order: [['Images.id', 'ASC']], group: ['Images.url'] }
         ],
         group: ['Spot.id']
       });
