@@ -4,8 +4,7 @@ const accountSpotsRouter = require('express').Router();
 
 const { Spot } = require('../../db/models');
 const { authentication, authorization } = require('../../utils/auth.js')
-const { validateSpot, validateQueryParams} = require('../../utils/validation.js');
-const { goodSpot } = require('../../utils/resources-check.js');
+const { validateSpot, validateQueryParams, checkSpotId } = require('../../utils/validation.js');
 const { spotReviewsRouter } = require('./reviewsRouter.js');
 const { spotBookingsRouter } = require('./bookingsRouter.js');
 const { spotImagesRouter } = require('./imagesRouter.js');
@@ -22,8 +21,8 @@ spotsRouter.get('/', async (req, res) => {
 
 // Return spots filtered by query parameters
 spotsRouter.get('/search', validateQueryParams, async (req, res) => {
-    const querySpots = await Spot.getQuerySpots(req.query)
-    res.json({ Spots: querySpots })
+    // const querySpots = await Spot.getQuerySpots(req.query)
+    res.json({ Spots: req.query })
 });
 
 // Create a Spot
@@ -36,7 +35,7 @@ spotsRouter.post('/', validateSpot, authentication, async (req, res) => {
 
 
 // middleware to spotByIdRouter
-spotsRouter.use('/:spotId', goodSpot, spotByIdRouter);
+spotsRouter.use('/:spotId', checkSpotId, spotByIdRouter);
 
 /**********************/
 /*** spotByIdRouter ***/
