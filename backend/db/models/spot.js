@@ -90,16 +90,16 @@ module.exports = (sequelize, DataTypes) => {
       if(minPrice && maxPrice) filter.price = { [Op.between]: [minPrice, maxPrice] }
       if(page === 0) page = 1;
       const spots = await Spot.findAll({
-        where: filter,
+        // where: filter,
         // attributes: { 
         //   include: [[sequelize.col('Images.url'), 'previewImage']] 
         // },
         include: [
           { 
-            required: true,
+            required: false,
             model: Image,
             // attributes: [],
-            duplicating: false,
+            // duplicating: false,
             // on: { id:  [sequelize.literal(`SELECT Image.id FROM Images AS Image WHERE Image.imageableId = Spot.id AND Image.imageableType = "Spot" ORDER BY Image.id DESC LIMIT 1`)] } 
           }
         ],
