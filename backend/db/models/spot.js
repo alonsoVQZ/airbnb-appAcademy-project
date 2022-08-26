@@ -61,30 +61,17 @@ module.exports = (sequelize, DataTypes) => {
       );
       return spot;
     }
-    static async createSpot(ownerId, { address, city, state, country, lat, lng, name, description, price } ) {
-      const spot = await Spot.create({
-        ownerId,
-        address,
-        city,
-        state,
-        country,
-        lat,
-        lng,
-        name,
-        description,
-        price
-      });
+    static async createSpot(ownerId, { address, city, state, country, lat, lng, name, description, price }) {
+      const spot = await Spot.create({ ownerId, address, city, state, country, lat, lng, name, description, price });
       return spot;
     }
     static async editSpot(spotId, { address, city, state, country, lat, lng, name, description, price } ) {
-      const { Spot } = require('../models');
       const spot = await Spot.findByPk(spotId)
       spot.set({ address, city, state, country, lat, lng, name, description, price });
       await spot.save();
       return spot;
     }
     static async deleteSpot(spotId) {
-      const { Spot } = require('../models');
       const spot = await Spot.findByPk(spotId);
       await spot.destroy();
     }
@@ -103,7 +90,7 @@ module.exports = (sequelize, DataTypes) => {
       const spots = await Spot.findAll({
         where: filter,
         limit: size,
-        offset: (page - 1) * size
+        offset: (page) * size
       })
       return spots;
     }
