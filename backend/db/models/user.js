@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
       return bcrypt.compareSync(password, this.password.toString());
     }
     static async getCurrentUserById(id) {
-      return await User.scope("currentUser").findByPk(id);
+      return await User.scope("safeData").findByPk(id);
     }
     static async signin({ credential, password }) {
       try {
@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
           }
         });
         if(!user ||  !user.validatePassword(password)) throw new Error("Invalid credentials");
-        return await User.scope("currentUser").findByPk(user.id);
+        return await User.scope("safeData").findByPk(user.id);
       } catch(e) {
         e.status = 401
         throw e;
@@ -34,7 +34,7 @@ module.exports = (sequelize, DataTypes) => {
     static async signup({ firstName, lastName, username, email, password }) {
       try {
         const user = await User.create({ firstName, lastName, username, email, password: bcrypt.hashSync(password) });
-        return await User.scope("currentUser").findByPk(user.id);
+        return await User.scope("safeData").findByPk(user.id);
       } catch(e) {
         if(e.name === 'SequelizeUniqueConstraintError') {
           e.status = 403;
@@ -128,7 +128,7 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'User',
     scopes: {
-      currentUser: {
+      safeData: {
         attributes: {
           exclude: ["password", "createdAt", "updatedAt"]
         }

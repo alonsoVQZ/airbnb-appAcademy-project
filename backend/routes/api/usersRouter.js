@@ -37,8 +37,7 @@ usersRouter.delete('/signout', async (req, res) => {
 // Get the Current User Information
 accountUserRouter.get('/', async (req, res) => {
     const { currentUserId } = res.locals;
-    const user = await User.findByPk(currentUserId);
-    res.json( user );
+    res.json(await User.scope("safeData").findByPk(currentUserId));
 });
 
 
