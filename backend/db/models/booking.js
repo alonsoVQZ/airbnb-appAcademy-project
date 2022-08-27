@@ -30,6 +30,7 @@ module.exports = (sequelize, DataTypes) => {
       const { Spot, Image } = require('../models');
       const bookings = await Booking.findAll({
         where: { userId },
+        order: [['id', 'ASC']],
         include: [
           { 
             required: true,
