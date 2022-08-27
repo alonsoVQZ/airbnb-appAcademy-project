@@ -3,6 +3,16 @@
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Booking extends Model {
+    async previewImage(booking) {
+      const { Image, Sequelize } = require('../models');
+        const image = await Image.findOne({
+          where: { imageableType: 'Spot', imageableId: booking.spotId },
+          order: ['id'],
+          limit: 1
+        })
+        console.log(image)
+        booking.dataValues.Spot.dataValues.previewImage =  'raw'
+    }
     validBooking(bS, bE, rS, rE) {
       const err = new Error('Sorry, this spot is already booked for the specified dates');
       const errors = [
@@ -17,25 +27,22 @@ module.exports = (sequelize, DataTypes) => {
       return;
     }
     static async getCurrentUserBookings(userId) {
-      const { Op } = require('sequelize');
       const { Spot, Image } = require('../models');
       const bookings = await Booking.findAll({
         where: { userId },
-        // subQuery: false,
         include: [
           { 
             required: true,
             model: Spot,
-            duplicating: false,
             attributes: { 
-              include: [[sequelize.literal(`(SELECT Image.url FROM Images AS Image WHERE Image.imageableId = Spot.id AND Image.imageableType = "Spot" ORDER BY Image.id ASC LIMIT 1)`), 'previewImage']],
-              // include: [[sequelize.col('Images.url'), 'previewImage']],
+              // include: [[sequelize.col('Image.url'), 'previewImage']],
               exclude: ['createdAt', 'updatedAt']
             },
-            include: [{ required: false, model: Image, attributes: [], duplicating: false}]
+            // include: [{ required: false, model: Image, limit: 1}]
           }
         ],
-        group: ['Spot.id'],
+        // group: ['Spot.id'],
+        order: [['id', 'ASC']]
       });
       return bookings;
     }
@@ -136,7 +143,6 @@ module.exports = (sequelize, DataTypes) => {
         throw e;
       }
     }
-    static async 
     static associate(models) {
       Booking.belongsTo(
         models.User,
