@@ -21,12 +21,14 @@ module.exports = (sequelize, DataTypes) => {
       const { Spot, Image } = require('../models');
       const bookings = await Booking.findAll({
         where: { userId },
+        subQuery: false,
         include: [
           { 
-            required: false,
+            required: true,
             model: Spot,
             attributes: { 
               include: [[sequelize.literal(`(SELECT Image.url FROM Images AS Image WHERE Image.imageableId = Spot.id AND Image.imageableType = "Spot" ORDER BY Image.id ASC LIMIT 1)`), 'previewImage']],
+              // include: [[sequelize.col('Images.url'), 'previewImage']],
               exclude: ['createdAt', 'updatedAt']
             },
             include: [{ required: false, model: Image, attributes: [] }]
