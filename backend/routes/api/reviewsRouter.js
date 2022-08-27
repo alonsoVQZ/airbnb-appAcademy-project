@@ -35,7 +35,7 @@ reviewByIdRouter.use('/images', reviewImagesRouter);
 // Get all Reviews by a Spot's id
 spotReviewsRouter.get('/', async (req, res) => {
     const { spotId } = res.locals;
-    const spotReviews = await Image.getSpotReviews(spotId);
+    const spotReviews = await Review.getSpotReviews(spotId);
     res.json({ spotReviews })
 });
 
