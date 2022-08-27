@@ -72,6 +72,13 @@ module.exports = (sequelize, DataTypes) => {
       attributes: {
         exclude: ['imageableType', 'createdAt', 'updatedAt']
       }
+    },
+    scopes: {
+      all: {
+        attributes: {
+          exclude: ["createdAt", "updatedAt"]
+        }
+      }
     }
   });
   return Image;

@@ -71,10 +71,19 @@ const checkBookingId = async (req, res, next) => {
 const checkImageId = async (req, res, next) => {
   try {
       const { imageId } = req.params;
-      const image = await Image.findByPk(imageId);
+      const image = await Image.scope('all').findByPk(imageId);
       if(!image) throw new Error ("Image couldn't be found");
       res.locals.imageId = image.id;
-      res.locals.resourceType = image.imageableType;
+      if(image.imageableType === 'Review') {
+        const review = await Review.findByPk(image.imageableId);
+        res.locals.reviewId = review.id;
+        res.locals.resourceUserId = review.userId;
+      }
+      if(image.imageableType === 'Spot') {
+        const spot = await Spot.findByPk(image.imageableId);
+        res.locals.spotId = spot.id;
+        res.locals.resourceUserId = spot.ownerId;
+      }
       next();
   } catch(e) {
       e.status = 404;

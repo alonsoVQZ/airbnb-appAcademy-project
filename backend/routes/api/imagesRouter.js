@@ -8,7 +8,13 @@ const { validateImage, checkImageId } = require('../../utils/validation.js')
 
 /*** imagesRouter ***/
 // Delete an Image
-imagesRouter.delete('/:imageId', checkImageId, authentication, authorization, (req, res) => {
+imagesRouter.delete('/:imageId', checkImageId, authentication, authorization, async (req, res) => {
+    const { imageId } = res.locals;
+    await Image.deleteImage(imageId);
+    res.json({
+        "message": "Successfully deleted",
+        "statusCode": 200
+    });
 });
 
 /*** spotImagesRouter ***/
