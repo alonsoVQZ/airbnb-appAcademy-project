@@ -122,7 +122,7 @@ module.exports = (sequelize, DataTypes) => {
         const spotsBooked = await Booking.findAll({ 
           where: { 
             [Op.and]: [
-              { spotId: spotId },
+              { spotId: booking.spotId },
               {
                 [Op.or]: [
                   { startDate: { [Op.gte]: nowDate } },
