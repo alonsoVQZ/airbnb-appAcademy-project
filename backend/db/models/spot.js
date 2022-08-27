@@ -100,7 +100,8 @@ module.exports = (sequelize, DataTypes) => {
         include: [
           { required: false, model: Image, attributes: [], duplicating: false }
         ],
-        group: ['Spot.id'],
+        subQuery: false,
+        group: ['Spot.id','Images.id', 'Images.url'],
         order: [['id', 'ASC'], [Image, 'id', 'DESC']],
         offset: (page - 1) * size,
         limit: size
@@ -117,8 +118,11 @@ module.exports = (sequelize, DataTypes) => {
       //       model: Image,
       //       attributes: [],
       //       duplicating: false
+      // on: 
       //     }
       //   ],
+      // subquery: false,
+
       //   group: ['Spot.id','Images.id', 'Images.url'],
       //   order: ['id'],
       //   offset: (page - 1) * size,

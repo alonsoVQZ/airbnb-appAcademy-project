@@ -21,6 +21,9 @@ module.exports = (sequelize, DataTypes) => {
       const { Spot, Image } = require('../models');
       const bookings = await Booking.findAll({
         where: { userId },
+        attributes: {
+          include: [[sequelize.literal(`(SELECT Image.url FROM Images AS Image WHERE Image.imageableId = Spot.id AND Image.imageableType = "Spot" ORDER BY Image.id ASC LIMIT 1)`), 'previewImage']]
+        },
         include: [
           { 
             required: false,
@@ -28,9 +31,14 @@ module.exports = (sequelize, DataTypes) => {
             attributes: { 
               exclude: ['createdAt', 'updatedAt'] 
             } 
+          },
+          { 
+            required: false,
+            model: Image,
+            attributes: []
           }
         ],
-        group: ['Booking.id'],
+        group: ['Spot.id'],
       });
       return bookings;
     }
