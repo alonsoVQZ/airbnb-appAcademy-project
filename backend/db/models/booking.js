@@ -29,13 +29,9 @@ module.exports = (sequelize, DataTypes) => {
             required: false,
             model: Spot,
             attributes: { 
-              exclude: ['createdAt', 'updatedAt'] 
-            } 
-          },
-          { 
-            required: false,
-            model: Image,
-            attributes: []
+              exclude: ['createdAt', 'updatedAt']
+            },
+            include: [{ required: false, model: Image, attributes: [] }]
           }
         ],
         group: ['Spot.id'],
