@@ -5,14 +5,13 @@ const accountBookingsRouter = require('express').Router();
 
 const { Booking } = require('../../db/models');
 const { authentication, authorization, authorizationReversed } = require('../../utils/auth.js');
-const { validateBooking } = require('../../utils/validation.js');
-const { goodBooking } = require('../../utils/resources-check.js');
+const { validateBooking, checkBookingId } = require('../../utils/validation.js');
 
 
 /*** bookingsRouter ***/
 
 // Midleware to bookingByIdRouter
-bookingsRouter.use('/:bookingId', goodBooking, bookingByIdRouter);
+bookingsRouter.use('/:bookingId', checkBookingId, bookingByIdRouter);
 
 
 /*** bookingByIdRouter ***/
@@ -20,8 +19,7 @@ bookingsRouter.use('/:bookingId', goodBooking, bookingByIdRouter);
 // Edit a Booking
 bookingByIdRouter.put('/', validateBooking, authentication, authorization, async (req, res) => {
     const { bookingId } = res.locals;
-    const bookingForm = req.body;
-    const booking = await Booking.editBooking(bookingId, bookingForm);
+    const booking = await Booking.editBooking(bookingId, req.body);
     res.json(booking);
 });
 

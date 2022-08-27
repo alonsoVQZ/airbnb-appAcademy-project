@@ -71,7 +71,6 @@ const checkBookingId = async (req, res, next) => {
 const checkImageId = async (req, res, next) => {
   try {
       const { imageId } = req.params;
-      console.log('raw')
       const image = await Image.findByPk(imageId);
       if(!image) throw new Error ("Image couldn't be found");
       res.locals.imageId = image.id;

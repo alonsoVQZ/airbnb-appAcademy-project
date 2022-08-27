@@ -16,27 +16,21 @@ module.exports = (sequelize, DataTypes) => {
       if(err.errors.length > 0) throw err;
       return;
     }
-    static async getCurrentUserBookings(currentUserId) {
+    static async getCurrentUserBookings(userId) {
+      const { Op } = require('sequelize');
       const { Spot, Image } = require('../models');
       const bookings = await Booking.findAll({
-        where: { userId: currentUserId },
+        where: { userId },
         include: [
-          { required: true,
+          { 
+            required: false,
             model: Spot,
             attributes: { 
-              // include: [[sequelize.col('Images.url'), 'previewImage']],
-              exclude: ['createdAt', 'updatedAt']
-            },
-            include: [
-              { 
-                required: false,
-                model: Image,
-                order: ['id'],
-                limit: 1
-              }
-            ]
+              exclude: ['createdAt', 'updatedAt'] 
+            } 
           }
-        ]
+        ],
+        group: ['Booking.id'],
       });
       return bookings;
     }

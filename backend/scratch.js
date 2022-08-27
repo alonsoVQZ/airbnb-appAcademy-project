@@ -99,7 +99,6 @@
 
 // const spots = async () => {
 //     const spots = await sequelize.query("SELECT `Spot`.`id`, `Spot`.`ownerId`, `Spot`.`address`, `Spot`.`city`, `Spot`.`state`, `Spot`.`country`, `Spot`.`lat`, `Spot`.`lng`, `Spot`.`name`, `Spot`.`description`, `Spot`.`price`, `Spot`.`createdAt`, `Spot`.`updatedAt`, ROUND(`lat`, 7) AS `lat`, ROUND(`lng`, 7) AS `lng`, `Images`.`url` AS `previewImage` FROM `Spots` AS `Spot` LEFT OUTER JOIN `Images` AS `Images` ON `Images`.`id` = (SELECT `I`.`id` FROM `Images` AS `I` WHERE `Spot`.`id` = `I`.`ImageableId` ORDER BY `I`.`id` LIMIT 1) AND `Images`.`imageableType` = 'Spot' ORDER BY `Spot`.`id` LIMIT 20 OFFSET 20")
-//     console.log(spots)
 // }
 // spots()
 

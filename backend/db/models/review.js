@@ -29,7 +29,6 @@ module.exports = (sequelize, DataTypes) => {
     }
     static async createReview(spotId, userId, { review, stars }) {
       try {
-        console.log(spotId, userId)
         const { Op } = require('sequelize');
         const { Review } = require('../models');
         const reviewCheck = await Review.findOne({ where: { [Op.and]: [{ spotId }, { userId }] } });
