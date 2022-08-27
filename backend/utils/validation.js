@@ -172,7 +172,7 @@ const validateBooking = [
     .custom((startDate) => {
       startDate = new Date(startDate + ' 15:30')
       const nowDate = new Date();
-      if(startDate.toLocaleString() < nowDate.toLocaleString()) {
+      if(startDate < nowDate) {
         throw new Error("startDate cannot come before today's Date");
       }
       return true;
@@ -185,7 +185,7 @@ const validateBooking = [
     .custom((endDate, { req }) => {
       endDate = new Date(endDate + ' 12:00')
       const startDate = new Date(req.body.startDate + ' 15:30');
-      if(endDate.toLocaleString() < startDate.toLocaleString()) {
+      if(endDate < startDate) {
         throw new Error('endDate cannot come before startDate');
       }
       return true;
