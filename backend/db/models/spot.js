@@ -101,7 +101,9 @@ module.exports = (sequelize, DataTypes) => {
           { required: false, model: Image, attributes: [] }
         ],
         group: ['Spot.id', 'Images.id', 'Images.url'],
-        order: [['id', 'ASC'], [Image, 'id', 'ASC']]
+        order: [['id', 'ASC'], [Image, 'id', 'ASC']],
+        offset: (page - 1) * size,
+        limit: size
       });
       // const spots = await Spot.findAll({
       //   where: filter,
