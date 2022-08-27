@@ -36,7 +36,7 @@ reviewByIdRouter.use('/images', reviewImagesRouter);
 spotReviewsRouter.get('/', async (req, res) => {
     const { spotId } = res.locals;
     const spotReviews = await Review.getSpotReviews(spotId);
-    res.json({ spotReviews })
+    res.json(spotReviews)
 });
 
 //Create a Review for a Spot based on the Spot's id
