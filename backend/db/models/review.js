@@ -29,18 +29,19 @@ module.exports = (sequelize, DataTypes) => {
     }
     static async createReview(spotId, userId, { review, stars }) {
       try {
+        const { Op } = require('sequelize');
         const { Review } = require('../models');
-      const review = await Review.findOne({ [Op.and]: [{ spotId }, { userId }] })
-      if(review) throw new Error('User already has a review for this spot')
-      const newReview = Review.create({
-        spotId,
-        userId,
-        review,
-        stars
-      }); 
-      return newReview;
+        const review = await Review.findOne({ [Op.and]: [{ spotId }, { userId }] })
+        if(review) throw new Error('User already has a review for this spot');
+        const newReview = Review.create({
+          spotId,
+          userId,
+          review,
+          stars
+        }); 
+        return newReview;
       } catch(e) {
-        e.status = 403
+        e.status = 403;
         throw e;
       }
     }
