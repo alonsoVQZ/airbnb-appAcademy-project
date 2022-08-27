@@ -92,23 +92,36 @@ module.exports = (sequelize, DataTypes) => {
       if(page < 1) page = 1;
       const spots = await Spot.findAll({
         where: filter,
-        attributes: { 
-          include: [[sequelize.col('Images.url'), 'previewImage']]
-          // include: [[sequelize.literal(`(SELECT Image.url FROM Images AS Image WHERE Image.imageableId = Spot.id AND Image.imageableType = "Spot" ORDER BY Image.id ASC LIMIT 1)`), 'previewImage']] 
+        attributes: {
+          include: [
+            [sequelize.col('Images.url'), 'previewImage']
+          ]
         },
         include: [
-          {
-            required: false,
-            model: Image,
-            attributes: [],
-            duplicating: false
-          }
+          { required: false, model: Image, attributes: [] }
         ],
-        group: ['Spot.id','Images.id', 'Images.url'],
-        order: ['id'],
-        offset: (page - 1) * size,
-        limit: size
+        group: ['Spot.id', 'Images.id', 'Images.url'],
+        order: [['id', 'ASC'], [Image, 'id', 'ASC']]
       });
+      // const spots = await Spot.findAll({
+      //   where: filter,
+      //   attributes: { 
+      //     include: [[sequelize.col('Images.url'), 'previewImage']]
+      //     // include: [[sequelize.literal(`(SELECT Image.url FROM Images AS Image WHERE Image.imageableId = Spot.id AND Image.imageableType = "Spot" ORDER BY Image.id ASC LIMIT 1)`), 'previewImage']] 
+      //   },
+      //   include: [
+      //     {
+      //       required: false,
+      //       model: Image,
+      //       attributes: [],
+      //       duplicating: false
+      //     }
+      //   ],
+      //   group: ['Spot.id','Images.id', 'Images.url'],
+      //   order: ['id'],
+      //   offset: (page - 1) * size,
+      //   limit: size
+      // });
       return spots;
     }
     static associate(models) {
