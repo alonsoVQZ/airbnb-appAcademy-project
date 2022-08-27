@@ -104,6 +104,14 @@ module.exports = (sequelize, DataTypes) => {
         offset: (page - 1) * size,
         limit: size
       });
+      spots.forEach(Spot => {
+        if(Spot.dataValues.Images.length) {
+          Spot.dataValues.previewImage = Spot.dataValues.Images[0].dataValues.url;
+          delete Spot.dataValues.Images;
+        } else {
+          Spot.dataValues.previewImage = null;
+        }
+      });
       // const spots = await Spot.findAll({
       //   where: filter,
       //   attributes: {
@@ -155,7 +163,6 @@ module.exports = (sequelize, DataTypes) => {
       );
       Spot.hasMany(
         models.Image, {
-        // as: 'previewImage',
         foreignKey: 'imageableId',
         constraints: false,
         scope: {
