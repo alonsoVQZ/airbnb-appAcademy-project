@@ -29,16 +29,12 @@ module.exports = (sequelize, DataTypes) => {
     }
     static async createReview(spotId, userId, { review, stars }) {
       try {
+        console.log(spotId, userId)
         const { Op } = require('sequelize');
         const { Review } = require('../models');
-        const review = await Review.findOne({ [Op.and]: [{ spotId }, { userId }] })
-        if(review) throw new Error('User already has a review for this spot');
-        const newReview = Review.create({
-          spotId,
-          userId,
-          review,
-          stars
-        }); 
+        const reviewCheck = await Review.findOne({ where: { [Op.and]: [{ spotId }, { userId }] } });
+        if(reviewCheck) throw new Error('User already has a review for this spot');
+        const newReview = Review.create({ spotId, userId, review, stars }); 
         return newReview;
       } catch(e) {
         e.status = 403;
@@ -46,17 +42,16 @@ module.exports = (sequelize, DataTypes) => {
       }
     }
     static async editReview(reviewId, { review, stars }) {
-      const { Review } = require('../models');
       const editedReview = await Review.findByPk(reviewId);
-      review.set({
+      editedReview.set({
         review,
         stars
       })
       await editedReview.save();
       return editedReview;
     }
-    static async editReview(reviewId) {
-      const review = await Review.findByPK(reviewId);
+    static async deleteReview(reviewId) {
+      const review = await Review.findByPk(reviewId);
       await review.destroy();
     }
     static associate(models) {

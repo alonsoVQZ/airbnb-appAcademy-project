@@ -18,13 +18,20 @@ reviewsRouter.use('/:reviewId', checkReviewId, reviewByIdRouter);
 /*** reviewByIdRouter ***/
 
 // Edit a Review
-reviewByIdRouter.put('/', (req, res) => {
-
+reviewByIdRouter.put('/', validateReview, authentication, authorization, async (req, res) => {
+    const { reviewId } = res.locals;
+    const review = await Review.editReview(reviewId, req.body);
+    res.json(review);
 });
 
 // Delete a Review
-reviewByIdRouter.delete('/', (req, res) => {
-
+reviewByIdRouter.delete('/', authentication, authorization, async (req, res) => {
+    const { reviewId } = res.locals;
+    await Review.deleteReview(reviewId);
+    res.json({
+        "message": "Successfully deleted",
+        "statusCode": 200
+      });
 });
 
 // Middleware to reviewImageRouter
@@ -42,6 +49,7 @@ spotReviewsRouter.get('/', async (req, res) => {
 //Create a Review for a Spot based on the Spot's id
 spotReviewsRouter.post('/', validateReview, authentication, async (req, res) => {
     const { spotId, currentUserId } = res.locals;
+    console.log(res.locals)
     const spotReview = await Review.createReview(spotId, currentUserId, req.body);
     res.status(201).json(spotReview)
 });

@@ -11,19 +11,28 @@ module.exports = (sequelize, DataTypes) => {
       return await Image.findByPk(image.id);
     }
     static async createReviewImage(reviewId, url) {
-      const reviewImages = await Image.count({
-        where: {
-          imageableId: reviewId,
-          imageableType: 'Review'
-        }
-      });
-      if(reviewImages > 10) throw new Error("Maximum number of images for this resource was reached")
-      const image = await Image.create({
-        url,
-        imageableType: 'Review',
-        imageableId: reviewId
-      });
-      return await Image.findByPk(image.id);
+      try {
+        const reviewImages = await Image.count({
+          where: {
+            imageableId: reviewId,
+            imageableType: 'Review'
+          }
+        });
+        if(reviewImages > 10) throw new Error("Maximum number of images for this resource was reached")
+        const image = await Image.create({
+          url,
+          imageableType: 'Review',
+          imageableId: reviewId
+        });
+        return await Image.findByPk(image.id);
+      } catch(e) {
+        e.status = 403;
+        throw e;
+      }
+    }
+    static async deleteImage(imageId) {
+      const image = await Image.findByPk(imageId);
+      await image.destroy();
     }
     static associate(models) {
       Image.belongsTo(
