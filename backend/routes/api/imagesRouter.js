@@ -18,7 +18,7 @@ spotImagesRouter.post('/', authentication, authorization, async (req, res) => {
     const { spotId } = res.locals;
     const { url } = req.body;
     const image = await Image.createSpotImage(spotId, url);
-    res.status(200).json(image);
+    res.json(image);
 });
 
 

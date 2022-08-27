@@ -31,7 +31,7 @@ spotsRouter.post('/', validateSpot, authentication, async (req, res) => {
     const { currentUserId } = res.locals;
     const spotForm = req.body;
     const spot = await Spot.createSpot(currentUserId, spotForm);
-    res.json(spot)
+    res.status(201).json(spot)
 });
 
 
@@ -61,7 +61,7 @@ spotByIdRouter.put('/', validateSpot, authentication, authorization, async (req,
 spotByIdRouter.delete('/', authentication, authorization, async (req, res) => {
     const { spotId } = res.locals;
     await Spot.deleteSpot(spotId);
-    res.status(200).json({
+    res.json({
         "message": "Successfully deleted",
         "statusCode": 200
     })

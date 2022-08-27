@@ -4,16 +4,15 @@ const spotReviewsRouter = require('express').Router();
 const accountReviewsRouter = require('express').Router();
 
 const { Review } = require('../../db/models');
-const { authentication, authorization } = require('../../utils/auth.js')
+const { authentication, authorization, checkReviewId } = require('../../utils/auth.js')
 const { validateReview } = require('../../utils/validation.js');
-const { goodReview } = require('../../utils/resources-check.js');
 const { reviewImagesRouter } = require('./imagesRouter.js')
 
 
 /*** reviewsRouter ***/
 
 // Middleware to reviewByIdRouter
-reviewsRouter.use('/:reviewId', goodReview, reviewByIdRouter);
+reviewsRouter.use('/:reviewId', checkReviewId, reviewByIdRouter);
 
 
 /*** reviewByIdRouter ***/
@@ -35,7 +34,9 @@ reviewByIdRouter.use('/images', reviewImagesRouter);
 
 // Get all Reviews by a Spot's id
 spotReviewsRouter.get('/', (req, res) => {
-
+    const { spotId } = res.locals;
+    const spotReviews = await Image.getSpotReviews(spotId);
+    res.json({ spotReviews })
 });
 
 //Create a Review for a Spot based on the Spot's id

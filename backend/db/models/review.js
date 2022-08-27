@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
       return reviews;
     }
     static async getSpotReviews(spotId) {
-      const { Review, User, Spot, Image } = require('../models');
+      const {  User, Image } = require('../models');
       const reviews = await Review.findAll({
         where: { spotId },
         include: [
