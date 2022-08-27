@@ -28,14 +28,21 @@ module.exports = (sequelize, DataTypes) => {
       return reviews;
     }
     static async createReview(spotId, userId, { review, stars }) {
-      const { Review } = require('../models');
+      try {
+        const { Review } = require('../models');
+      const review = await Review.findByPk(spotId, { where: { userId } })
+      if(review) throw new Error('User already has a review for this spot')
       const newReview = Review.create({
         spotId,
         userId,
         review,
         stars
-      });
-      return await Review.findByPK(newReview.id);
+      }); 
+      return newReview;
+      } catch(e) {
+        e.status = 403
+        throw e;
+      }
     }
     static async editReview(reviewId, { review, stars }) {
       const { Review } = require('../models');
