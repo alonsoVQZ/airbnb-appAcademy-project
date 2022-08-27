@@ -35,7 +35,8 @@ module.exports = (sequelize, DataTypes) => {
           { required: false, model: Review, attributes: [] }, 
           { required: false, model: Image, attributes: [] }
         ],
-        group: ['Spot.id']
+        group: ['Spot.id', 'Images.id', 'Images.url'],
+        order: [['id', 'ASC'], [Image, 'id', 'ASC']]
       });
       return spots;
     }
