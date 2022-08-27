@@ -4,8 +4,8 @@ const spotReviewsRouter = require('express').Router();
 const accountReviewsRouter = require('express').Router();
 
 const { Review } = require('../../db/models');
-const { authentication, authorization, checkReviewId } = require('../../utils/auth.js')
-const { validateReview } = require('../../utils/validation.js');
+const { authentication, authorization } = require('../../utils/auth.js')
+const { validateReview, checkReviewId } = require('../../utils/validation.js');
 const { reviewImagesRouter } = require('./imagesRouter.js')
 
 
@@ -33,7 +33,7 @@ reviewByIdRouter.use('/images', reviewImagesRouter);
 /*** spotReviewsRouter ***/
 
 // Get all Reviews by a Spot's id
-spotReviewsRouter.get('/', (req, res) => {
+spotReviewsRouter.get('/', async (req, res) => {
     const { spotId } = res.locals;
     const spotReviews = await Image.getSpotReviews(spotId);
     res.json({ spotReviews })
