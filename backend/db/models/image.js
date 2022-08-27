@@ -3,13 +3,6 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Image extends Model {
     static async createSpotImage(spotId, url) {
-      const spotImages = await Image.count({
-        where: {
-          imageableId: spotId,
-          imageableType: 'Spot'
-        }
-      });
-      if(spotImages > 10) throw new Error("Maximum number of images for this resource was reached")
       const image = await Image.create({
         url,
         imageableType: 'Spot',
@@ -36,8 +29,6 @@ module.exports = (sequelize, DataTypes) => {
       Image.belongsTo(
         models.Spot,
         { 
-          // through: 'SpotImages',
-          as: 'raw',
           foreignKey: 'imageableId', 
           constraints: false 
         }
@@ -45,8 +36,6 @@ module.exports = (sequelize, DataTypes) => {
       Image.belongsTo(
         models.Review,
         { 
-          through: 'ReviewImages',
-          // as: 'ReviewImages',
           foreignKey: 'imageableId', 
           constraints: false 
         }

@@ -2,7 +2,8 @@ const imagesRouter = require('express').Router();
 const spotImagesRouter = require('express').Router();
 const reviewImagesRouter = require('express').Router();
 
-
+const { Image } = require('../../db/models');
+const { authentication, authorization } = require('../../utils/auth.js')
 
 /*** imagesRouter ***/
 // Delete an Image
@@ -13,9 +14,11 @@ imagesRouter.delete('/', (req, res) => {
 /*** spotImagesRouter ***/
 
 // Add an Image to a Spot based on the Spot's id
-spotImagesRouter.post('/', (req, res) => {
-
-    res.json({ spotImagesRouter: 'spotImagesRouter' })
+spotImagesRouter.post('/', authentication, authorization, async (req, res) => {
+    const { spotId } = res.locals;
+    const { url } = req.body;
+    const image = await Image.createSpotImage(spotId, url);
+    res.status(200).json(image);
 });
 
 

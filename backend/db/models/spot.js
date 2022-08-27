@@ -98,10 +98,10 @@ module.exports = (sequelize, DataTypes) => {
           ]
         },
         include: [
-          { required: false, model: Image, attributes: [] }
+          { required: false, model: Image, attributes: [], duplicating: false }
         ],
-        group: ['Spot.id', 'Images.id', 'Images.url'],
-        order: [['id', 'ASC'], [Image, 'id', 'ASC']],
+        group: ['Spot.id'],
+        order: [['id', 'ASC'], [Image, 'id', 'DESC']],
         offset: (page - 1) * size,
         limit: size
       });
