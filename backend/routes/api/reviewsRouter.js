@@ -40,7 +40,7 @@ spotReviewsRouter.get('/', async (req, res) => {
 });
 
 //Create a Review for a Spot based on the Spot's id
-spotReviewsRouter.post('/', authentication, (req, res) => {
+spotReviewsRouter.post('/', validateReview, authentication, (req, res) => {
     const { spotId, currentUserId } = res.locals;
     const spotReview = await Review.createReview(spotId, currentUserId, req.body);
     res.status(201).json(spotReview)
