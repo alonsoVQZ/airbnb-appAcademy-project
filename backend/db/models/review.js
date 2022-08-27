@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
     static async createReview(spotId, userId, { review, stars }) {
       try {
         const { Review } = require('../models');
-      const review = await Review.findByPk(spotId, { where: { userId } })
+      const review = await Review.findOne({ [Op.and]: [{ spotId }, { userId }] })
       if(review) throw new Error('User already has a review for this spot')
       const newReview = Review.create({
         spotId,
