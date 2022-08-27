@@ -106,94 +106,94 @@ const booking = require("./db/models/booking")
 
 // (SELECT I.id FROM Images AS I WHERE Spot.id = I.ImageableId ORDER BY I.id LIMIT 1)
 
-SELECT `Booking`.`id`, `Booking`.`userId`, `Booking`.`spotId`, `Booking`.`startDate`, `Booking`.`endDate`, `Booking`.`createdAt`, `Booking`.`updatedAt`, `Spot`.`id` AS `Spot.id`, `Spot`.`ownerId` AS `Spot.ownerId`, `Spot`.`address` AS `Spot.address`, `Spot`.`city` AS `Spot.city`, `Spot`.`state` AS `Spot.state`, `Spot`.`country` AS `Spot.country`, `Spot`.`lat` AS `Spot.lat`, `Spot`.`lng` AS `Spot.lng`, `Spot`.`name` AS `Spot.name`, `Spot`.`description` AS `Spot.description`, `Spot`.`price` AS `Spot.price`, `Spot->Images`.`url` AS `Spot.previewImage` 
-FROM `Bookings` AS `Booking` 
-INNER JOIN `Spots` AS `Spot` ON `Booking`.`spotId` = `Spot`.`id` 
-LEFT OUTER JOIN `Images` AS `Spot->Images` ON `Spot`.`id` = `Spot->Images`.`imageableId` AND `Spot->Images`.`imageableType` = 'Spot' WHERE `Booking`.`userId` = 9 
-GROUP BY `Spot`.`id`
-ORDER BY `Booking`.`id`, `Spot->Images`.`imageableId` ASC;
+// SELECT `Booking`.`id`, `Booking`.`userId`, `Booking`.`spotId`, `Booking`.`startDate`, `Booking`.`endDate`, `Booking`.`createdAt`, `Booking`.`updatedAt`, `Spot`.`id` AS `Spot.id`, `Spot`.`ownerId` AS `Spot.ownerId`, `Spot`.`address` AS `Spot.address`, `Spot`.`city` AS `Spot.city`, `Spot`.`state` AS `Spot.state`, `Spot`.`country` AS `Spot.country`, `Spot`.`lat` AS `Spot.lat`, `Spot`.`lng` AS `Spot.lng`, `Spot`.`name` AS `Spot.name`, `Spot`.`description` AS `Spot.description`, `Spot`.`price` AS `Spot.price`, `Spot->Images`.`url` AS `Spot.previewImage` 
+// FROM `Bookings` AS `Booking` 
+// INNER JOIN `Spots` AS `Spot` ON `Booking`.`spotId` = `Spot`.`id` 
+// LEFT OUTER JOIN `Images` AS `Spot->Images` ON `Spot`.`id` = `Spot->Images`.`imageableId` AND `Spot->Images`.`imageableType` = 'Spot' WHERE `Booking`.`userId` = 9 
+// GROUP BY `Spot`.`id`
+// ORDER BY `Booking`.`id`, `Spot->Images`.`imageableId` ASC;
 
-SELECT 
-    Booking.id AS bookingId,
-    Booking.spotId AS bookingSpotsId,
-    Booking.userId AS bookingUserId,
-    Spot.id AS spotId,
-    Spot.name AS spotName,
-    Image.id AS imageId,
-    Image.url AS previewImage
-FROM 
-    Bookings AS Booking
-INNER JOIN 
-    Spots AS Spot ON Booking.spotId = Spot.id
-LEFT OUTER JOIN 
-    Images AS Image ON Image.imageableId = Spot.Id AND Image.imageableType = 'Spot'
-WHERE 
-    Booking.userId = 2
-GROUP BY Image.url
-ORDER BY Booking.id, Image.id;
+// SELECT 
+//     Booking.id AS bookingId,
+//     Booking.spotId AS bookingSpotsId,
+//     Booking.userId AS bookingUserId,
+//     Spot.id AS spotId,
+//     Spot.name AS spotName,
+//     Image.id AS imageId,
+//     Image.url AS previewImage
+// FROM 
+//     Bookings AS Booking
+// INNER JOIN 
+//     Spots AS Spot ON Booking.spotId = Spot.id
+// LEFT OUTER JOIN 
+//     Images AS Image ON Image.imageableId = Spot.Id AND Image.imageableType = 'Spot'
+// WHERE 
+//     Booking.userId = 2
+// GROUP BY Image.url
+// ORDER BY Booking.id, Image.id;
 
-SELECT 
-    Booking.id AS bookingId,
-    Booking.spotId AS bookingSpotsId,
-    Booking.userId AS bookingUserId,
-    Spot.id AS spotId,
-    Spot.name AS spotName,
-FROM 
-    Bookings AS Booking
-INNER JOIN 
-    Spots AS Spot ON Booking.spotId = Spot.id
-LEFT OUTER JOIN 
-    Images AS Image ON (
-        SELECT 
-            Imageq.id
-        FROM
-            Images AS Imageq
-        WHERE
-            Imageq.imageableId = Spot.id AND Imageq.imageableType = 'Spot'
-        ORDER BY 
-            Imageq.id
-        LIMIT
-            1
-    ) = Image.id AND Image.imageableType = 'Spot'
-WHERE 
-    Booking.userId = 2
-ORDER BY Booking.id, Image.id;
+// SELECT 
+//     Booking.id AS bookingId,
+//     Booking.spotId AS bookingSpotsId,
+//     Booking.userId AS bookingUserId,
+//     Spot.id AS spotId,
+//     Spot.name AS spotName,
+// FROM 
+//     Bookings AS Booking
+// INNER JOIN 
+//     Spots AS Spot ON Booking.spotId = Spot.id
+// LEFT OUTER JOIN 
+//     Images AS Image ON (
+//         SELECT 
+//             Imageq.id
+//         FROM
+//             Images AS Imageq
+//         WHERE
+//             Imageq.imageableId = Spot.id AND Imageq.imageableType = 'Spot'
+//         ORDER BY 
+//             Imageq.id
+//         LIMIT
+//             1
+//     ) = Image.id AND Image.imageableType = 'Spot'
+// WHERE 
+//     Booking.userId = 2
+// ORDER BY Booking.id, Image.id;
 
 
-select Spot.id, Spot.name, Image.url as previewImage
-from Spots as Spot
-left outer join Images as Image on Image.id in (select Image.id from Images as Image where Image.imageableId = Spot.id and Image.imageableType = "Spot" order by Image.id asc limit 1)
-order by Spot.id asc
-limit 10, 5;
+// select Spot.id, Spot.name, Image.url as previewImage
+// from Spots as Spot
+// left outer join Images as Image on Image.id in (select Image.id from Images as Image where Image.imageableId = Spot.id and Image.imageableType = "Spot" order by Image.id asc limit 1)
+// order by Spot.id asc
+// limit 10, 5;
 
-SELECT 
-    Booking.*,
-    Spot.id AS Spot.Id,
-    Spot.ownerId,
-    Spot.address,
-    Spot.city,
-    Spot.state,
-    Spot.country,
-    Spot.lat,
-    Spot.lng,
-    Spot.name,
-    Spot.price
-FROM Bookings AS Booking
-INNER JOIN Spots AS Spot ON Booking.spotId = Spot.id
-WHERE Spot.ownerId = 3;
+// SELECT 
+//     Booking.*,
+//     Spot.id AS Spot.Id,
+//     Spot.ownerId,
+//     Spot.address,
+//     Spot.city,
+//     Spot.state,
+//     Spot.country,
+//     Spot.lat,
+//     Spot.lng,
+//     Spot.name,
+//     Spot.price
+// FROM Bookings AS Booking
+// INNER JOIN Spots AS Spot ON Booking.spotId = Spot.id
+// WHERE Spot.ownerId = 3;
 
-SELECT 
-    Booking.*,
-    Spot.id AS Spot.id,
-    Spot.ownerId AS Spot.ownerId,
-    Spot.address AS Spot.address,
-    Spot.city AS Spot.city,
-    Spot.state AS Spot.state,
-    Spot.country AS Spot.country,
-    Spot.lat AS Spot.lat,
-    Spot.lng AS Spot.lng,
-    Spot.name AS Spot.name,
-    Spot.price AS Spot.price
-FROM Bookings AS Booking
-INNER JOIN Spots AS Spot ON Booking.spotId = Spot.id
-WHERE Spot.ownerId = 3;
+// SELECT 
+//     Booking.*,
+//     Spot.id AS Spot.id,
+//     Spot.ownerId AS Spot.ownerId,
+//     Spot.address AS Spot.address,
+//     Spot.city AS Spot.city,
+//     Spot.state AS Spot.state,
+//     Spot.country AS Spot.country,
+//     Spot.lat AS Spot.lat,
+//     Spot.lng AS Spot.lng,
+//     Spot.name AS Spot.name,
+//     Spot.price AS Spot.price
+// FROM Bookings AS Booking
+// INNER JOIN Spots AS Spot ON Booking.spotId = Spot.id
+// WHERE Spot.ownerId = 3;

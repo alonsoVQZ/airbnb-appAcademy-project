@@ -92,20 +92,34 @@ module.exports = (sequelize, DataTypes) => {
       if(page < 1) page = 1;
       const spots = await Spot.findAll({
         where: filter,
-        attributes: {
-          include: [
-            [sequelize.col('Images.url'), 'previewImage']
-          ]
-        },
         include: [
-          { required: false, model: Image, attributes: [], duplicating: false }
+          { 
+            required: false,
+            model: Image,
+            limit: 1,
+            order: [['id', 'ASC']],
+          }
         ],
-        subQuery: false,
-        group: ['Spot.id','Images.id', 'Images.url'],
-        order: [['id', 'ASC'], [Image, 'id', 'DESC']],
+        order: [['id', 'ASC']],
         offset: (page - 1) * size,
         limit: size
       });
+      // const spots = await Spot.findAll({
+      //   where: filter,
+      //   attributes: {
+      //     include: [
+      //       [sequelize.col('Images.url'), 'previewImage']
+      //     ]
+      //   },
+      //   include: [
+      //     { required: false, model: Image, attributes: [], duplicating: false }
+      //   ],
+      //   subQuery: false,
+      //   group: ['Spot.id','Images.id', 'Images.url'],
+      //   order: [['id', 'ASC'], [Image, 'id', 'DESC']],
+      //   offset: (page - 1) * size,
+      //   limit: size
+      // });
       // const spots = await Spot.findAll({
       //   where: filter,
       //   attributes: { 
@@ -141,6 +155,7 @@ module.exports = (sequelize, DataTypes) => {
       );
       Spot.hasMany(
         models.Image, {
+        // as: 'previewImage',
         foreignKey: 'imageableId',
         constraints: false,
         scope: {

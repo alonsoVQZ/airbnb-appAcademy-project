@@ -34,15 +34,26 @@ module.exports = (sequelize, DataTypes) => {
           { 
             required: true,
             model: Spot,
-            attributes: { 
-              // include: [[sequelize.col('Image.url'), 'previewImage']],
-              exclude: ['createdAt', 'updatedAt']
-            },
-            // include: [{ required: false, model: Image, limit: 1}]
+            include: [
+              { 
+                required: false,
+                model: Image,
+                limit: 1,
+                order: [['id', 'ASC']],
+                
+              }
+            ]
           }
-        ],
-        // group: ['Spot.id'],
-        order: [['id', 'ASC']]
+        ]
+      });
+      
+      bookings.forEach(booking => {
+        if(booking.dataValues.Spot.dataValues.Images.length) {
+          booking.dataValues.Spot.dataValues.previewImage = booking.dataValues.Spot.dataValues.Images[0].dataValues.url;
+          delete booking.dataValues.Spot.dataValues.Images;
+        } else {
+          booking.dataValues.Spot.dataValues.previewImage = null;
+        }
       });
       return bookings;
     }
