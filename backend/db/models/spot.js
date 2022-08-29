@@ -14,11 +14,16 @@ module.exports = (sequelize, DataTypes) => {
         },
         include: [
           { required: false, model: Review, attributes: [] }, 
-          { required: false, model: Image, attributes: [] }
+          { 
+            required: false,
+            model: Image,
+            attributes: [],
+            order: ['id', 'ASC'],
+            limit: 1
+          }
         ],
-        group: ['Spot.id'],
-        order: [['id', 'ASC'], [Image, 'id', 'ASC']],
-        limit: 1
+        // group: ['Spot.id'],
+        order: [['id', 'ASC']]
       });
       return spots;
       
