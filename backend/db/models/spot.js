@@ -192,7 +192,7 @@ module.exports = (sequelize, DataTypes) => {
     defaultScope: {
       attributes: {
         include: [
-          [sequelize.cast(sequelize.fn('SUM', sequelize.col('lat')), 'INT'), 'lat'],
+          [sequelize.cast(sequelize.fn('SUM', sequelize.col('lat')), 'FLOAT'), 'lat'],
           // [sequelize.fn("ROUND", sequelize.cast(sequelize.col("lat")), "int", 7), "lat"],
           [sequelize.fn("ROUND", sequelize.col("lng"), 7), "lng"],
         ]
