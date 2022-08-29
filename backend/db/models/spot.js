@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
       const spots = await Spot.findAll({
         attributes: {
           include: [
-            [sequelize.cast(sequelize.fn("ROUND", sequelize.fn("AVG", sequelize.col("Reviews.stars")), 1)), 'FLOAT', "avgRating"],
+            [sequelize.cast(sequelize.fn("ROUND", sequelize.fn("AVG", sequelize.col("Reviews.stars")), 1), 'FLOAT'), "avgRating"],
             [sequelize.col('Images.url'), 'previewImage']
           ]
         },
