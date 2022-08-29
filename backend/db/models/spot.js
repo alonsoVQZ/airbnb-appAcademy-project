@@ -157,7 +157,6 @@ module.exports = (sequelize, DataTypes) => {
       Spot.hasMany(
         models.Image, 
         {
-          as: 'Image',
           foreignKey: 'imageableId',
           constraints: false,
           scope: {
