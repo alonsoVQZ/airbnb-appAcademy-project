@@ -4,7 +4,7 @@ const {  Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Spot extends Model {
     static async getSpots() {
-      const { Review, Image } = require('../models')
+      const { Review, Image } = require('../models');
       const spots = await Spot.findAll({
         attributes: {
           include: [
@@ -16,10 +16,27 @@ module.exports = (sequelize, DataTypes) => {
           { required: false, model: Review, attributes: [] }, 
           { required: false, model: Image, attributes: [] }
         ],
-        group: ['Spot.id', 'Images.id', 'Images.url'],
-        order: [['id', 'ASC'], [Image, 'id', 'ASC']]
+        group: ['Spot.id'],
+        order: [['id', 'ASC'], [Image, 'id', 'ASC']],
+        limit: 1
       });
       return spots;
+      
+      // const spots = await Spot.findAll({
+      //   attributes: {
+      //     include: [
+      //       [sequelize.cast(sequelize.fn("ROUND", sequelize.fn("AVG", sequelize.col("Reviews.stars")), 1), 'FLOAT'), "avgRating"],
+      //       [sequelize.col('Images.url'), 'previewImage']
+      //     ]
+      //   },
+      //   include: [
+      //     { required: false, model: Review, attributes: [] }, 
+      //     { required: false, model: Image, attributes: [] }
+      //   ],
+      //   group: ['Spot.id', 'Images.id', 'Images.url'],
+      //   order: [['id', 'ASC'], [Image, 'id', 'ASC']]
+      // });
+      // return spots;
     }
     static async getCurrentUserSpots(currentUserId) {
       const { Review, Image } = require('../models')
