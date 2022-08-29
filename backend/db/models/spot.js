@@ -14,34 +14,12 @@ module.exports = (sequelize, DataTypes) => {
         },
         include: [
           { required: false, model: Review, attributes: [] }, 
-          { 
-            required: false,
-            model: Image,
-            attributes: [],
-            order: ['id', 'ASC'],
-            limit: 1
-          }
+          { required: false, model: Image, attributes: [] }
         ],
-        // group: ['Spot.id'],
-        order: [['id', 'ASC']]
+        group: ['Spot.id', 'Images.id', 'Images.url'],
+        order: [['id', 'ASC'], [Image, 'id', 'ASC']]
       });
       return spots;
-      
-      // const spots = await Spot.findAll({
-      //   attributes: {
-      //     include: [
-      //       [sequelize.cast(sequelize.fn("ROUND", sequelize.fn("AVG", sequelize.col("Reviews.stars")), 1), 'FLOAT'), "avgRating"],
-      //       [sequelize.col('Images.url'), 'previewImage']
-      //     ]
-      //   },
-      //   include: [
-      //     { required: false, model: Review, attributes: [] }, 
-      //     { required: false, model: Image, attributes: [] }
-      //   ],
-      //   group: ['Spot.id', 'Images.id', 'Images.url'],
-      //   order: [['id', 'ASC'], [Image, 'id', 'ASC']]
-      // });
-      // return spots;
     }
     static async getCurrentUserSpots(currentUserId) {
       const { Review, Image } = require('../models')
@@ -49,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
         where: { ownerId: currentUserId },
         attributes: {
           include: [
-            [sequelize.fn("ROUND", sequelize.fn("AVG", sequelize.col("Reviews.stars")), 1), "avgRating"],
+            [sequelize.cast(sequelize.fn("ROUND", sequelize.fn("AVG", sequelize.col("Reviews.stars")), 1), 'FLOAT'), "avgRating"],
             [sequelize.col('Images.url'), 'previewImage']
           ]
         },
@@ -70,7 +48,7 @@ module.exports = (sequelize, DataTypes) => {
           attributes: {
             include: [
               [sequelize.fn("COUNT", sequelize.col("Reviews.stars")), "numReviews"],
-              [sequelize.fn("ROUND", sequelize.fn("AVG", sequelize.col("Reviews.stars")), 1), "avgStarRating"]
+              [sequelize.cast(sequelize.fn("ROUND", sequelize.fn("AVG", sequelize.col("Reviews.stars")), 1), 'FLOAT'), "avgStarRating"],
             ]
           },
           include: [
