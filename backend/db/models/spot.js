@@ -47,7 +47,7 @@ module.exports = (sequelize, DataTypes) => {
         {
           attributes: {
             include: [
-              [sequelize.fn("COUNT", sequelize.col("Reviews.stars")), "numReviews"],
+              [sequelize.cast(sequelize.fn("COUNT", sequelize.col("Reviews.stars")), 'INT'), "numReviews"],
               [sequelize.cast(sequelize.fn("ROUND", sequelize.fn("AVG", sequelize.col("Reviews.stars")), 1), 'FLOAT'), "avgStarRating"],
             ]
           },
