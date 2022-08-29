@@ -17,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
           { 
             required: false,
             model: Image,
+            as: 'Image',
             attributes: [],
             order: ['id', 'ASC'],
             limit: 1
