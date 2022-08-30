@@ -63,7 +63,8 @@ module.exports = (sequelize, DataTypes) => {
       return spot;
     }
     static async createSpot(ownerId, { address, city, state, country, lat, lng, name, description, price }) {
-      const spot = await Spot.create({ ownerId, address, city, state, country, lat, lng, name, description, price });
+      const newSpot = await Spot.create({ ownerId, address, city, state, country, lat, lng, name, description, price });
+      const spot = await Spot.findByPk(newSpot.id)
       return spot;
     }
     static async editSpot(spotId, { address, city, state, country, lat, lng, name, description, price } ) {
