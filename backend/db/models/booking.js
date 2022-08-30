@@ -136,10 +136,6 @@ module.exports = (sequelize, DataTypes) => {
         
         if(spotsBooked.length > 0) {
           spotsBooked.forEach(booking => {
-            // console.log('///////////////////')
-            // console.log(booking.userId)
-            // console.log(booking.startDate)
-            // console.log(booking.endDate)
             booking.validBooking(booking.startDate, booking.endDate, startDate, endDate)
           });
         }
