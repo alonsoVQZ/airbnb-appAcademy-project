@@ -4,11 +4,11 @@ const {  Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Spot extends Model {
     static async getSpots() {
-      const { Review, Image } = require('../models')
+      const { Review, Image } = require('../models');
       const spots = await Spot.findAll({
         attributes: {
           include: [
-            [sequelize.fn("ROUND", sequelize.fn("AVG", sequelize.col("Reviews.stars")), 1), "avgRating"],
+            [sequelize.cast(sequelize.fn("ROUND", sequelize.fn("AVG", sequelize.col("Reviews.stars")), 1), 'FLOAT'), "avgRating"],
             [sequelize.col('Images.url'), 'previewImage']
           ]
         },
@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
         where: { ownerId: currentUserId },
         attributes: {
           include: [
-            [sequelize.fn("ROUND", sequelize.fn("AVG", sequelize.col("Reviews.stars")), 1), "avgRating"],
+            [sequelize.cast(sequelize.fn("ROUND", sequelize.fn("AVG", sequelize.col("Reviews.stars")), 1), 'FLOAT'), "avgRating"],
             [sequelize.col('Images.url'), 'previewImage']
           ]
         },
@@ -47,8 +47,8 @@ module.exports = (sequelize, DataTypes) => {
         {
           attributes: {
             include: [
-              [sequelize.fn("COUNT", sequelize.col("Reviews.stars")), "numReviews"],
-              [sequelize.fn("ROUND", sequelize.fn("AVG", sequelize.col("Reviews.stars")), 1), "avgStarRating"]
+              [sequelize.cast(sequelize.fn("COUNT", sequelize.col("Reviews.stars")), 'INT'), "numReviews"],
+              [sequelize.cast(sequelize.fn("ROUND", sequelize.fn("AVG", sequelize.col("Reviews.stars")), 1), 'FLOAT'), "avgStarRating"],
             ]
           },
           include: [
@@ -112,88 +112,113 @@ module.exports = (sequelize, DataTypes) => {
           Spot.dataValues.previewImage = null;
         }
       });
-      // const spots = await Spot.findAll({
-      //   where: filter,
-      //   attributes: {
-      //     include: [
-      //       [sequelize.col('Images.url'), 'previewImage']
-      //     ]
-      //   },
-      //   include: [
-      //     { required: false, model: Image, attributes: [], duplicating: false }
-      //   ],
-      //   subQuery: false,
-      //   group: ['Spot.id','Images.id', 'Images.url'],
-      //   order: [['id', 'ASC'], [Image, 'id', 'DESC']],
-      //   offset: (page - 1) * size,
-      //   limit: size
-      // });
-      // const spots = await Spot.findAll({
-      //   where: filter,
-      //   attributes: { 
-      //     include: [[sequelize.col('Images.url'), 'previewImage']]
-      //     // include: [[sequelize.literal(`(SELECT Image.url FROM Images AS Image WHERE Image.imageableId = Spot.id AND Image.imageableType = "Spot" ORDER BY Image.id ASC LIMIT 1)`), 'previewImage']] 
-      //   },
-      //   include: [
-      //     {
-      //       required: false,
-      //       model: Image,
-      //       attributes: [],
-      //       duplicating: false
-      // on: 
-      //     }
-      //   ],
-      // subquery: false,
-
-      //   group: ['Spot.id','Images.id', 'Images.url'],
-      //   order: ['id'],
-      //   offset: (page - 1) * size,
-      //   limit: size
-      // });
       return spots;
     }
     static associate(models) {
       Spot.hasMany(
         models.Review,
-          { foreignKey: 'spotId', onDelete: 'CASCADE',  hooks: true }
+          {
+            foreignKey: 'spotId',
+            onDelete: 'CASCADE',
+            hooks: true
+          }
       );
       Spot.hasMany(
         models.Booking,
-          { foreignKey: 'spotId', onDelete: 'CASCADE',  hooks: true }
+          { 
+            foreignKey: 'spotId',
+            onDelete: 'CASCADE',
+            hooks: true
+          }
       );
       Spot.hasMany(
-        models.Image, {
-        foreignKey: 'imageableId',
-        constraints: false,
-        scope: {
-          imageableType: 'Spot'
+        models.Image, 
+        {
+          foreignKey: 'imageableId',
+          constraints: false,
+          scope: {
+            imageableType: 'Spot'
+          }
         }
-      });
+      );
       Spot.belongsTo(
         models.User,
-          { as: 'Owner', foreignKey: 'ownerId' }
+          {
+            as: 'Owner',
+            foreignKey: 'ownerId'
+          }
       );
     }
   }
   Spot.init({
-    ownerId: DataTypes.INTEGER,
-    address: DataTypes.STRING,
-    city: DataTypes.STRING,
-    state: DataTypes.STRING,
-    country: DataTypes.STRING,
-    lat: DataTypes.DECIMAL,
-    lng: DataTypes.DECIMAL,
-    name: DataTypes.STRING,
-    description: DataTypes.STRING,
-    price: DataTypes.INTEGER,
+    ownerId: {
+      type: DataTypes.INTEGER,
+      validate: {
+        
+      }
+    },
+    address: {
+      type: DataTypes.STRING,
+      validate: {
+        
+      }
+    },
+    city: {
+      type: DataTypes.STRING,
+      validate: {
+        
+      }
+    },
+    state: {
+      type: DataTypes.STRING,
+      validate: {
+        
+      }
+    },
+    country: {
+      type: DataTypes.STRING,
+      validate: {
+        
+      }
+    },
+    lat: {
+      type: DataTypes.DECIMAL,
+      validate: {
+        
+      }
+    },
+    lng: {
+      type: DataTypes.DECIMAL,
+      validate: {
+        
+      }
+    },
+    name: {
+      type: DataTypes.STRING,
+      validate: {
+        
+      }
+    },
+    description: {
+      type: DataTypes.STRING,
+      validate: {
+        
+      }
+    },
+    price: {
+      type: DataTypes.INTEGER,
+      validate: {
+
+      }
+    },
   }, {
     sequelize,
     modelName: 'Spot',
     defaultScope: {
       attributes: {
         include: [
-          [sequelize.fn("ROUND", sequelize.col("lat"), 7), "lat"],
-          [sequelize.fn("ROUND", sequelize.col("lng"), 7), "lng"],
+          [sequelize.cast(sequelize.fn("ROUND", sequelize.col('lat'), 7), 'FLOAT'), 'lat'],
+          [sequelize.cast(sequelize.fn("ROUND", sequelize.col('lng'), 7), 'FLOAT'), 'lng']
         ]
       }
     },
