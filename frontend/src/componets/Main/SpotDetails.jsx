@@ -5,6 +5,7 @@ import { useParams, useHistory } from "react-router-dom";
 
 // Store
 import { getSpotDetails, removeSpot, resetSpot } from "../../store/spot";
+import { getSpotReviews } from "../../store/reviews";
 
 // Componets
 import Modal from "../misc/Modal";
@@ -95,12 +96,15 @@ function EditSpot(props) {
 }
 
 function GuestOptions() {
-    const handleBook = () => {
-
+    const { spotId } = useParams();
+    const dispatch = useDispatch();
+    const handleReviews = () => {
+        dispatch(getSpotReviews(spotId))
     }
     return (
         <div>
-            <button onClick={() => handleBook()}>Book</button>
+            <button type="button" onClick={() => handleReviews()}>Reviews</button>
+            <button onClick={() => console.log()}>Book</button>
         </div>
     );
 }
