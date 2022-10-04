@@ -1,0 +1,11 @@
+#airbnbIconContainer {
+    width: 10%;
+    height: auto;
+    margin: 10px 5px;
+    padding: 5px;
+}
+
+#airbnbIcon {
+    width: 100%;
+    height: auto;
+}

@@ -34,14 +34,14 @@ module.exports = async () => {
     const reviews = new Array();
     const userCount = await User.count();
     const spotCount = await Spot.count();
-    const randomUserId = () => Math.floor(Math.random() * ((userCount + 1) - 1) + 1);
+    const randomUserId = (index) => index < 5 ? 1 : Math.floor(Math.random() * ((userCount + 1) - 1) + 1);
     const randomSpotId = () => Math.floor(Math.random() * ((spotCount + 1) - 1) + 1);
     const goodUserId = (userId, ownerId) => userId !== ownerId ? userId : goodUserId(randomUserId(), ownerId);
     const randomReview = (reviewsArray) => reviewsArray[Math.floor(Math.random() * reviewsArray.length)];
     for (let index = 0; index < 100; index++) {
         const spot = await Spot.findByPk(randomSpotId());
         const spotId = spot.id;
-        const userId = goodUserId(randomUserId(), spot.ownerId);
+        const userId = goodUserId(randomUserId(index), spot.ownerId);
         const stars = Math.floor(Math.random() * ((6) - 1) + 1);
         const review = randomReview(reviewsObject[stars])
         reviews.push({

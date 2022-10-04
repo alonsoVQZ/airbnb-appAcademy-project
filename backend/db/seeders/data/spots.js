@@ -69,7 +69,7 @@ module.exports = async () => {
         const { latitude, longitude } = csc.cityObj;
         const coords = randomLocation.randomCirclePoint({ latitude, longitude }, 500);
         spots.push({
-            ownerId: randomUserId(),
+            ownerId: index < 5 ? 1 : randomUserId(),
             address: faker.address.streetAddress(),
             city: csc.cityObj.name,
             state: csc.stateObj.name,

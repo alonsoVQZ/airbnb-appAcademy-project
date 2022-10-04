@@ -1,0 +1,22 @@
+header {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+}
+
+.headerContainer {
+    width: 90%;
+    height: auto;
+    border-bottom: 1px solid #ced4da;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.signButton {
+    background-color: transparent;
+    border: none;
+    padding: 10px 5px;
+}

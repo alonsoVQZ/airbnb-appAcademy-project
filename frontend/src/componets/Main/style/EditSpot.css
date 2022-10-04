@@ -1,0 +1,11 @@
+#edit-spot-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.edit-spot-input {
+    margin: 8px;
+    border: none;
+    padding: 10px;
+    background-color: #dee2e6;
+}

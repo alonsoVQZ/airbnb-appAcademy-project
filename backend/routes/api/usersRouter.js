@@ -8,12 +8,17 @@ const { validateSignup, validateSignin } = require('../../utils/validation.js');
 /*** usersRouter ***/
 
 // Logs in a current user with valid credentials and returns the current user's information.
-usersRouter.post('/signin', validateSignin, async (req, res) => {
-    const { credential, password } = req.body;
-    const user = await User.signin({ credential, password });
-    const token = setTokenCookie(res, user);
-    user.dataValues.token = token;
-    res.json(user);
+usersRouter.post('/signin', validateSignin, async (req, res, next) => {
+    try {
+
+        const { credential, password } = req.body;
+        const user = await User.signin({ credential, password });
+        const token = setTokenCookie(res, user);
+        user.dataValues.token = token;
+        res.json(user);
+    } catch(e) {
+        next(e)
+    }
 });
 
 // Creates a new user, logs them in as the current user, and returns the current user's information.

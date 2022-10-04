@@ -1,0 +1,25 @@
+#searchBarNav {
+    width: auto;
+    height: auto;
+}
+
+#searchBarNav {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border: 2px solid #939597;
+    border-radius: 30px;
+    padding: 10px;
+    transition-property: box-shadow;
+    transition-duration: 1s;
+}
+
+#searchBarNav:hover {
+    box-shadow: 0px 2px 4px #939597;
+
+}
+
+.searchSpan {
+    margin: 3px;
+    padding: 5px 10px;
+}

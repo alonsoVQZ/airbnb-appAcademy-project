@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
     }
     static async signin({ credential, password }) {
       try {
+
         const user = await User.findOne({
           where: {
             [Op.or]: {

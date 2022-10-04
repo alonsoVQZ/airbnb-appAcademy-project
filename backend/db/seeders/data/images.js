@@ -1,6 +1,7 @@
 const { faker } = require('@faker-js/faker');
 const { Spot, Review } = require('../../models');
 
+
 module.exports = async () => {
     const spotsCount = await Spot.count();
     const reviewsCount = await Review.count();
