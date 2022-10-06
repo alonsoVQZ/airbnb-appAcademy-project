@@ -10,6 +10,7 @@ import { getSpotReviews } from "../../store/reviews";
 // Componets
 import Modal from "../misc/Modal";
 import SpotForm from "./SpotForm";
+import Reviews from "./Reviews";
 
 // Style
 import "./style/SpotDetails.css"
@@ -29,7 +30,7 @@ function SpotDetails() {
     }, []);
 
     useEffect(() => {
-        if(spotDetails.ownerId === user.id) setOwner(true);
+        if(spotDetails.ownerId === user?.id) setOwner(true);
         return () => setOwner(false)
     }, [spotDetails]);
 
@@ -98,13 +99,15 @@ function EditSpot(props) {
 function GuestOptions() {
     const { spotId } = useParams();
     const dispatch = useDispatch();
-    const handleReviews = () => {
-        dispatch(getSpotReviews(spotId))
-    }
+    const [showReviews, setShowReviews] = useState(false);
+    const handleReviews = () => setShowReviews(true)
     return (
         <div>
             <button type="button" onClick={() => handleReviews()}>Reviews</button>
             <button onClick={() => console.log()}>Book</button>
+            {
+                showReviews && <Reviews />
+            }
         </div>
     );
 }

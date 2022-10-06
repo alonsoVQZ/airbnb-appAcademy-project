@@ -4,18 +4,22 @@ import { Route, Switch } from "react-router-dom";
 // Componets
 import Spots from "./Spots";
 import SpotDetails from "./SpotDetails";
-import UserSpots from "./UserSpots";
+import User from "./User/index";
+
+import "./style/Main.css"
+
+
 
 
 function Main() {
     return (
-        <div>
+        <div id="main-d1">
             <Switch>
                 <Route exact path={"/"}>
                     <Spots/>
                 </Route>
-                <Route path={"/user/spots"}>
-                    <UserSpots />
+                <Route path={"/user"}>
+                    <User />
                 </Route>
                 <Route path={"/spot/:spotId"}>
                     <SpotDetails />

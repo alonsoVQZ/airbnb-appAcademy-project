@@ -1,0 +1,49 @@
+/* User Div */
+
+#user-id-d1 {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    background-color: azure;
+}
+
+#user-id-d1d21 {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+#user-id-d1d22 {
+    width: auto;
+    height: auto;
+    padding: 25px;
+}
+
+/* User Nav */
+
+#user-id-d1d21n3 {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: black;
+    color: white;
+    transition-property: width;
+    transition-duration: 1s;
+}
+
+.nav-bar-element-d1 {
+    display: flex;
+    align-items: center;
+    margin: 15px 0px;
+}
+
+.nav-bar-element-d1i2 {
+    width: 25px;
+    height: auto;
+}
+
+.nav-bar-element-d1s2 {
+    height: 25px;
+}

@@ -6,7 +6,6 @@
     background-color: #f8f9fa;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    overflow: hidden
 }
 
 .sign-form-container {

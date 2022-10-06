@@ -1,0 +1,86 @@
+ /* Review Div */
+
+.review-d1 {
+    width: 400px;
+    margin: 10px;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: #bde0fe;
+}
+
+.review-d1d2 {
+    display: flex;
+    justify-content: space-between;
+}
+
+.review-d1d2d31 {
+    display: flex;
+    align-items: center;
+}
+
+.review-d1d2d32 {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+/* Review Paragraph */
+
+.review-d1p2 {
+    margin: 0px;
+    margin-top: 10px;
+    border-radius: 10px;
+    padding: 5px;
+    background-color: #a2d2ff;
+}
+
+/* Review Image */
+.review-d1d2d31i4 {
+    width: 25px;
+    height: auto;
+    margin-right: 10px;
+    border-radius: 50%;
+    padding: 5px;
+    background-color: black;
+}
+
+.review-d1d2d32i4 {
+    width: 20px;
+    height: auto;
+    padding: 5px;
+}
+
+/* Review Options Div */
+.review-options-d1 {
+    position: absolute;
+}
+
+#stars-rating-container {
+    width: 50px;
+    height: 10px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+}
+
+.stars-container {
+    width: 10px;
+    height: 10px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.black-star {
+    top: 0;
+    width: 10px;
+    height: auto;
+}
+
+.yellow-star {
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    top: 0;
+    z-index: 1;
+}
