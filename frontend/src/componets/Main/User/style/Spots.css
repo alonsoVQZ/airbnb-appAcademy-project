@@ -3,86 +3,56 @@
     height: 100%;
     display: grid;
     justify-content: center;
+    align-items: center;
+    justify-items: center;
     grid-template-columns: repeat(auto-fit, 400px);
     grid-template-rows: repeat(auto-fit, 400px);
     overflow:hidden;
 }
 
 
-.spot-card-nl1 {
-    width: 300px;
-    height: 300px;
-    display: flex;
-    justify-content: center;
-    margin: 15px;
-    border-radius: 25px;
-    padding: 10px;
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-}
 
+
+/* SPOT CARD */
+
+/* DIV */
 .spot-card-d1 {
-    position: relative;
+    width: 100%;
+    height: 100%;
     display: flex;
     justify-content: center;
-    margin: 15px;
-    border-radius: 25px;
-    padding: 10px;
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-}
-
-.spot-card-d1d2 {
-    width: 240px;
-    height: 75px;
-    position: absolute;
-    bottom: 3px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    border-radius: 25px;
-    padding: 10px;
-    background-color: white;
-    transition-property: height;
-    transition-duration: 1s;
-}
-
-.spot-card-d1d2d3 {
-    display: flex;
     align-items: center;
 }
 
-.spot-card-d1d2d3d42{
-    width: 170px;
-    display: flex;
-    flex-direction: column;
-    padding: 5px;
-}
-
-.spot-card-d1d2d3d42d5{
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-}
-
-/* Spot Card Image */
-
-.spot-card-d1d2d31i4 {
-    width: 30px;
-    height: auto;
-    border-radius: 50%;
-    padding: 5px;
-    background-color: black;
-}
-
-.spot-owner-options-d1 {
-    width: 100%;
+/* NAV LINK */
+.spot-card-d1nl2 {
+    width: 360px;
+    height: 360px;
+    position: relative;
     display: flex;
     justify-content: center;
-    padding: 15px;
+    border-radius: 25px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    text-decoration: none;
 }
 
-.spot-owner-options-d1b2 {
-    width: 50px;
-    margin: 0px 10px;
 
+/* SPOT CARD INFO*/
+.spot-card-info-d1 {
+    width: 350px;
+    height: 150px;
+    position: absolute;
+    bottom: 5px;
+    /* overflow: hidden; */
+}
+.spot-card-info-d1d2 {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid;
+    border-radius: 25px;
+    padding: 10px;
+    box-sizing: border-box;
 }

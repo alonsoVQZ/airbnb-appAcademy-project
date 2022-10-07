@@ -13,10 +13,10 @@ function Spots() {
         dispatch(getUserSpots())
     }, []);
     return (
-            <div id="spots-d1">
-        {
-            spots?.map((spot, i) => <SpotCard { ...{ spot } }/>)
-        }
+        <div id="spots-d1">
+            {
+                spots?.map((spot, i) => <SpotCard { ...{ spot } }/>)
+            }
         </div>
         
     );
@@ -31,33 +31,38 @@ function SpotCard(props) {
         else setHeightStyle("75px")
     }, [mouseOverDetailts])
     return (
-        <NavLink className="spot-card-nl1" to={`/spots/${spot.id}`}>
-            {/* <div className="spot-card-d1">
-                <div className="spot-card-d1d2" style={ {height: heightStyle } } onMouseEnter={() => setMouseOverDetailts(true)} onMouseLeave={() => setMouseOverDetailts(false)}>
-                    <div className="spot-card-d1d2d3">
-                        <div className="spot-card-d1d2d3d41">
-                            <img className="spot-card-d1d2d31i4" src="/icons/spots.png" alt="" />
-                        </div>
-                        <div className="spot-card-d1d2d3d42">
-                            <span>{`${spot.city}, ${spot.state}`}</span>
-                            <div className="spot-card-d1d2d3d42d5">
-                                <span>{`${spot.country}`}</span>
-                                <span>{`Reviews: ${spot.avgRating || 0}`}</span>
-                            </div>
-                        </div>
-                    </div>
-                    {
-                        mouseOverDetailts && <SpotOwnerOptions />
-                    }
-                </div>
-            </div> */}
-        </NavLink>
+        <div className="spot-card-d1">
+            <NavLink className="spot-card-d1nl2" to={`/spots/${spot.id}`}>
+                <img className="spot-card-d1nl2i3" src="" alt="" />
+                <SpotCardInfo { ...{ spot } } />
+            </NavLink>
+        </div>
     );
 }
 
-function SpotOwnerOptions() {
+function SpotCardInfo(props) {
+    const { spot } = props;
+    const { city, state, country, avgRating, name, price } = spot;
+    const [] = useState(false);
+    const [heightStyle, setHeightStyle] = useState("75px")
     return (
-        <div className="spot-owner-options-d1">
+        <div className="spot-card-info-d1">
+            <div className="spot-card-info-d1d2">
+                <div className="spot-card-info-d1d2d31">
+                    <img className="spot-card-info-d1d2d31i4" src="" alt="" />
+                    <div className="spot-card-info-d1d2d31d4">
+                        <span>{`${city}, ${state}`}</span>
+                        <div>
+                            <span>{country}</span>
+                            <span>{(avgRating || 0)}</span>
+                        </div>
+                    </div>
+                </div>
+                <div className="spot-card-info-d1d2d32">
+                    <span>{name}</span>
+                    <span>{price}</span>
+                </div>
+            </div>
         </div>
     );
 }
