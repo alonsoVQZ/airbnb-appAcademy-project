@@ -24,12 +24,6 @@ function Spots() {
 
 function SpotCard(props) {
     const { spot } = props;
-    const [mouseOverDetailts, setMouseOverDetailts] = useState(false);
-    const [heightStyle, setHeightStyle] = useState("75px")
-    useEffect(() => {
-        if(mouseOverDetailts) setHeightStyle("100px");
-        else setHeightStyle("75px")
-    }, [mouseOverDetailts])
     return (
         <div className="spot-card-d1">
             <NavLink className="spot-card-d1nl2" to={`/spots/${spot.id}`}>
@@ -43,16 +37,20 @@ function SpotCard(props) {
 function SpotCardInfo(props) {
     const { spot } = props;
     const { city, state, country, avgRating, name, price } = spot;
-    const [] = useState(false);
-    const [heightStyle, setHeightStyle] = useState("75px")
+    const [mouseOver, setMouseOver] = useState(false);
+    const [styleTop, setStyleTop] = useState("30px");
+    useEffect(() => {
+        if(mouseOver) setStyleTop("0px");
+        else setStyleTop("50px")
+    }, [mouseOver])
     return (
         <div className="spot-card-info-d1">
-            <div className="spot-card-info-d1d2">
+            <div className="spot-card-info-d1d2" style={ { top: styleTop } } onMouseEnter={() => setMouseOver(true)} onMouseLeave={() => setMouseOver(false)}>
                 <div className="spot-card-info-d1d2d31">
-                    <img className="spot-card-info-d1d2d31i4" src="" alt="" />
+                    <img className="spot-card-info-d1d2d31i4" src="/icons/spots.png" alt="" />
                     <div className="spot-card-info-d1d2d31d4">
                         <span>{`${city}, ${state}`}</span>
-                        <div>
+                        <div className="spot-card-info-d1d2d31d4d5">
                             <span>{country}</span>
                             <span>{(avgRating || 0)}</span>
                         </div>
@@ -60,7 +58,7 @@ function SpotCardInfo(props) {
                 </div>
                 <div className="spot-card-info-d1d2d32">
                     <span>{name}</span>
-                    <span>{price}</span>
+                    <span>{`$${price}`}</span>
                 </div>
             </div>
         </div>

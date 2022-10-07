@@ -1,3 +1,7 @@
+span {
+    margin: 0px 10px;
+}
+
 #spots-d1 {
     width: 100%;
     height: 100%;
@@ -9,9 +13,6 @@
     grid-template-rows: repeat(auto-fit, 400px);
     overflow:hidden;
 }
-
-
-
 
 /* SPOT CARD */
 
@@ -34,16 +35,22 @@
     border-radius: 25px;
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
     text-decoration: none;
+    color: black;
+    background-color: black;
 }
 
 
 /* SPOT CARD INFO*/
+
+/* DIV */
+
 .spot-card-info-d1 {
     width: 350px;
     height: 150px;
     position: absolute;
     bottom: 5px;
-    /* overflow: hidden; */
+    border-radius: 25px;
+    overflow: hidden;
 }
 .spot-card-info-d1d2 {
     width: 100%;
@@ -51,8 +58,47 @@
     position: absolute;
     display: flex;
     flex-direction: column;
-    border: 1px solid;
     border-radius: 25px;
-    padding: 10px;
+    padding: 20px;
     box-sizing: border-box;
+    background-color: white;
+    transition-property: top;
+    transition-duration: 1s;
+}
+
+.spot-card-info-d1d2d31 {
+    width: 100%;
+    height: 60%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.spot-card-info-d1d2d32 {
+    width: 100%;
+    height: 40%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.spot-card-info-d1d2d31d4 {
+    width: 100%;
+    height: auto;
+}
+
+.spot-card-info-d1d2d31d4d5 {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* IMG */
+
+.spot-card-info-d1d2d31i4 {
+    width: 30px;
+    height: 30px;
+    margin: 5px;
+    border-radius: 50%;
+    padding: 5px;
+    background-color: black;
 }
