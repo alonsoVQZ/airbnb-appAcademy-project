@@ -49,6 +49,7 @@ const resetSpotsAction = (spots) => {
 export const getSpots = () => async (dispatch) => {
     const response = await csrfFetch("/api/spots");
     const data = await response.json();
+    console.log(data)
     dispatch(getSpotsAction(data.Spots));
     return;
 };

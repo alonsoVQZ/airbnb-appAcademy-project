@@ -3,8 +3,6 @@ import { Route, Switch } from "react-router-dom";
 
 // Componets
 import Spots from "./Spots";
-import SpotDetails from "./SpotDetails";
-import User from "./User/index";
 
 import "./style/Main.css"
 
@@ -16,13 +14,16 @@ function Main() {
         <div id="main-d1">
             <Switch>
                 <Route exact path={"/"}>
+                    <h1>Home</h1>
+                </Route>
+                <Route path={"/spots"}>
                     <Spots/>
                 </Route>
                 <Route path={"/user"}>
-                    <User />
+                    {/* <User /> */}
                 </Route>
                 <Route path={"/spot/:spotId"}>
-                    <SpotDetails />
+                    {/* <SpotDetails /> */}
                 </Route>
                 <Route>
                    <h1>Page Not Found</h1> 
