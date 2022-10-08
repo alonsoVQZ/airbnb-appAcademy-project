@@ -1,18 +1,18 @@
 import { csrfFetch } from './csrf';
 
-const initialState = { profile: {}, spots: [], reviews: [], bookings: [] }
+const initialState = { authenticated: false, session: {}, spots: [], reviews: [] }
 
-const USER_PROFILE = "user/profile";
+const USER_SESSION = "user/session";
 const USER_SPOTS = "user/spots";
 const USER_REVIEWS = "user/reviews";
-const USER_BOOKINGS = "user/bookings";
+const USER_RESET = "user/reset";
 
 // Actions
 
-const getUserProfileAction = (profile) => {
+const getUserSessionAction = (session) => {
     return {
-        type: USER_PROFILE,
-        profile
+        type: USER_SESSION,
+        session
     }
 }
 
@@ -30,19 +30,20 @@ const getUserReviewsAction = (reviews) => {
     }
 }
 
-const getUserBookingsAction = (bookings) => {
+const userResetAction = () => {
     return {
-        type: USER_BOOKINGS,
-        bookings
+        type: USER_RESET
     }
 }
 
+
 // Functions
-export const getUserProfile = () => async (dispatch) => {
+
+export const getUserSession = () => async (dispatch) => {
     const response = await csrfFetch('/api/account');
     const data = await response.json();
-    const profile = data;
-    dispatch(getUserProfileAction(profile));
+    const session = data;
+    dispatch(getUserSessionAction(session));
     return data;
 }
 
@@ -64,13 +65,9 @@ export const getUserReviews = () => async (dispatch) => {
     return data;
 }
 
-
-export const getUserBookings = () => async (dispatch) => {
-    const response = await csrfFetch('/api/account/bookings');
-    const data = await response.json();
-    const bookings = data.Bookings;
-    dispatch(getUserBookingsAction(bookings));
-    return data;
+export const userReset = () => async (dispatch) => {
+    dispatch(userResetAction());
+    return;
 }
 
 
@@ -79,10 +76,11 @@ export const getUserBookings = () => async (dispatch) => {
 const userReducer = (state = initialState, action) => {
     let newState;
     switch(action.type) {
-        case USER_PROFILE:
+        case USER_SESSION:
             newState = {
                 ...state,
-                profile: action.profile
+                authenticated: true,
+                session: action.session
             }
             return newState;
         case USER_SPOTS:
@@ -97,11 +95,8 @@ const userReducer = (state = initialState, action) => {
                 reviews: action.reviews
             }
             return newState;
-        case USER_BOOKINGS:
-            newState = {
-                ...state,
-                bookings: action.bookings
-            }
+        case USER_RESET: 
+            newState = initialState;
             return newState;
         default:
             return initialState;

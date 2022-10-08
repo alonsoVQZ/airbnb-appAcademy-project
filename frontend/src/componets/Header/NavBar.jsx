@@ -5,40 +5,35 @@ import Modal from "../misc/Modal";
 import { signOut, demouser } from "../../store/account";
 import { useHistory } from "react-router-dom";
 import SignForms from "./SignForms";
-import { useClickCloseElement } from "../misc/helperFunctions"
 import { UserContext } from "../../context/UserContext";
 import SpotForm from "../Main/SpotForm";
 
 function NavBar() {
     const user = useSelector(state => state.user);
-    const [navBarContent, setNavBarContent] = useState();
+    const { authenticated, session } = user;
+    const [content, setContent] = useState();
     useEffect(() => {
-        if(user) setNavBarContent(<UserIn />);
-        else setNavBarContent(<UserOut />)
-    }, [user]);
-
+        if(authenticated) setContent(<UserAuthenticated />);
+        else setContent(<UserNoAuthenticated />)
+    }, [authenticated]);
     return (
-        <nav id="nav-bar-container">
-            { 
-                user && <span id="nav-bar-user">{`${user.firstName} ${user.lastName}`}</span>
-            }
-            { 
-                navBarContent
-            }
+        <nav id="nav-bar-id-nav1">
+            { authenticated && <span id="nav-bar-id-nav1s2">{`${session.firstName} ${session.lastName}`}</span> }
+            { content }
         </nav>
     );
-}
+};
 
-function UserIn() {
+function UserAuthenticated() {
     const { setUser } = useContext(UserContext);
     const [userDropdown, setUserDropdown] = useState(false);
     const [menuDropdown, setMenuDropdown] = useState(false);
     const [modal, setModal] = useState(false);
     const disptach = useDispatch();
     const history = useHistory();
-    const handleSpots = () => history.push("/user/spots");
-    const handleReviews = () => history.push("/user/reviews");
-    const handleBookings = () => history.push("/user/bookings");
+    const handleSpots = () => history.push("/user");
+    const handleReviews = () => history.push("/user");
+    const handleBookings = () => history.push("/user");
     const handleSignOut = () => {
         disptach(signOut());
         setUser(null);
@@ -48,25 +43,25 @@ function UserIn() {
         setModal(true)
     }
     return (
-        <ul id="nav-bar-list">
-            <li id="nav-bar-list-user" className="nav-bar-list-element" key="nav-bar-list-user">
-                <img className="nav-bar-list-icon" src="/user-icon.png" alt="" onClick={() => setUserDropdown(!userDropdown)}/>
+        <ul id="user-id-ul1">
+            <li id="user-id-ul1li21" className="user-ul1li2A">
+                <img className="user-ul1li2Ai3" src="/user-icon.png" alt="" onClick={() => setUserDropdown(!userDropdown)}/>
                 {
                     userDropdown && (
                         <Dropdown>
                             <DropdownElement {...{text: "Spots", imgSrc: "/user-icon.png", func: handleSpots}}/>
                             <DropdownElement {...{text: "Reviews", imgSrc: "/user-icon.png", func: handleReviews}}/>
                             <DropdownElement {...{text: "Bookings", imgSrc: "/user-icon.png", func: handleBookings}}/>
+                            <DropdownElement {...{text: "Become a Host", imgSrc: "/user-icon.png", func: handleHost}}/>
                         </Dropdown>
                     )
                 }
             </li>
-            <li id="nav-bar-list-menu" className="nav-bar-list-element" key="nav-bar-list-menu">
-                <img className="nav-bar-list-icon" src="/menu-icon.png" alt="" onClick={() => setMenuDropdown(!menuDropdown)}/>
+            <li id="user-id-ul1li22" className="user-ul1li2A">
+                <img className="user-ul1li2Ai3" src="/menu-icon.png" alt="" onClick={() => setMenuDropdown(!menuDropdown)}/>
                 {
                     menuDropdown && (
                         <Dropdown>
-                            <DropdownElement {...{text: "Become a Host", imgSrc: "/user-icon.png", func: handleHost}}/>
                             <DropdownElement {...{text: "Sign Out", imgSrc: "/user-icon.png", func: handleSignOut}}/>
                         </Dropdown>
                     )
@@ -79,7 +74,7 @@ function UserIn() {
     );
 }
 
-function UserOut() {
+function UserNoAuthenticated() {
     const { setUser } = useContext(UserContext);
     const [menuDropdown, setMenuDropdown] = useState(false);
     const [modal, setModal] = useState(false);
@@ -101,9 +96,9 @@ function UserOut() {
         setUser(userSelector);
     }
     return (
-        <ul id="nav-bar-list">
-            <li id="nav-bar-list-menu" className="nav-bar-list-element" key="nav-bar-list-menu">
-                <img className="nav-bar-list-icon" src="/menu-icon.png" alt="" onClick={() => setMenuDropdown(!menuDropdown)}/>
+        <ul id="user-id-ul1">
+            <li id="user-id-ul1li2" className="user-ul1li2">
+                <img className="user-ul1li2i3" src="/menu-icon.png" alt="" onClick={() => setMenuDropdown(!menuDropdown)}/>
                 {
                     menuDropdown && (
                         <Dropdown>
@@ -124,7 +119,7 @@ function UserOut() {
 function Dropdown(props) {
     const { children } = props;
     return (
-        <div id="dropdown-container">
+        <div id="dropdown-id-d1">
             {children}
         </div>
     )
@@ -133,9 +128,9 @@ function Dropdown(props) {
 function DropdownElement(props) {
     const { text, imgSrc, func, setModal, setFormsPosition} = props;
     return (
-        <div className="dropdown-list-element" onClick={(e) => func(setModal, setFormsPosition)}>
-            <img className="dropdown-list-icon" src={imgSrc} alt={text}/>
-            <span className="dropdown-list-span">{text}</span>
+        <div className="dropdown-element-d1" onClick={(e) => func(setModal, setFormsPosition)}>
+            <img className="dropdown-element-d1i2" src={imgSrc} alt={text}/>
+            <span className="dropdown-element-d1s2">{text}</span>
         </div>
     );
 }

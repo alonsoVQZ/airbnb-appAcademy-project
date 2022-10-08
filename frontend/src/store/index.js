@@ -2,18 +2,18 @@ import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 
 // Reducers
-import sessionReducer from './account';
-import spotsReducer from './spots';
-import spotDetailsReducer from "./spot"
-import reviewsReducer from './reviews';
-import userReducer from "./user"
+import userReducer from "./user";
+import spotsReducer from "./spots";
+import reviewsReducer from "./reviews";
+import imagesReducer from "./images";
+import detailsReducer from "./details";
 
 const rootReducer = combineReducers({
-    spot: spotDetailsReducer,
+    user: userReducer,
     spots: spotsReducer,
-    user: sessionReducer,
     reviews: reviewsReducer,
-    userInfo: userReducer
+    details: detailsReducer,
+    images: imagesReducer
 });
 
 let enhancer;

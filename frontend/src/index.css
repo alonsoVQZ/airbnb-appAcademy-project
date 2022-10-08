@@ -3,7 +3,6 @@ html, body {
     margin: 0px;
     width: 100%;
     height: 100%;
-    overflow: hidden;
 }
 
 #root {
@@ -11,21 +10,4 @@ html, body {
     height: 100%;
     display: grid;
     grid-template-rows: 100px 1fr 50px;
-}
-
-#header-d1 {
-    width: 100%;
-    height: 100%;
-    position: fixed;
-
-}
-
-#main-d1 {
-    width: 100%;
-    height: 100%;
-}
-
-#footer-d1 {
-    width: 100%;
-    height: 100%;
 }

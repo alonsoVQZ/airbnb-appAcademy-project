@@ -1,7 +1,5 @@
 // Components
-import AirbnbIcon from "./AirbnbIcon";
-import SearchBar from "./SearchBar";
-// import NavBar from "./NavBar";
+import AirbnbIcon from "./AirbnbLogo";
 import NavBar from "./NavBar";
 
 // Style
@@ -13,12 +11,9 @@ import { UserProvider } from "../../context/UserContext";
 function Header() {
     return (
         <UserProvider>
-            <header>
-                <div className="headerContainer">
-                    <AirbnbIcon />
-                    <SearchBar />
-                    <NavBar />
-                </div>
+            <header id="header-id-h1">
+                <AirbnbIcon />
+                <NavBar />
             </header>
         </UserProvider>
     );

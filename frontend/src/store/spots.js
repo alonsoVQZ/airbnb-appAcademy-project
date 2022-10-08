@@ -1,55 +1,96 @@
 import { csrfFetch } from './csrf';
 
-const SPOTS_ALL = 'spots/all';
-const SPOTS_USER = 'spots/user';
-const SPOTS_RESET = 'spots/reset';
 const initialState = [];
+
+const SPOTS_GET = "spots/get";
+const SPOTS_POST = "spots/post";
+const SPOTS_PUT = "spots/put";
+const SPOTS_DELETE = "spots/delete";
+const SPOTS_RESET = "spots/reset";
+
+// Actions
 
 const getSpotsAction = (spots) => {
     return {
-        type: SPOTS_ALL,
+        type: SPOTS_GET,
         spots
     };
 };
 
-const getUserSpotsAction = (spots) => {
+const postSpotsAction = (spots) => {
     return {
-        type: SPOTS_USER,
+        type: SPOTS_POST,
         spots
     };
 };
 
-const resetSpotsAction = () => {
+const putSpotsAction = (spots) => {
     return {
-        type: SPOTS_RESET
+        type: SPOTS_PUT,
+        spots
     };
-}
+};
+
+const deleteSpotsAction = (spots) => {
+    return {
+        type: SPOTS_DELETE,
+        spots
+    };
+};
+
+const resetSpotsAction = (spots) => {
+    return {
+        type: SPOTS_RESET,
+    };
+};
+
+// Functions
 
 export const getSpots = () => async (dispatch) => {
     const response = await csrfFetch("/api/spots");
     const data = await response.json();
     dispatch(getSpotsAction(data.Spots));
-    return response;
+    return;
 };
 
-export const getUserSpots = () => async (dispatch) => {
-    const response = await csrfFetch("/api/account/spots");
+export const postSpots = (spot) => async (dispatch) => {
+    const response = await csrfFetch("/api/spots", {
+        method: 'POST',
+        body: JSON.stringify(spot)
+    });
     const data = await response.json();
-    dispatch(getUserSpotsAction(data.Spots));
-    return response;
+    dispatch(postSpotsAction());
+    return;
+};
+
+export const putSpots = (spotId, spot) => async (dispatch) => {
+    const response = await csrfFetch("/api/spots" + spotId, {
+        method: 'PUT',
+        body: JSON.stringify(spot)
+    });
+    const data = await response.json();
+    dispatch(putSpotsAction());
+    return;
+};
+
+export const deleteSpots = (spotId) => async (dispatch) => {
+    const response = await csrfFetch("/api/spots" + spotId, {
+        method: 'delete',
+    });
+    const data = await response.json();
+    dispatch(deleteSpotsAction());
+    return;
 };
 
 export const resetSpots = () => (dispatch) => {
     dispatch(resetSpotsAction());
+    return;
 };
 
 const spotsReducer = (state = initialState, action) => {
     let newState;
     switch (action.type) {
-    case SPOTS_ALL:
-        newState = action.spots;
-        return newState;
-    case SPOTS_USER:
+    case SPOTS_GET:
         newState = action.spots;
         return newState;
     case SPOTS_RESET:

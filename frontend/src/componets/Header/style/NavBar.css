@@ -1,4 +1,4 @@
-#nav-bar-container {
+#nav-bar-id-nav1 {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -6,15 +6,14 @@
     margin: 0px 20px;
 }
 
-#nav-bar-user {
-    width: 100px;
-    height: 50px;
+#nav-bar-id-nav1s2 {
+    width: 150px;
+    height: auto;
     display: flex;
     justify-content: center;
-    align-items: center;
 }
 
-#nav-bar-list {
+#user-id-ul1 {
     width: 100px;
     height: 50px;
     display: grid;
@@ -24,24 +23,29 @@
     list-style: none;
 }
 
-.nav-bar-list-element {
+#user-id-ul1li21 {
+    grid-column: 1;
+}
+
+#user-id-ul1li22, #user-id-ul1li2 {
+    grid-column: 2;
+}
+
+.user-ul1li2A, .user-ul1li2 {
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-#nav-bar-list-menu {
-    grid-column: 2;
-}
-
-.nav-bar-list-icon {
+.user-ul1li2Ai3, .user-ul1li2i3 {
     width: 30px;
     height: auto;
     padding: 5px;
 }
 
-#dropdown-container {
+
+#dropdown-id-d1 {
     position: absolute;
     top: 45px;
     right: 5px;
@@ -53,12 +57,7 @@
     background-color:cadetblue;
 }
 
-#dropdown-list {
-    list-style: none;
-    padding: 0px;
-}
-
-.dropdown-list-element {
+.dropdown-element-d1 {
     width: 150px;
     display: flex;
     justify-content: flex-start;
@@ -68,11 +67,11 @@
     padding: 5px;
 }
 
-.dropdown-list-element:hover {
+.dropdown-element-d1:hover {
     background-color: azure;
 }
 
-.dropdown-list-icon {
+.dropdown-element-d1i2 {
     width: 15px;
     margin: 0px 10px;
 }
