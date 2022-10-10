@@ -7,9 +7,10 @@ export const signIn = (user) => async (dispatch) => {
         method: 'POST',
         body: JSON.stringify(user)
     });
+    if(response.statusCode >= 400) return response;
     const data = await response.json();
     await dispatch(getUserSession());
-    return;
+    return data;
 };
 
 export const signUp = (user) => async (dispatch) => {
@@ -17,18 +18,21 @@ export const signUp = (user) => async (dispatch) => {
         method: 'POST',
         body: JSON.stringify(user)
     });
+    console.log(response)
+    if(response.statusCode >= 400) return response;
     const data = await response.json();
     await dispatch(getUserSession());
-    return;
+    return data;
 };
 
 export const signOut = () => async (dispatch) => {
     const response = await csrfFetch('/api/users/signout', {
         method: 'DELETE'
     });
+    if(response.statusCode >= 400) return response;
     const data = await response.json();
     await dispatch(userReset());
-    return;
+    return data;
 };
 
 export const demouser = () => async (dispatch) => {
@@ -40,7 +44,8 @@ export const demouser = () => async (dispatch) => {
         method: 'POST',
         body: JSON.stringify(user)
     });
+    if(response.statusCode >= 400) return response;
     const data = await response.json();
     await dispatch(getUserSession());
-    return;
+    return data;
 };

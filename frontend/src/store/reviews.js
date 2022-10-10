@@ -40,10 +40,10 @@ export const postReviews = (spotId, spot) => async (dispatch) => {
         method: 'POST',
         body: JSON.stringify(spot)
     });
-    console.log(response)
+    if(response.statusCode >= 400) return response;
     const data = await response.json();
     dispatch(getReviews(spotId))
-    return;
+    return data;
 };
 
 export const deleteReviews = (reviewId, spotId) => async (dispatch) => {
@@ -60,10 +60,10 @@ export const editReviews = (reviewId, spotId, review) => async (dispatch) => {
         method: 'PUT',
         body: JSON.stringify(review)
     });
-    console.log(response)
+    if(response.statusCode >= 400) return response;
     const data = await response.json();
     dispatch(getReviews(spotId))
-    return;
+    return data;
 };
 
 // Reducer

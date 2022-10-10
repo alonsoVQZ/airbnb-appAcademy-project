@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-
+import { BackendErrors } from "../misc/Errors";
 // Reducer
 import { signIn, signUp } from "../../store/account";
 
@@ -8,16 +8,17 @@ import { signIn, signUp } from "../../store/account";
 import "./style/SignForms.css"
 
 function SignForms({ formsPosition }) {
+    const [backendErrors, setBackendErrors] = useState({});
     const [signLeftComponent, setSignLeftComponent] = useState();
     const [signRightComponent, setSignRightComponent] = useState();
     const stateObject = { setSignLeftComponent, setSignRightComponent };
     useEffect(() => {
         if(formsPosition) {
-            setSignLeftComponent(<SignInForm />)
-            setSignRightComponent(<SignUpOverlay  {...stateObject}/>)
+            setSignLeftComponent(<SignInForm { ...{ setBackendErrors } }/>)
+            setSignRightComponent(<SignUpOverlay { ...{stateObject, setBackendErrors } } />)
         } else {
-            setSignLeftComponent(<SignInOverlay {...stateObject} />)
-            setSignRightComponent(<SignUpForm />)
+            setSignLeftComponent(<SignInOverlay { ...{stateObject, setBackendErrors } } />)
+            setSignRightComponent(<SignUpForm { ...{ setBackendErrors } }/>)
         }
     }, []);
 
@@ -25,18 +26,20 @@ function SignForms({ formsPosition }) {
         <div id="sign-forms-container">
             {signLeftComponent}
             {signRightComponent}
+            { (Object.values(backendErrors).length > 0) && <BackendErrors { ...{ backendErrors , setBackendErrors } }/> }
         </div>
     );
 }
 
-function SignInForm() {
+function SignInForm({ setBackendErrors }) {
     const dispatch = useDispatch();
     const [credential, setCredential] = useState("");
     const [password, setPassword] = useState("");
-    function handleSubmitSignIn(e) {
+    async function handleSubmitSignIn(e) {
         e.preventDefault();
         const user = { credential, password };
-        dispatch(signIn(user));
+        const response = await dispatch(signIn(user));
+        if(response?.statusCode >= 400) setBackendErrors(response);
     }
     return (
         <form className="sign-form" onSubmit={(e) => handleSubmitSignIn(e)}>
@@ -48,17 +51,19 @@ function SignInForm() {
     );
 }
 
-function SignUpForm() {
+function SignUpForm({ setBackendErrors }) {
     const dispatch = useDispatch();
     const [firstName,setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    function handleSubmitSignUp(e) {
+    async function handleSubmitSignUp(e) {
         e.preventDefault();
         const user = { firstName, lastName, username, email, password }
-        dispatch(signUp(user));
+        const response = await dispatch(signUp(user));
+        if(response?.statusCode >= 400) setBackendErrors(response);
+        return;
     }
     return (
         <form className="sign-form" onSubmit={(e) => handleSubmitSignUp(e)}>
@@ -73,11 +78,11 @@ function SignUpForm() {
     );
 }
 
-function SignInOverlay(stateObject) {
+function SignInOverlay({ stateObject, setBackendErrors }) {
     const { setSignLeftComponent, setSignRightComponent } = stateObject;
     function handleSignInOverlayButton(e) {
-        setSignLeftComponent(<SignInForm />)
-        setSignRightComponent(<SignUpOverlay {...stateObject} />)
+        setSignLeftComponent(<SignInForm { ...{ setBackendErrors } }/>)
+        setSignRightComponent(<SignUpOverlay {...{ stateObject, setBackendErrors } } />)
     }
     return (
         <div id="sign-in-overlay" className="sign-overlay">
@@ -92,11 +97,11 @@ function SignInOverlay(stateObject) {
     );
 }
 
-function SignUpOverlay(stateObject) {
+function SignUpOverlay({ stateObject, setBackendErrors }) {
     const { setSignLeftComponent, setSignRightComponent } = stateObject;
     function handleSignUpOverlayButton(e) {
-        setSignLeftComponent(<SignInOverlay {...stateObject}/>)
-        setSignRightComponent(<SignUpForm />)
+        setSignLeftComponent(<SignInOverlay {...{ stateObject, setBackendErrors } }/>)
+        setSignRightComponent(<SignUpForm { ...{ setBackendErrors } }/>)
     }
     return (
         <div id="sign-up-overlay" className="sign-overlay">

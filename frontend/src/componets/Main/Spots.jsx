@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from 'react-router-dom';
 
+import { ShowStarsRating } from "../misc/StarsRating";
+
 import { getSpots } from "../../store/spots";
 import { getUserSpots } from "../../store/user";
 
@@ -57,7 +59,7 @@ function SpotCardInfo(props) {
                         <span>{`${city}, ${state}`}</span>
                         <div className="spot-card-info-d1d2d31d4d5">
                             <span>{country}</span>
-                            <span>{(avgRating || 0)}</span>
+                            <ShowStarsRating { ...{ avgRating } }/>
                         </div>
                     </div>
                 </div>

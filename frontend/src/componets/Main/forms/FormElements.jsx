@@ -1,11 +1,16 @@
 import "./style/FormElements.css";
+import { InputError } from "../../misc/Errors";
+import { useState } from "react";
 
 export function FormInput(props) {
-    const { value = "", setValue, text, type } = props;
+    const { value = "", setValue, text, type, errors = {} } = props;
+    const errorsArray = Object.values(errors);
+    const [showError, setShowError] = useState(false)
     return (
         <div className="form-input-d1">
+            { (errorsArray.length > 0 && showError) && <InputError { ...{ errorsArray } }/> }
             <label className="form-input-d1l2">{text}</label>
-            <input className="form-input-d1in2" type={type} value={value} placeholder={text} onChange={(e) => setValue(e.target.value)}/>
+            <input className="form-input-d1in2" type={type} value={value} placeholder={text} onChange={(e) => setValue(e.target.value)} onMouseEnter={() => setShowError(true)} onMouseLeave={() => setShowError(false)}/>
         </div>
     )
 }

@@ -43,6 +43,7 @@
     width: 150px;
     height: 100%;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
@@ -79,7 +80,7 @@
 
 .review-card-d1d22d33 {
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
     padding: 5px;
 }

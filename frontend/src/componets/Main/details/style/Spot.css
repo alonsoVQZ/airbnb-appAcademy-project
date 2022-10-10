@@ -21,7 +21,7 @@
 
 #spot-id-d1d22 {
     display: grid;
-    grid-template-rows: 1fr 500px 70px;
+    grid-template-rows: 1fr 500px 40px;
     padding: 20px;
     background-color: #d3d3d3;
 }
@@ -33,4 +33,28 @@
     border-radius: 20px;
     overflow: auto;
     background-color: #0b090a;
+}
+
+/* SPOT DETAILS */
+
+#spot-details-element-id-d1d21 {
+    display: flex;
+    justify-content: space-around;
+}
+
+#spot-details-element-id-d1p2 {
+    padding: 0px 20px;
+}
+
+#spot-details-element-id-d1d22 {
+    display: flex;
+    flex-direction: column;
+    padding: 0px 20px;
+}
+
+.spot-details-element-d1d21d3 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }

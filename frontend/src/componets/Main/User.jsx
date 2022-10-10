@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useState } from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, useHistory } from "react-router-dom";
 import "./style/User.css"
 
 import Spots from "./Spots";
@@ -8,15 +8,10 @@ import Reviews from "./Reviews";
 import Host from "./Host";
 
 function User(props) {
-    const { componentSelected = "Spots" } = props;
-    const [component, setComponent] = useState();
-    useEffect(() => {
-        setComponent(userSetComponent(componentSelected));
-    }, []);
     return (
         <div id="user-id-d1">
             <div id="user-id-d1d21">
-                <NavBar { ...{ setComponent } } />
+                <NavBar/>
             </div>
             <div id="user-id-d1d22">
                 <Switch>
@@ -35,8 +30,7 @@ function User(props) {
     );
 };
 
-function NavBar(props) {
-    const { setComponent } = props;
+function NavBar() {
     const [mouseOverNav, setMouseOverNav] = useState(false);
     const [navStyleWidth, setNavStyleWidth] = useState("auto")
     useEffect(() => {
@@ -46,33 +40,27 @@ function NavBar(props) {
     
     return (
         <nav id="user-id-d1d21n3" style={{width: navStyleWidth}} onMouseEnter={() => setMouseOverNav(true)} onMouseLeave={() => setMouseOverNav(false)}>
-            <NavBarElement { ...{ mouseOverNav, text: "Spots", imgSrc: "/icons/spots.png", setComponent } }/>
-            <NavBarElement { ...{ mouseOverNav, text: "Reviews", imgSrc: "/icons/reviews.png", setComponent } }/>
-            <NavBarElement { ...{ mouseOverNav, text: "Host", imgSrc: "/icons/host.png", setComponent } }/>
+            <NavBarElement { ...{ mouseOverNav, text: "Spots", imgSrc: "/icons/spots.png", path: "/user/spots" } }/>
+            <NavBarElement { ...{ mouseOverNav, text: "Reviews", imgSrc: "/icons/reviews.png", path: "/user/reviews" } }/>
+            <NavBarElement { ...{ mouseOverNav, text: "Host", imgSrc: "/icons/host.png", path: "/user/host" } }/>
         </nav>
     )
 };
 
 function NavBarElement(props) {
-    const { mouseOverNav, text, imgSrc, setComponent} = props;
+    const { mouseOverNav, text, imgSrc, path} = props;
+    const history = useHistory();
     const [element, setElement] = useState();
-    const handleSetComponent = () => setComponent(userSetComponent(text))
+    const handlePath = (e) => history.push(path)
     useEffect(() => {
         if(mouseOverNav) setTimeout(setElement, 400, <span className="nav-bar-element-d1s2">{text}</span>);
         else setTimeout(setElement, 400, <img className="nav-bar-element-d1i2" src={imgSrc} alt="" />);
     }, [mouseOverNav]);
     return (
-        <div className="nav-bar-element-d1" onClick={() => handleSetComponent()}>
+        <div className="nav-bar-element-d1" onClick={(e) => handlePath(e)}>
             {element}
         </div>
     );
 }
-
-function userSetComponent(componentSelected) {
-    if(componentSelected === "Spots") return <Spots { ...{ user: true } }/>;
-    if(componentSelected === "Reviews") return <Reviews { ...{ user: true } }/>;
-    if(componentSelected === "Host") return <Host />;
-}
-
 
 export default User;

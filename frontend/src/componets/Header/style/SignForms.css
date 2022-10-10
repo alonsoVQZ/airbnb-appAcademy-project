@@ -1,4 +1,5 @@
 #sign-forms-container {
+    position: relative;
     width: 700px;
     height: 500px;
     position: relative;

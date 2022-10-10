@@ -38,7 +38,7 @@ function UserAuthenticated() {
     return (
         <ul id="user-id-ul1">
             <li id="user-id-ul1li21" className="user-ul1li2A">
-                <img className="user-ul1li2Ai3" src="/user-icon.png" alt="" onClick={() => setUserDropdown(!userDropdown)}/>
+                <img className="user-ul1li2Ai3" src="/icons/user.png" alt="" onClick={() => setUserDropdown(!userDropdown)}/>
                 {
                     userDropdown && (
                         <Dropdown>
@@ -50,7 +50,7 @@ function UserAuthenticated() {
                 }
             </li>
             <li id="user-id-ul1li22" className="user-ul1li2A">
-                <img className="user-ul1li2Ai3" src="/menu-icon.png" alt="" onClick={() => setMenuDropdown(!menuDropdown)}/>
+                <img className="user-ul1li2Ai3" src="/icons/menu.png" alt="" onClick={() => setMenuDropdown(!menuDropdown)}/>
                 {
                     menuDropdown && (
                         <Dropdown>
@@ -85,7 +85,7 @@ function UserNoAuthenticated() {
     return (
         <ul id="user-id-ul1">
             <li id="user-id-ul1li2" className="user-ul1li2">
-                <img className="user-ul1li2i3" src="/menu-icon.png" alt="" onClick={() => setMenuDropdown(!menuDropdown)}/>
+                <img className="user-ul1li2i3" src="/icons/menu.png" alt="" onClick={() => setMenuDropdown(!menuDropdown)}/>
                 {
                     menuDropdown && (
                         <Dropdown>

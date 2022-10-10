@@ -1,52 +1,3 @@
-/* 
-
-
-
-
-#backend-errors-container {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    border-radius: 10px;
-    padding: 25px;
-    background-color: #ffcec6;
-}
-
-#backend-errors-header {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-#backend-errors-list {
-    display: flex;
-    flex-direction: column;
-    padding-left: 20px;
-}
-
-#backend-errors-icon {
-    width: 20px;
-    height: auto;
-    margin: 10px;
-}
-
-#backend-errors-button {
-    width: fit-content;
-    height: auto;
-    margin: 10px;
-}
-
-#frontend-error-container {
-    position: absolute;
-    top: -40px;
-    right: 20px;
-    border: 2px solid rgb(0, 0, 0, 0.5);
-    padding: 5px;
-    background-color: #fdfccc;
-} */
-
 #spot-form-id-d1 {
     width: auto;
     height: auto;
@@ -59,6 +10,36 @@
     background-color: #d3d3d3;
 }
 
+#spot-form-id-d1f2 {
+    position: relative;
+}
+
 #spot-form-id-d1f2d31 {
     display: flex;
+}
+
+#spot-form-id-d1f2d32 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#spot-form-id-d1f2d32b4 {
+    width: 100px;
+    height: 30px;
+    border: 2px solid black;
+    background-color: #2b2d42;
+    transition-property: border, background-color;
+    transition-duration: 1s;
+    font-size: larger;
+    color: white;
+}
+
+#spot-form-id-d1f2d32b4:hover {
+    color: black;
+    background-color: #8d99ae;
+}
+
+.spot-form-d1f2d31d4d5 {
+    position: relative;
 }

@@ -3,21 +3,26 @@ import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { postReviews, getReviews, editReviews } from "../../../store/reviews";
 import "./style/ReviewForm.css"
+import { BackendErrors } from "../../misc/Errors";
 
 function ReviewForm({ id, spotId, review: reviewV , stars: starsV, edit, setModal}) {
-
+    const [backendErrors, setBackendErrors] = useState({});
     const [review, setReview] = useState(reviewV || "");
     const [stars, setStars] = useState(starsV || 0);
     const dispatch = useDispatch();
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
         const reviewObject = { review, stars };
         if(edit) {
-            setModal(false);
-            dispatch(editReviews(id, spotId, reviewObject));
+            const response = await dispatch(editReviews(id, spotId, reviewObject));
+            if(response?.statusCode >= 400) setBackendErrors(response);
+            else setModal(false);
+            
+        } else {
+            const response = await dispatch(postReviews(spotId, reviewObject));
+            if(response?.statusCode >= 400) setBackendErrors(response);
+            else dispatch(getReviews(spotId));
         }
-        else dispatch(postReviews(spotId, reviewObject));
-        dispatch(getReviews(spotId));
     }
 
     return (
@@ -27,6 +32,7 @@ function ReviewForm({ id, spotId, review: reviewV , stars: starsV, edit, setModa
                 <input id="review-form-id-d1f2i3" value={stars} type="number" placeholder="Stars..." onChange={(e) => setStars(e.target.value)}/>
                 <button id="review-form-id-d1f2b3" type="submit">Submit</button>
             </form>
+            { (Object.values(backendErrors).length > 0) && <BackendErrors { ...{ backendErrors , setBackendErrors } }/> }
         </div>
     );
 }

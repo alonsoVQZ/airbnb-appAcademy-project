@@ -1,0 +1,17 @@
+.show-star-rating-d1 {
+  width: auto;
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.show-star-rating-d1i2 {
+  width: 12px;
+  height: 12px;
+  margin: 0px 3px;
+}
+
+.show-star-rating-d1s2 {
+  margin: 0px 3px;
+}

@@ -2,23 +2,24 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import Modal from "../../misc/Modal"
-import { getSpotDetails } from "../../../store/details";
+import { getSpotDetails, resetSpotDetails } from "../../../store/details";
 import { deleteSpots } from "../../../store/spots";
 import ReviewForm from "../forms/ReviewForm";
 import Reviews from "../Reviews";
 import SpotForm from "../forms/SpotForm";
-
+import { ShowStarsRating } from "../../misc/StarsRating";
 import "./style/Spot.css";
 
 function Spot() {
     const spotDetails = useSelector(state => state.details.spot);
-    const { ownerId, address, city, state, country, name, description, price, numReviews, avgStarRating, Images = [""], Owner } = spotDetails;
+    const { ownerId, Images = [""], Owner } = spotDetails;
     const user = useSelector(state => state.user.session);
     const [previewImage, setPreviewImage] = useState("");
     const { spotId } = useParams();
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(getSpotDetails(spotId));
+        return () => dispatch(resetSpotDetails())
     }, [dispatch]);
     useEffect(() => {
         setPreviewImage(Images[0].url)
@@ -29,36 +30,46 @@ function Spot() {
                     <img id="spot-id-d1d21i3" src={previewImage} alt="" />
                 </div>
                 <div id="spot-id-d1d22">
-                    <DetailsElement { ...{ name, price, description, address, city, state, country, numReviews, avgStarRating } }/>
-                    <ReviewsElement />
-                    <OwnerOptions />
+                    <SpotDetailsElement { ...{ ...spotDetails } }/>
+                    <ReviewsElement { ...{ ownerId, userId: user.id} }/>
+                    {
+                        (ownerId === user.id) && <OwnerOptions />
+                    }   
                 </div>
         </div>
     );
 }
 
-function DetailsElement({ name, price, description, address, city, state, country }) {
+function SpotDetailsElement({ address, city, state, country, name, description, price, numReviews, avgStarRating }) {
     return (
 
-        <div id="spot-id-d1d22d32">
-        <div>
-            <span>{name}</span>
-            <span>{price}</span>
+        <div id="spot-details-element-id-d1">
+            <div id="spot-details-element-id-d1d21">
+                <div className="spot-details-element-d1d21d3">
+                    <span>{name}</span>
+                    <ShowStarsRating { ...{ numReviews, avgStarRating, details: true } }/>
+                </div>
+                <div className="spot-details-element-d1d21d3">
+                    <span>{`$${price}`}</span>
+                </div>
+            </div>
+            <p id="spot-details-element-id-d1p2">{description}</p>
+            <div id="spot-details-element-id-d1d22">
+                <span>{`${address}, ${city}, ${state}`}</span>
+                <span>{country}</span>
+            </div>
         </div>
-        <p>{description}</p>
-                            <div>
-                                <span>{`${address}, ${city}, ${state}`}</span>
-                                <span>{country}</span>
-                            </div>
-    </div>
     );
 }
 
-function ReviewsElement() {
+function ReviewsElement(props) {
+    const { ownerId, userId} = props;
     const { spotId } = useParams();
     return(
         <div id="reviews-element-id-d1">
-            <ReviewForm { ...{ spotId } }/>
+            {
+                (ownerId !== userId) && <ReviewForm { ...{ spotId } }/>
+            }
             <div id="reviews-element-id-d1d2">
                 <Reviews { ...{ spotId } } />
             </div>
@@ -74,7 +85,7 @@ function OwnerOptions() {
     const handleEdit = () => setModal(true);
     const handleDelete = () => {
         dispatch(deleteSpots(spotId))
-        history.push("/user")
+        history.push("/user/spots")
     }
     return (
         <div>

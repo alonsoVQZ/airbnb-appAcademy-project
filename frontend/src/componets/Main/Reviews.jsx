@@ -8,6 +8,7 @@ import { getReviews, deleteReviews } from "../../store/reviews";
 import Modal from "../misc/Modal";
 // import ReviewDetails from "./ReviewDetails";
 import ReviewForm from "./forms/ReviewForm";
+import { ShowStarsRating } from "../misc/StarsRating"
 
 import "./style/Reviews.css"
 
@@ -39,10 +40,10 @@ function Reviews({ user = false, spotId = 1 }) {
 }
 
 function ReviewCard(props) {
-    const { review, User, createdAt, Images } = props.review;
+    const user = useSelector(state => state.user.session);
+    const { review, User, createdAt, Images, spotId, userId, stars } = props.review;
     const [mouseOver, setMouseOver] = useState(false);
     const [styleShadow, setStyleShadow] = useState(null);
-    const [modal, setModal] = useState(false)
     useEffect(() => {
         if(mouseOver) setStyleShadow("rgb(38, 57, 77) 0px 20px 30px -10px");
         else setStyleShadow(null)
@@ -65,8 +66,10 @@ function ReviewCard(props) {
     return (
         <div className="review-card-d1" style={ { boxShadow: styleShadow } } onMouseEnter={() => setMouseOver(true)} onMouseLeave={() => setMouseOver(false)}>
             <div className="review-card-d1d21">
-                <img className="review-card-d1d21i3" src={Images[0].url} alt="" />
-                <span></span>
+                <NavLink to={`/spots/${spotId}`}>
+                    <img className="review-card-d1d21i3" src={Images[0]?.url} alt="" />
+                </NavLink>
+                <ShowStarsRating { ...{ stars } } />
             </div>
             <div className="review-card-d1d22">
                 <div className="review-card-d1d22d31">
@@ -80,11 +83,9 @@ function ReviewCard(props) {
                     <p>{review}</p>
                 </div>
                 <div className="review-card-d1d22d33">
-                    <button type="button" onClick={() => setModal(true)}>More</button>
-                    <OwnerOptions { ...{...props}}/>
+                    { userId === user.id && <OwnerOptions { ...{...props}}/>}
                 </div>
             </div>
-            {/* { modal && <Modal { ...{ setModal, outside: true } }><ReviewDetails { ...{ reviewInfo: props.review } }/></Modal> } */}
         </div>
     );
 }
