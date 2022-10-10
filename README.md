@@ -19,6 +19,8 @@ User Interface:
 There are two nav bars to interect with the interface left black bar and top right user icon both are gonna open menus to intereact.
 ![image](https://user-images.githubusercontent.com/94940188/194966565-143780f7-2e65-4833-99da-59d624643df6.png | width=500)
 
+![](https://gyazo.com/eb5c5741b6a9a16c692170a41a49c858.png | width=100)
+
 
 
 
