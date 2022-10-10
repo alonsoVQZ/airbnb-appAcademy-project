@@ -6,6 +6,14 @@
 
 [Web Site Live](https://airbnb-aovz.herokuapp.com/)
 
+## Features
+
+- Sign In
+- Sign Up
+- Demouser
+- Sign Out
+- Spots (GET, POST, PUT, DELETE)
+- Reviews (GET, POST, PUT, DELETE)
 
 
 Welcome this is a web application clone inspired by airbnb, is built with ReactJS, ExpressJS and Sequelize.
