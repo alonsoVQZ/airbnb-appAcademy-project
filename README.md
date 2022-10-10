@@ -20,6 +20,9 @@ Welcome this is a web application clone inspired by airbnb, is built with ReactJ
 - Spots (GET, POST, PUT, DELETE)
 - Reviews (GET, POST, PUT, DELETE)
 
+## Features in Queue
+- Bookings (GET, POST, PUT, DELETE)
+- Images (POST, DELETE)
 
 ## Explore
 
