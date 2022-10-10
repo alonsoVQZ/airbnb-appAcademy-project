@@ -58,3 +58,25 @@
     justify-content: center;
     align-items: center;
 }
+
+.owner-options-d1 {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.owner-options-d1b2 {
+    width: 100px;
+    height: 30px;
+    border: 2px solid black;
+    background-color: #2b2d42;
+    transition-property: border, background-color;
+    transition-duration: 1s;
+    font-size: larger;
+    color: white;
+}
+
+.owner-options-d1b2:hover {
+    color: black;
+    background-color: #8d99ae;
+}

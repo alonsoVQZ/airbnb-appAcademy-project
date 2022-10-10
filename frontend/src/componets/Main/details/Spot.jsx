@@ -88,9 +88,9 @@ function OwnerOptions() {
         history.push("/user/spots")
     }
     return (
-        <div>
-            <button type="button" onClick={() => handleEdit()}>Edit</button>
-            <button type="button" onClick={() => handleDelete()}>Delete</button>
+        <div className="owner-options-d1">
+            <button className="owner-options-d1b2" type="button" onClick={() => handleEdit()}>Edit</button>
+            <button className="owner-options-d1b2" type="button" onClick={() => handleDelete()}>Delete</button>
             {
                 modal && <Modal { ...{ setModal, outside: true } }><SpotForm { ...{ edit: true, spotId, setModal } }/></Modal>
             }

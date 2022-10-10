@@ -24,11 +24,24 @@
 #review-form-id-d1f2i3 {
     position: absolute;
     width: 40px;
-    right: 100px;
+    right: 150px;
     bottom: 5px;
 }
 #review-form-id-d1f2b3 {
     position: absolute;
     right: 40px;
     bottom: 5px;
+    width: 100px;
+    height: 30px;
+    border: 2px solid black;
+    background-color: #2b2d42;
+    transition-property: border, background-color;
+    transition-duration: 1s;
+    font-size: larger;
+    color: white;
+}
+
+#review-form-id-d1f2b3:hover {
+    color: black;
+    background-color: #8d99ae;
 }
