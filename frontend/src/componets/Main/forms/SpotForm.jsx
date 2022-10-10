@@ -73,14 +73,13 @@ function SpotForm(props) {
         if(name.length < 5) errors.name.min = "Name min length is 5";
         if(name.length > 50) errors.name.max = "Name max length is 50";
         if(!name.trim().length) errors.name.blank = "Name must start with a letter";
-        if(description.length < 20) errors.description.min = "Description min length is 5";
+        if(description.length < 20) errors.description.min = "Description min length is 20";
         if(description.length > 100) errors.description.max = "Description max length is 100";
         if(!description.trim().length) errors.description.blank = "Description must start with a letter";
-
         if(price < 1) errors.price.min = "Price min ammount is 0";
-        if(price > 2000) errors.price.max = "Longitude max ammount is 2000";
+        if(price > 2000) errors.price.max = "Price max ammount is 2000";
 
-        for (const key in errors)  if(Object.values(errors[key]).length > 0) counter++;
+        for (const key in errors)  if(Object.values(errors[key]).length > 0) counter ++;
         if(counter > 0) setDistableButton(true);
         else setDistableButton(false);
         setFrontendErrors({ ...errors })
@@ -98,7 +97,7 @@ function SpotForm(props) {
                         <FormInput { ...{ text: "City", value: city, type: "text", setValue: setCity, inputPlaceholder: "", errors: frontendErrors?.city } }/>
                     
                         <FormInput { ...{ text: "State", value: state, type: "text", setValue: setState, inputPlaceholder: "", errors: frontendErrors?.state } }/>
-                        <FormSelect { ...{ text: "State", value: country, options: ["Mexico", "Canada", "United States"], setValue: setCountry } }/>
+                        <FormSelect { ...{ text: "State", value: country, options: ["Mexico", "Canada", "United States"], setValue: setCountry, errors: frontendErrors?.name} }/>
                         <FormInput { ...{ text: "Latitude", value: lat, type: "number", setValue: setLatitude, inputPlaceholder: "", errors: frontendErrors?.lat } }/>
                         <FormInput { ...{ text: "Longitude", value: lng, type: "number", setValue: setLongitude, inputPlaceholder: "", errors: frontendErrors?.lng } }/>
                     </div>

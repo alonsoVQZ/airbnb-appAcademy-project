@@ -31,7 +31,6 @@ export function BackendErrors(props) {
 }
 
 export function InputError({ errorsArray }) {
-    console.log(errorsArray)
     return (
         <div className="input-error-d1">
             <ul>

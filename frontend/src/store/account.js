@@ -18,7 +18,6 @@ export const signUp = (user) => async (dispatch) => {
         method: 'POST',
         body: JSON.stringify(user)
     });
-    console.log(response)
     if(response.statusCode >= 400) return response;
     const data = await response.json();
     await dispatch(getUserSession());

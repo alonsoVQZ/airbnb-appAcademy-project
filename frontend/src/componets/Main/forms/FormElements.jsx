@@ -34,11 +34,14 @@ export function FormSelect(props) {
 }
 
 export function FormTextArea(props) {
-    const { value = "", setValue, text} = props;
+    const { value = "", setValue, text, errors = {} } = props;
+    const errorsArray = Object.values(errors);
+    const [showError, setShowError] = useState(false)
     return (
         <div className="form-text-area-d1">
+            { (errorsArray.length > 0 && showError) && <InputError { ...{ errorsArray } }/> }
             <label className="form-text-area-d1l2">{text}</label>
-            <textarea className="form-text-area-d1ta2" value={value} placeholder={text} onChange={(e) => setValue(e.target.value)}/>
+            <textarea className="form-text-area-d1ta2" value={value} placeholder={text} onChange={(e) => setValue(e.target.value)} onMouseEnter={() => setShowError(true)} onMouseLeave={() => setShowError(false)}/>
         </div>
     )
 }
