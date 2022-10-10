@@ -31,6 +31,7 @@ function UserAuthenticated() {
     const handleSpots = () => history.push("/user/spots");
     const handleReviews = () => history.push("/user/reviews");
     const handleHost = () => history.push("/user/host");
+    const handleAbout = () => history.push("/about")
     const handleSignOut = () => {
         disptach(signOut());
         history.push("/");
@@ -55,6 +56,7 @@ function UserAuthenticated() {
                     menuDropdown && (
                         <Dropdown>
                             <DropdownElement {...{text: "Sign Out", imgSrc: "/user-icon.png", func: handleSignOut}}/>
+                            <DropdownElement {...{text: "About", imgSrc: "/user-icon.png", func: handleAbout}}/>
                         </Dropdown>
                     )
                 }

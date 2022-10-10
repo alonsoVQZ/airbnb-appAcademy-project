@@ -22,7 +22,7 @@ function Spot() {
         return () => dispatch(resetSpotDetails())
     }, [dispatch]);
     useEffect(() => {
-        setPreviewImage(Images[0].url)
+        setPreviewImage(Images[0]?.url)
     }, [Images]);
     return (
         <div id="spot-id-d1">
