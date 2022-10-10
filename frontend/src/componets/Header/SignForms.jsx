@@ -116,9 +116,9 @@ function Errors(props) {
     return (
         <ul id="errors-container">
             {
-                errors.map(element => {
+                errors.map((element, i) => {
                     
-                    return <li><span>{element}</span></li>
+                    return <li key={element + (i + 1)} ><span>{element}</span></li>
                 })
             }
         </ul>

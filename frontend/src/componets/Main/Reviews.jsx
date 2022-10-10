@@ -20,17 +20,17 @@ function Reviews({ user = false, spotId = 1 }) {
     useEffect(() => {
         if(user) dispatch(getUserReviews());
         else dispatch(getReviews(spotId));
-    }, []);
+    }, [dispatch]);
     useEffect(() => {
-        reviews = user ? userReviews : spotReviews;
-    }, [reviews]);
+
+    }, [userReviews]);
     return (
         <div id="reviews-id-d1">
                 {
                     reviews.map((review, i) => {
                         return (
-                            <div className="reviews-d1d2">
-                                <ReviewCard {  ...{ review } }/>
+                            <div className="reviews-d1d2" key={review + (i + 1)}>
+                                <ReviewCard {  ...{ isUser: user, review } }/>
                             </div>
                         )
                     })
@@ -91,10 +91,11 @@ function ReviewCard(props) {
 }
 
 function OwnerOptions(props) {
+    const user = props.isUser;
     const { id, spotId, review, stars} = props.review;
     const dispatch = useDispatch();
     const [modal, setModal] = useState(false);
-    const handleDelete = (e) => dispatch(deleteReviews(id, spotId));
+    const handleDelete = (e) => dispatch(deleteReviews(id, spotId, user));
     const handleEdit = (e) => setModal(true);
 
     return (

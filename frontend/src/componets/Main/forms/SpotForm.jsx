@@ -74,7 +74,7 @@ function SpotForm(props) {
         if(name.length > 50) errors.name.max = "Name max length is 50";
         if(!name.trim().length) errors.name.blank = "Name must start with a letter";
         if(description.length < 20) errors.description.min = "Description min length is 20";
-        if(description.length > 100) errors.description.max = "Description max length is 100";
+        if(description.length > 500) errors.description.max = "Description max length is 500";
         if(!description.trim().length) errors.description.blank = "Description must start with a letter";
         if(price < 1) errors.price.min = "Price min ammount is 0";
         if(price > 2000) errors.price.max = "Price max ammount is 2000";

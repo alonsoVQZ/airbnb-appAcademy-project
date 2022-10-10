@@ -36,7 +36,7 @@ export function InputError({ errorsArray }) {
             <ul>
                 { 
                     errorsArray.map((element, i) => {
-                        return <li><span>{element}</span></li>
+                        return <li key={element + (i + 1)}><span>{element}</span></li>
                     })
                 }
             </ul>

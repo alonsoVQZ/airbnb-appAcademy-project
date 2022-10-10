@@ -21,7 +21,7 @@ function Spots({ user = false }) {
     return (
         <div id="spots-d1">
             {
-                spots?.map((spot, i) => <SpotCard { ...{ spot } }/>)
+                spots?.map((spot, i) => <SpotCard key={spot + (i + 1)} { ...{ spot } }/>)
             }
         </div>
         
