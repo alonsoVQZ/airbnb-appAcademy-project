@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 import { useState } from "react";
+import { Route, Switch } from "react-router-dom";
 import "./style/User.css"
 
-import Profile from "./Profile";
 import Spots from "./Spots";
 import Reviews from "./Reviews";
-import Bookings from "./Bookings";
+import Host from "./Host";
 
 function User(props) {
     const { componentSelected = "Spots" } = props;
@@ -19,7 +19,17 @@ function User(props) {
                 <NavBar { ...{ setComponent } } />
             </div>
             <div id="user-id-d1d22">
-                {component}
+                <Switch>
+                    <Route exact path={"/user/spots"}>
+                        <Spots { ...{ user: true } }/>
+                    </Route>
+                    <Route exact path={"/user/reviews"}>
+                        <Reviews { ...{ user: true } }/>
+                    </Route>
+                    <Route exact path={"/user/host"}>
+                        <Host />
+                    </Route>
+                </Switch>
             </div>
         </div>
     );
@@ -36,10 +46,9 @@ function NavBar(props) {
     
     return (
         <nav id="user-id-d1d21n3" style={{width: navStyleWidth}} onMouseEnter={() => setMouseOverNav(true)} onMouseLeave={() => setMouseOverNav(false)}>
-            <NavBarElement { ...{ mouseOverNav, text: "Profile", imgSrc: "/icons/robot.png", setComponent } }/>
             <NavBarElement { ...{ mouseOverNav, text: "Spots", imgSrc: "/icons/spots.png", setComponent } }/>
             <NavBarElement { ...{ mouseOverNav, text: "Reviews", imgSrc: "/icons/reviews.png", setComponent } }/>
-            <NavBarElement { ...{ mouseOverNav, text: "Bookings", imgSrc: "/icons/bookings.png", setComponent } }/>
+            <NavBarElement { ...{ mouseOverNav, text: "Host", imgSrc: "/icons/host.png", setComponent } }/>
         </nav>
     )
 };
@@ -60,10 +69,9 @@ function NavBarElement(props) {
 }
 
 function userSetComponent(componentSelected) {
-    if(componentSelected === "Profile") return <Profile />;
-    if(componentSelected === "Spots") return <Spots />;
-    if(componentSelected === "Reviews") return <Reviews />;
-    if(componentSelected === "Bookings") return <Bookings />;
+    if(componentSelected === "Spots") return <Spots { ...{ user: true } }/>;
+    if(componentSelected === "Reviews") return <Reviews { ...{ user: true } }/>;
+    if(componentSelected === "Host") return <Host />;
 }
 
 

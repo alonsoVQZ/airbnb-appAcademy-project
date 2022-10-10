@@ -5,8 +5,6 @@ import Modal from "../misc/Modal";
 import { signOut, demouser } from "../../store/account";
 import { useHistory } from "react-router-dom";
 import SignForms from "./SignForms";
-import { UserContext } from "../../context/UserContext";
-import SpotForm from "../Main/SpotForm";
 
 function NavBar() {
     const user = useSelector(state => state.user);
@@ -25,22 +23,17 @@ function NavBar() {
 };
 
 function UserAuthenticated() {
-    const { setUser } = useContext(UserContext);
     const [userDropdown, setUserDropdown] = useState(false);
     const [menuDropdown, setMenuDropdown] = useState(false);
     const [modal, setModal] = useState(false);
     const disptach = useDispatch();
     const history = useHistory();
-    const handleSpots = () => history.push("/user");
-    const handleReviews = () => history.push("/user");
-    const handleBookings = () => history.push("/user");
+    const handleSpots = () => history.push("/user/spots");
+    const handleReviews = () => history.push("/user/reviews");
+    const handleHost = () => history.push("/user/host");
     const handleSignOut = () => {
         disptach(signOut());
-        setUser(null);
         history.push("/");
-    }
-    const handleHost = () => {
-        setModal(true)
     }
     return (
         <ul id="user-id-ul1">
@@ -49,10 +42,9 @@ function UserAuthenticated() {
                 {
                     userDropdown && (
                         <Dropdown>
-                            <DropdownElement {...{text: "Spots", imgSrc: "/user-icon.png", func: handleSpots}}/>
-                            <DropdownElement {...{text: "Reviews", imgSrc: "/user-icon.png", func: handleReviews}}/>
-                            <DropdownElement {...{text: "Bookings", imgSrc: "/user-icon.png", func: handleBookings}}/>
-                            <DropdownElement {...{text: "Become a Host", imgSrc: "/user-icon.png", func: handleHost}}/>
+                            <DropdownElement {...{text: "Spots", imgSrc: "/icons/spots.png", func: handleSpots}}/>
+                            <DropdownElement {...{text: "Reviews", imgSrc: "/icons/reviews.png", func: handleReviews}}/>
+                            <DropdownElement {...{text: "Become a Host", imgSrc: "/icons/host.png", func: handleHost}}/>
                         </Dropdown>
                     )
                 }
@@ -68,18 +60,16 @@ function UserAuthenticated() {
                 }
             </li>
             {
-                modal && <Modal {...{setModal, outside: true}}><SpotForm {...{formType: "Add", setModal}}/></Modal>
+                modal && <Modal {...{setModal, outside: true}}></Modal>
             }
         </ul>
     );
 }
 
 function UserNoAuthenticated() {
-    const { setUser } = useContext(UserContext);
     const [menuDropdown, setMenuDropdown] = useState(false);
     const [modal, setModal] = useState(false);
     const [formsPosition, setFormsPosition] = useState(false);
-    const userSelector = useSelector(state => state.user);
     const disptach = useDispatch();
     const handleSignIn = (setModal) => {
         setMenuDropdown(false);
@@ -91,10 +81,7 @@ function UserNoAuthenticated() {
         setFormsPosition(false);
         setModal(true);
     }
-    const handleDemoUser = () => {
-        disptach(demouser());
-        setUser(userSelector);
-    }
+    const handleDemoUser = () => disptach(demouser());
     return (
         <ul id="user-id-ul1">
             <li id="user-id-ul1li2" className="user-ul1li2">

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink, Route } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 import { getSpots } from "../../store/spots";
 import { getUserSpots } from "../../store/user";
@@ -15,7 +15,7 @@ function Spots({ user = false }) {
     useEffect(() => {
         if(user) dispatch(getUserSpots());
         else dispatch(getSpots())
-    }, []);
+    }, [dispatch]);
     return (
         <div id="spots-d1">
             {
@@ -28,10 +28,11 @@ function Spots({ user = false }) {
 
 function SpotCard(props) {
     const { spot } = props;
+    const { previewImage } = spot;
     return (
         <div className="spot-card-d1">
             <NavLink className="spot-card-d1nl2" to={`/spots/${spot.id}`}>
-                <img className="spot-card-d1nl2i3" src="" alt="" />
+                <img className="spot-card-d1nl2i3" src={previewImage} alt="" />
                 <SpotCardInfo { ...{ spot } } />
             </NavLink>
         </div>

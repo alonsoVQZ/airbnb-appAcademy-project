@@ -8,7 +8,7 @@ export const signIn = (user) => async (dispatch) => {
         body: JSON.stringify(user)
     });
     const data = await response.json();
-    dispatch(getUserSession());
+    await dispatch(getUserSession());
     return;
 };
 
@@ -18,7 +18,7 @@ export const signUp = (user) => async (dispatch) => {
         body: JSON.stringify(user)
     });
     const data = await response.json();
-    dispatch(getUserSession());
+    await dispatch(getUserSession());
     return;
 };
 
@@ -27,7 +27,7 @@ export const signOut = () => async (dispatch) => {
         method: 'DELETE'
     });
     const data = await response.json();
-    dispatch(userReset());
+    await dispatch(userReset());
     return;
 };
 
@@ -41,6 +41,6 @@ export const demouser = () => async (dispatch) => {
         body: JSON.stringify(user)
     });
     const data = await response.json();
-    dispatch(getUserSession());
+    await dispatch(getUserSession());
     return;
 };

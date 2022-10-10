@@ -108,7 +108,6 @@ function SignUpOverlay(stateObject) {
 
 function Errors(props) {
     const { errors } = props;
-    console.log(errors)
     return (
         <ul id="errors-container">
             {

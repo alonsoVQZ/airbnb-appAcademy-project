@@ -5,8 +5,8 @@ import thunk from 'redux-thunk';
 import userReducer from "./user";
 import spotsReducer from "./spots";
 import reviewsReducer from "./reviews";
-import imagesReducer from "./images";
 import detailsReducer from "./details";
+import imagesReducer from "./images";
 
 const rootReducer = combineReducers({
     user: userReducer,

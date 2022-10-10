@@ -53,8 +53,11 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    border-radius: 10px;
     padding: 20px 5px;
     background-color:cadetblue;
+    color: black;
+    z-index: 1;
 }
 
 .dropdown-element-d1 {

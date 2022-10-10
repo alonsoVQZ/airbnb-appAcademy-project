@@ -1,0 +1,85 @@
+/* Input */
+
+.form-input-d1 {
+    width: 200px;
+    height: 50px;
+    position: relative;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 15px;
+}
+
+.form-input-d1l2 {
+    position: absolute;
+    top: -10px;
+    left: 5px;
+    border-radius: 5px;
+    padding: 1px 5px;
+    background-color: #161a1d;
+    color: white;
+}
+
+.form-input-d1in2 {
+    width: 100%;
+    height: 30px;
+    border: none;
+    background-color: #f5f3f4;
+}
+
+/* SELECT */
+.form-select-d1 {
+    width: 200px;
+    height: 50px;
+    position: relative;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 15px;
+}
+
+.form-select-d1l2 {
+    position: absolute;
+    top: -10px;
+    left: 5px;
+    border-radius: 5px;
+    padding: 1px 5px;
+    background-color: #161a1d;
+    color: white;
+}
+
+.form-select-d1op2 {
+    width: 100%;
+    height: 30px;
+    border: none;
+    background-color: #f5f3f4;
+}
+
+/* TEXT AREA */
+
+.form-text-area-d1 {
+    width: 200px;
+    height: 150px;
+    position: relative;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 15px;
+}
+
+.form-text-area-d1l2 {
+    position: absolute;
+    top: -15px;
+    left: 5px;
+    border-radius: 5px;
+    padding: 1px 5px;
+    background-color: #161a1d;
+    color: white;
+}
+
+.form-text-area-d1ta2 {
+    width: 100%;
+    height: 130px;
+    border: none;
+    background-color: #f5f3f4;
+}

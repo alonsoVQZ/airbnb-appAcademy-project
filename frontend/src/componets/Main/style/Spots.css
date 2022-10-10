@@ -1,7 +1,3 @@
-span {
-    margin: 0px 10px;
-}
-
 #spots-d1 {
     width: 100%;
     height: 100%;
@@ -11,19 +7,24 @@ span {
     justify-items: center;
     grid-template-columns: repeat(auto-fit, 400px);
     grid-template-rows: repeat(auto-fit, 400px);
-    overflow:hidden;
 }
 
 /* SPOT CARD */
 
 /* DIV */
 .spot-card-d1 {
-    width: 100%;
-    height: 100%;
+    width: 400px;
+    height: 400px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
+
+.spot-card-d1nl2i3{
+    width: 700px;
+    height: auto;
+}
+
 
 /* NAV LINK */
 .spot-card-d1nl2 {
@@ -37,6 +38,7 @@ span {
     text-decoration: none;
     color: black;
     background-color: black;
+    overflow: hidden;
 }
 
 

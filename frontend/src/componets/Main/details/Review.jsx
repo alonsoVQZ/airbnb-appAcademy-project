@@ -2,11 +2,11 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
-import ShowStarsRating from "../misc/ShowStarsRating";
-import ImagesSlider from "../misc/ImagesSlider";
+import ShowStarsRating from "../../misc/ShowStarsRating";
+import ImagesSlider from "../../misc/ImagesSlider";
 import "./style/ReviewDetails.css"
 
-import { getUserProfile } from "../../store/user";
+import { getUserProfile } from "../../../store/user";
 
 function ReviewDetails({ reviewInfo, user }) {
     const currentUser = useSelector(state => state.userInfo.profile);
@@ -37,7 +37,9 @@ function ReviewDetails({ reviewInfo, user }) {
     }, [])
     return (
         <div id="review-details-id-d1">
-            <ImagesSlider { ...{ images } }/>
+            <div id="review-details-id-d1d21">
+                <img id="review-details-id-d1d21i3" src={images[0].url} alt="" />
+            </div>
             <div id="review-details-id-d1d2">
                 <div id="review-details-id-d1d2d31">
                     <div id="review-details-id-d1d2d31d41">

@@ -99,7 +99,7 @@ const userReducer = (state = initialState, action) => {
             newState = initialState;
             return newState;
         default:
-            return initialState;
+            return state;
     }
 }
 

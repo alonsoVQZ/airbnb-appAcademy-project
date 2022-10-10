@@ -10,7 +10,6 @@ module.exports = (sequelize, DataTypes) => {
           order: ['id'],
           limit: 1
         })
-        console.log(image)
         booking.dataValues.Spot.dataValues.previewImage =  'raw'
     }
     validBooking(bS, bE, rS, rE) {

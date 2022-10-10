@@ -2,21 +2,22 @@ import { csrfFetch } from './csrf';
 
 const initialState = [];
 
-const SPOT_REVIEWS = "spot/reviews";
-const RESET_REVIEWS = "reset/reviews";
+const REVIEWS_GET = "reviews/get";
+const REVIEWS_POST = "reviews/post"
+const REVIEWS_RESET = "reviews/reset";
 
 // Actions
 
 const resetReviewsAction = () => {
     return {
-        type: RESET_REVIEWS
+        type: REVIEWS_RESET
     }
 }
 
-const getSpotReviewsAction = (spotReviews) => {
+const getSpotReviewsAction = (reviews) => {
     return {
-        type: SPOT_REVIEWS,
-        spotReviews
+        type: REVIEWS_GET,
+        reviews
     }
 }
 
@@ -27,22 +28,56 @@ export const resetReviews = () => async (dispatch) => {
     return;
 }
 
-export const getSpotReviews = (spotId) => async (dispatch) => {
+export const getReviews = (spotId) => async (dispatch) => {
     const response = await csrfFetch(`/api/spots/${spotId}/reviews`);
     const data = await response.json();
     dispatch(getSpotReviewsAction(data.Reviews));
     return;
 }
 
+export const postReviews = (spotId, spot) => async (dispatch) => {
+    const response = await csrfFetch(`/api/spots/${spotId}/reviews`, {
+        method: 'POST',
+        body: JSON.stringify(spot)
+    });
+    console.log(response)
+    const data = await response.json();
+    dispatch(getReviews(spotId))
+    return;
+};
+
+export const deleteReviews = (reviewId, spotId) => async (dispatch) => {
+    const response = await csrfFetch("/api/reviews/" + reviewId, {
+        method: 'DELETE'
+    });
+    const data = await response.json();
+    dispatch(getReviews(spotId))
+    return;
+};
+
+export const editReviews = (reviewId, spotId, review) => async (dispatch) => {
+    const response = await csrfFetch("/api/reviews/" + reviewId, {
+        method: 'PUT',
+        body: JSON.stringify(review)
+    });
+    console.log(response)
+    const data = await response.json();
+    dispatch(getReviews(spotId))
+    return;
+};
+
 // Reducer
 
 const reviewsReducer = (state = initialState, action) => {
     let newState;
     switch(action.type) {
-        case RESET_REVIEWS:
+        case REVIEWS_RESET:
             return state;
-        case SPOT_REVIEWS:
-            newState = action.spotReviews;
+        case REVIEWS_GET:
+            newState = action.reviews;
+            return newState;
+        case REVIEWS_POST:
+            newState = action.reviews;
             return newState;
         default:
             return state;

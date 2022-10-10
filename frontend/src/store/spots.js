@@ -1,4 +1,5 @@
 import { csrfFetch } from './csrf';
+import { getSpotDetails } from "./details"
 
 const initialState = [];
 
@@ -49,7 +50,6 @@ const resetSpotsAction = (spots) => {
 export const getSpots = () => async (dispatch) => {
     const response = await csrfFetch("/api/spots");
     const data = await response.json();
-    console.log(data)
     dispatch(getSpotsAction(data.Spots));
     return;
 };
@@ -59,28 +59,31 @@ export const postSpots = (spot) => async (dispatch) => {
         method: 'POST',
         body: JSON.stringify(spot)
     });
+    if(response.statusCode >= 400) return response;
     const data = await response.json();
-    dispatch(postSpotsAction());
-    return;
+    dispatch(getSpots());
+    return data;
 };
 
 export const putSpots = (spotId, spot) => async (dispatch) => {
-    const response = await csrfFetch("/api/spots" + spotId, {
+    const response = await csrfFetch("/api/spots/" + spotId, {
         method: 'PUT',
         body: JSON.stringify(spot)
     });
+    if(response.statusCode >= 400) return response;
     const data = await response.json();
-    dispatch(putSpotsAction());
-    return;
+    dispatch(getSpotDetails(spotId));
+    return data;
 };
 
 export const deleteSpots = (spotId) => async (dispatch) => {
-    const response = await csrfFetch("/api/spots" + spotId, {
+    const response = await csrfFetch("/api/spots/" + spotId, {
         method: 'delete',
     });
+    if(response.statusCode >= 400) return response;
     const data = await response.json();
-    dispatch(deleteSpotsAction());
-    return;
+    dispatch(getSpots());
+    return data;
 };
 
 export const resetSpots = () => (dispatch) => {
@@ -92,8 +95,8 @@ const spotsReducer = (state = initialState, action) => {
     let newState;
     switch (action.type) {
     case SPOTS_GET:
-        newState = action.spots;
-        return newState;
+            newState = action.spots
+            return newState;
     case SPOTS_RESET:
         newState = [];
         return newState;

@@ -10,7 +10,7 @@ module.exports = {
       },
       url: {
         allowNull: false,
-        unique: true,
+        unique: false,
         type: Sequelize.STRING
       },
       imageableType: {

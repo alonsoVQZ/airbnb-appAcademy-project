@@ -1,0 +1,13 @@
+#footer-id-d1 {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    background-color: #0b090a;
+    color: white;
+}
+#footer-id-d1d2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0px 20px;
+}
