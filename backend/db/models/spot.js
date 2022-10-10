@@ -63,13 +63,15 @@ module.exports = (sequelize, DataTypes) => {
       return spot;
     }
     static async createSpot(ownerId, { address, city, state, country, lat, lng, name, description, price }) {
-      const spot = await Spot.create({ ownerId, address, city, state, country, lat, lng, name, description, price });
+      const newSpot = await Spot.create({ ownerId, address, city, state, country, lat, lng, name, description, price });
+      const spot = await Spot.findByPk(newSpot.id)
       return spot;
     }
     static async editSpot(spotId, { address, city, state, country, lat, lng, name, description, price } ) {
-      const spot = await Spot.findByPk(spotId)
-      spot.set({ address, city, state, country, lat, lng, name, description, price });
-      await spot.save();
+      const spotEdited = await Spot.findByPk(spotId)
+      spotEdited.set({ address, city, state, country, lat, lng, name, description, price });
+      await spotEdited.save();
+      const spot = await Spot.scope('noUACA').findByPk(spotEdited.id)
       return spot;
     }
     static async deleteSpot(spotId) {
@@ -222,6 +224,13 @@ module.exports = (sequelize, DataTypes) => {
         ]
       }
     },
+    scopes: {
+      noUACA: {
+        attributes: {
+          exclude: ['createdAt', 'updatedAt']
+        }
+      }
+    }
   });
   return Spot;
 };

@@ -120,7 +120,7 @@ module.exports = (sequelize, DataTypes) => {
         const nowDate = new Date();
         const spotsBooked = await Booking.findAll({ 
           where: { 
-            // userId: { [Op.ne]: booking.userId },
+            id: { [Op.ne]: bookingId },
             [Op.and]: [
               { spotId: booking.spotId },
               {
@@ -135,10 +135,6 @@ module.exports = (sequelize, DataTypes) => {
         
         if(spotsBooked.length > 0) {
           spotsBooked.forEach(booking => {
-            // console.log('///////////////////')
-            // console.log(booking.userId)
-            // console.log(booking.startDate)
-            // console.log(booking.endDate)
             booking.validBooking(booking.startDate, booking.endDate, startDate, endDate)
           });
         }
