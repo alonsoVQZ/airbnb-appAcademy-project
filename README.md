@@ -1,10 +1,15 @@
 # airbnb-appAcademy-project
 
+
+Welcome this is a web application clone inspired by airbnb, is built with ReactJS, ExpressJS and Sequelize.
+
+
 ## Links
 
 [API Documentations](https://github.com/alonsoVQZ/airbnb-appAcademy-project/wiki/API-Documentation)
 
 [Web Site Live](https://airbnb-aovz.herokuapp.com/)
+
 
 ## Features
 
@@ -15,8 +20,6 @@
 - Spots (GET, POST, PUT, DELETE)
 - Reviews (GET, POST, PUT, DELETE)
 
-
-Welcome this is a web application clone inspired by airbnb, is built with ReactJS, ExpressJS and Sequelize.
 
 ## Explore
 
