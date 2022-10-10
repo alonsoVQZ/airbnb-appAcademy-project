@@ -22,6 +22,11 @@ Inside this page you can select a spot to see it's details and interact with the
 There are two nav bars to interect with the interface left black bar and top right user icon both are gonna open menus to intereact.
 ![image](https://user-images.githubusercontent.com/94940188/194966565-143780f7-2e65-4833-99da-59d624643df6.png)
 
+### Spot Details:
+As owner of the spot you are gonna be able to see the buttons delete and edit to manipulate it and if u are not the owner 
+a review form will be there to write one for the spot.
+![image](https://user-images.githubusercontent.com/94940188/194967340-416be742-8324-4f02-8327-788cb9c4d57d.png)
+
 
 
 
